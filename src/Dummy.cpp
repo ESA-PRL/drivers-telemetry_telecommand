@@ -1,7 +1,7 @@
 #include "Dummy.hpp"
 
 
-namespace data_handling
+namespace telemetry_telecommand
 {
 
 	void DummyClass::welcome()

@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-namespace data_handling
+namespace telemetry_telecommand
 {
 	class DummyClass
 	{
@@ -15,6 +15,6 @@ namespace data_handling
 			void welcome();
 	};
 
-} // end namespace data_handling
+} // end namespace telemetry_telecommand
 
 #endif // _DUMMYPROJECT_DUMMY_HPP_
