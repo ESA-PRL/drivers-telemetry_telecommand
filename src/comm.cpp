@@ -12,7 +12,7 @@ using std::string;
 using std::ostringstream;
 using std::istringstream;
 
-//extern "C" int orcExecAct(const char* rtname, const char *rtparams, int req_id); 
+extern "C" int orcExecAct(const char* rtname, const char *rtparams, int req_id); 
 
 extern void orcGetTmMsg(std::string &tmmsg);
 
@@ -414,7 +414,14 @@ int handleTcMsg(char *msg) {
 	    << "Action Params = ->" << actionparam << "<--" << std::endl;
   
   if (!strcmp(actioncmd, "START")) {
-    //orcExecAct(actionname, actionparam, atoi(ackid)); 
+	if ((!strcmp(actionname, "RT1")) || (!strcmp(actionname, "RT2")))
+	{
+		orcExecAct(actionname, actionparam, atoi(ackid)); 
+	}
+	else
+	{
+		std::cout << "action " << actionname << " to be executed by Rock" << std::endl;
+	}
   }
 
   return OK;
