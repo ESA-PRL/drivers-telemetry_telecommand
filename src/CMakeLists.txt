@@ -1,6 +1,6 @@
 rock_library(telemetry_telecommand
-    SOURCES comm.cpp tmgeneration.cpp simplethread.cpp
-    HEADERS comm.h ctrl_state.h simplethread.h linuxOrcc.h)
+    SOURCES comm.cpp tmgeneration.cpp simplethread.cpp rt.cpp
+    HEADERS comm.h ctrl_state.h simplethread.h linuxOrcc.h rt.h)
 
 include_directories( 
   /usr/include/SDL/
