@@ -18,7 +18,7 @@ extern void orcGetTmMsg(std::string &tmmsg);
 
 //extern CommTcReplyServer* tcReplyServer;
 
-int handleTcMsg(char *msg);
+int handleTcMsg(CommTcServer *, char *msg);
 
 void choppy( char *s )
 {
@@ -54,6 +54,10 @@ void  CommServer::Close() {
     SDLNet_TCP_Close(Server);
 }
 
+CommandInfo::CommandInfo(std::string activity_name, std::string activity_param) {
+  activityName.append(activity_name);
+  activityParams.append(activity_param);
+}
 CommTcServer::CommTcServer(int port): CommServer(port) {
 
   fprintf (stdout, "=== CommTcServer::CommTcServer \n");
@@ -64,6 +68,19 @@ CommTcServer::CommTcServer(int port): CommServer(port) {
   theStatus = 1;
   fprintf (stdout, "=== CommTcServer::CommTcServer OK \n");
 }
+void CommTcServer::addCommandInfo(CommandInfo *cmd_info) {
+  cmdList.push_back( cmd_info ); 
+}
+CommandInfo* CommTcServer::extractCommandInfo() {
+  std::list<CommandInfo*>::iterator pr; 
+  if (cmdList.size() == 0) {
+    return NULL;
+  }
+  pr = cmdList.begin();
+  cmdList.clear();
+  return (*pr);
+}
+
 void* CommTcServer::thread() {
   IPaddress ip;
 
@@ -127,7 +144,7 @@ void* CommTcServer::thread() {
 	  string send_msg(ackid + " 0 RspAck\n");
 	  //result = tcReplyServer->sendData((char *)send_msg.c_str());
 	  
-	  int rc = handleTcMsg(msg);
+	  int rc = handleTcMsg(this, msg);
 	}
       }
     }
@@ -366,7 +383,7 @@ void  CommClient::Close() {
 }
 
 
-int handleTcMsg(char *msg) {
+int handleTcMsg(CommTcServer *tc_server, char *msg) {
   
   char ackid[80], 
     actionname[80], 
@@ -414,17 +431,13 @@ int handleTcMsg(char *msg) {
 	    << "Action Params = ->" << actionparam << "<--" << std::endl;
   
   if (!strcmp(actioncmd, "START")) {
-	if ((!strcmp(actionname, "RT1")) || (!strcmp(actionname, "RT2")))
-	{
-		orcExecAct(actionname, actionparam, atoi(ackid)); 
-	}
-	else
-	{
-		std::cout << "action " << actionname << " to be executed by Rock" << std::endl;
-	}
+    CommandInfo *cmd_info = new CommandInfo(actionname, actionparam);
+    tc_server->addCommandInfo(cmd_info);
   }
-
-  return OK;
-
+  else
+    {
+      std::cout << "action " << actionname << " to be executed by Rock" << std::endl;
+    }
+return OK;
 
 }

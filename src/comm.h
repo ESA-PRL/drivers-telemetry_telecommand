@@ -26,6 +26,7 @@
 #include <SDL/SDL_net.h>
 #include <string>
 #include <vector>
+#include <list>
 
 #include "simplethread.h"
 
@@ -92,12 +93,23 @@ class CommTcReplyServer : public CommServer
   int sendData (char *buffer);
   void* thread ();
 }; 
+class CommandInfo {
+ public:
+  std::string activityName;
+  std::string activityParams;
+ public:
+  CommandInfo(std::string activity_name, std::string activity_param);
+  
+};
 class CommTcServer : public CommServer
 {
  private:
+  std::list <CommandInfo*> cmdList;
  public:
   CommTcServer(int port);
   ~CommTcServer(){};
+  void addCommandInfo(CommandInfo *);
+  CommandInfo* extractCommandInfo();
   int strTokenize (const string& str, vector<string>& tokens, const string& delimiters = " ");
   void* thread ();
 }; 
