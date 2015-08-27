@@ -26,9 +26,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <log4cxx/logger.h>
+//#include <log4cxx/logger.h>
 
-using namespace log4cxx;
+//using namespace log4cxx;
 
 
 #include "linuxOrcc.h"
