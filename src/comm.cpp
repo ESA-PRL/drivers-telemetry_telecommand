@@ -14,7 +14,7 @@ using std::istringstream;
 
 extern "C" int orcExecAct(const char* rtname, const char *rtparams, int req_id); 
 
-extern void orcGetTmMsg(std::string &tmmsg);
+//extern void orcGetTmMsg(std::string &tmmsg);
 
 //extern CommTcReplyServer* tcReplyServer;
 
@@ -220,8 +220,9 @@ void* CommTcReplyServer::thread() {
 }
 
 
-CommTmServer::CommTmServer(int port): CommServer(port) {
+CommTmServer::CommTmServer(int port, RobotProcedure* prr): CommServer(port) {
 
+  this->prr=prr;
   fprintf (stdout, "=== CommTmServer::CommTmServer \n");
   if ( createThread() == ERROR ) {
     fprintf (stdout, "=== CommTmServer::createThread failed \n");
