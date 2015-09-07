@@ -5,24 +5,21 @@
 #include <math.h>
 
 #include "ctrl_state.h"
+#include "comm.h"
 
 #include <stdio.h>
 
 static int ctrl_time = 0;
 
-void orcGetTmMsg(std::string &tmmsg) {
+void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
   
-  double ctrlstate[CTRL_MAX_STATE_SIZE];
-  double rrpstate[CTRL_MAX_STATE_SIZE];
-  double ptustate[CTRL_MAX_STATE_SIZE];
-  double gncstate[CTRL_MAX_STATE_SIZE];
-  double navcamstate[CTRL_MAX_STATE_SIZE];
-  double pancamstate[CTRL_MAX_STATE_SIZE];
-  double hazcamstate[CTRL_MAX_STATE_SIZE];
-  double minicamstate[CTRL_MAX_STATE_SIZE];
-  double tofcamstate[CTRL_MAX_STATE_SIZE];
-  double inclinostate[CTRL_MAX_STATE_SIZE];
-  double ttcstate[CTRL_MAX_STATE_SIZE];
+ // State variables definition
+ double State[MAX_STATE_SIZE];
+ double ADEState[MAX_STATE_SIZE]; // Needed?
+ double SAState[MAX_STATE_SIZE];  // Needed?
+ double PanCamState[MAX_STATE_SIZE];
+ double MastState[MAX_STATE_SIZE];
+ double GNCState[MAX_STATE_SIZE];
 
   //
   // dummy initialisation of the TM
@@ -41,6 +38,11 @@ void orcGetTmMsg(std::string &tmmsg) {
     ttcstate[i] = i;
   }
 
+
+  if ( prr->GetParameters()->get( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) GNCState ) == ERROR ){
+         std::cout << "Error getting GNCState" << std::endl;
+  }
+
   char buffer[1024];
 
   ctrl_time = ctrl_time + 200; // 0.2 sec in msec
@@ -48,10 +50,10 @@ void orcGetTmMsg(std::string &tmmsg) {
   tmmsg = "TmPacket MODE ";
   sprintf(buffer, "%d:", ctrl_time);
   tmmsg += buffer;
-  sprintf(buffer, "%.0lf;\n", ctrlstate[RAT_CONROLLER_OPER_MODE_INDEX]);
+  sprintf(buffer, "%.0lf;\n", GNCState[7]);
   tmmsg += buffer;
 
-
+/*
   //
   // ACT_STAT
   //
@@ -301,5 +303,5 @@ void orcGetTmMsg(std::string &tmmsg) {
 	  ttcstate[COMMS_TC_PACKET_DROP_RATE_INDEX],
 	  ttcstate[COMMS_LOG_VERBOSITY_LEVEL_INDEX]);
   tmmsg += buffer;
-
+*/
 }
