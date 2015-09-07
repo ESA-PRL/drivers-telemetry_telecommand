@@ -29,6 +29,7 @@
 #include <list>
 
 #include "simplethread.h"
+#include "prr.h"
 
 #define COMM_ERROR0 1
 #define COMM_ERROR1 2
@@ -78,9 +79,11 @@ class CommServer :public SimpleThread
 class CommTmServer : public CommServer
 {
  private:
+ RobotProcedure* prr;
  public:
-  CommTmServer(int port);
+  CommTmServer(int port, RobotProcedure* prr);
   ~CommTmServer(){};
+  void orcGetTmMsg(std::string &tmmsg);
   void* thread ();
 }; 
 
