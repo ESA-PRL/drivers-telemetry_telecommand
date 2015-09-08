@@ -24,18 +24,13 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
   //
   // dummy initialisation of the TM
   //
-  for (int i=0; i<CTRL_MAX_STATE_SIZE; i++) {
-    ctrlstate[i] = i;
-    rrpstate[i] = i;
-    ptustate[i] = i;
-    gncstate[i] = i;
-    navcamstate[i] = i;
-    pancamstate[i] = i;
-    hazcamstate[i] = i;
-    minicamstate[i] = i;
-    tofcamstate[i] = i;
-    inclinostate[i] = i;
-    ttcstate[i] = i;
+  for (int i=0; i<MAX_STATE_SIZE; i++) {
+    State[i] = 0.0;
+    ADEState[i] = 0.0;
+    SAState[i] = 0.0;
+    PanCamState[i] = 0.0;
+    MastState[i] = 0.0;
+    GNCState[i] = 0.0;
   }
 
 
