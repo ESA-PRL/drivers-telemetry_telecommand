@@ -7,6 +7,7 @@
 #include "simplethread.h"
 #include "linuxOrcc.h"
 #include "utils.h"
+#include "ctrl_state.h"
 
 
 class RobotTask : public SimpleThread
@@ -25,6 +26,60 @@ class RobotTask : public SimpleThread
 
   /** The name of the Robot Task */
   std::string rtName;
+
+  // PANCAM
+  double warmUpTimeout;
+  int status_index;
+  int current_status;
+  int previous_status;
+  int final_status;
+  char cameraid[80]; 
+  char exposure_time_str[80]; 
+  char exposure_mode[80];
+  double duration;
+  char compression_level[80];
+  int filterid;
+  double current_filterid;
+
+  // ADE
+  char ade_id[80];
+  char target_mode[80];
+  char hdrm_id[80];
+  int target_mode_id;
+  double ade_duration;
+
+  double current_time;
+  
+  int index;
+  int post_cond;
+  int param_completed;
+  int init_completed;
+  int compute_completed;
+  int end_completed;
+
+  // SA MoveTo
+  double tilt;
+
+  double initSAPose[SA_DOF];
+  double finalSAPose[SA_DOF];
+  double jointSATrajDuration[SA_DOF];
+  double jointSAMaxSpeed[SA_DOF];
+  double saCurrentTime;
+  double saTrajDuration;
+  double saCurrentPose[SA_DOF];
+
+
+  double initMASTPose[MAST_DOF];
+  double finalMASTPose[MAST_DOF];
+  double jointMASTTrajDuration[MAST_DOF];
+  double jointMASTMaxSpeed[MAST_DOF];
+  double mastCurrentTime;
+  double mastTrajDuration;
+  double mastCurrentPose[MAST_DOF];
+
+  // all trajectories
+  double tFracDur;
+  double rt;
 
  protected:	
 

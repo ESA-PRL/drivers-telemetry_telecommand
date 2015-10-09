@@ -14,6 +14,13 @@ RobotTask::RobotTask (std::string name)
   if (( waitEndActionSem = orcSemCreate( ORCEMPTY ) ) == NULL ) {
     //EventStorage->displayError( RT_ERROR3, Clock->GetTime() );
   }
+  param_completed   = 0;
+  init_completed    = 0;
+  compute_completed = 0;
+  end_completed     = 0;
+  current_time = 0.0;
+  index = 0;
+  post_cond = 0;
 
   // set the name
   rtName = name;
@@ -66,16 +73,7 @@ int RobotTask::SetParam (char* params)
 void* RobotTask::thread ()
 {
   std::cerr << "++ Thread RobotTask::thread spawned" << std::endl;
-  FILE *logFile;
-  char filename[240];
-  sprintf(filename, "%s.log", rtName.c_str());
-  if ((logFile = fopen( filename, "w+")) == NULL) {
-    printf ("ERROR: Log init failed!!!!! can't open file %s\n", 
-	    filename);
-    return NULL;
-  }
   
-  int index = 0;
   int run = TRUE;
   do
     {
@@ -208,14 +206,20 @@ void* RobotTask::thread ()
       }
       
       sleep(1);
-      index++;
-      fprintf(logFile, "%d %s\n", index, rtName.c_str());
-      if (index == 3) 
+      
+      if (post_cond == 1) {
 	run = FALSE;
+	post_cond = 0;
+	current_time = 0.0;
+	index = 0;
+	param_completed = 0;
+	init_completed = 0;
+	compute_completed = 0;
+	end_completed = 0;
+      }
     }
   while ( run );
   
-  fclose(logFile);
   
   // at the end of the Control method
   if ( orcSemGive(waitEndActionSem) == ERROR ) { 
@@ -225,276 +229,8 @@ void* RobotTask::thread ()
   std::cout << "-- Thread RobotTask::thread terminated" << std::endl;
 }
 
-void RobotTask::computeADE_LEFT_Initialise(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computeADE_LEFT_conf(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computeADE_LEFT_ReleaseHDRM(){ 
-  std::cerr << rtName << std::endl;
-  if ( theRobotProcedure->GetParameters()->get( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  } 
-}
-void RobotTask::computeADE_LEFT_SwitchOff(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computeADE_RIGHT_Initialise(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computeADE_RIGHT_conf(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computeADE_RIGHT_ReleaseHDRM(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computeADE_RIGHT_SwitchOff(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
 
-void RobotTask::computeSA_LEFT_Initialise(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computeSA_LEFT_PrimaryMoveTo(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computeSA_LEFT_SecondaryMoveTo(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computeSA_LEFT_SwitchOff(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computeSA_RIGHT_Initialise(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computeSA_RIGHT_PrimaryMoveTo(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computeSA_RIGHT_SecondaryMoveTo(){ 
-  std::cerr << rtName << std::endl; 
-}
-void RobotTask::computeSA_RIGHT_SwitchOff(){ 
-std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
 
-void RobotTask::computePanCam_Initialise(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computePanCam_InitWACs(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computePanCam_SwitchOn(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computePanCam_WACAcqImage(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computePanCam_WACGetImage(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computePanCam_SwitchOff(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computePanCam_PIUSwitchOff(){ 
-  std::cerr << rtName << std::endl; 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computePANCAM_WAC_RRGB(){ 
-  std::cerr << rtName << std::endl; 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computePanCam_FilterSel(){ 
-  std::cerr << rtName << std::endl; 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-
-void RobotTask::computeMAST_DEP_Initialise(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "MastState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) MastState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "MastState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) MastState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computeMAST_DEP_Deploy(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "MastState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) MastState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "MastState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) MastState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computeMAST_PTU_Initialise(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "MastState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) MastState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "MastState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) MastState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computeMAST_PTU_MoveTo(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "MastState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) MastState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "MastState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) MastState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computeMAST_SwitchOff(){ 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "MastState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) MastState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-  if ( theRobotProcedure->GetParameters()->set( "MastState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) MastState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
 
 void RobotTask::computeBEMA_Deploy_1(){ 
   std::cerr << rtName << std::endl; 
