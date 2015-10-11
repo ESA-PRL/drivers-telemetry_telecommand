@@ -26,7 +26,7 @@ void RobotTask::computeMAST_DEP_Initialise(){
   MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_INITIALISING;
   MastState[MAST_STATUS_INDEX]     = MAST_OPER_MODE_DEP_INITIALISE;
   
-  if (index >= (warmUpTimeout/theRobotProcedure->Clock->GetBasePeriod())) {
+  if (index >= (warmUpTimeout/1.0)) {
     
     // set the state
     MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_DEP_STNDBY;
@@ -147,7 +147,7 @@ void RobotTask::computeMAST_DEP_Deploy(){
 	MastState[MAST_DES_Q3_INDEX] = finalMASTPose[2];
 	MastState[MAST_DES_Q4_INDEX] = finalMASTPose[3];
 
-	mastCurrentTime = mastCurrentTime + theRobotProcedure->Clock->GetBasePeriod();
+	mastCurrentTime = mastCurrentTime + 1.0;
   }
 
   //
@@ -296,7 +296,7 @@ void RobotTask::computeMAST_PTU_MoveTo(){
       compute_completed = 1;
     }	
     
-    mastCurrentTime = mastCurrentTime + theRobotProcedure->Clock->GetBasePeriod();
+    mastCurrentTime = mastCurrentTime + 1.0;
   }
   
   //
@@ -329,7 +329,7 @@ void RobotTask::computeMAST_SwitchOff(){
   MastState[MAST_ACTION_ID_INDEX]  = rtId;
   MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
   
-  if (index >= (duration/theRobotProcedure->Clock->GetBasePeriod())) {
+  if (index >= (duration/1.0)) {
     MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_OFF;
     MastState[MAST_ACTION_ID_INDEX]  = rtId;
     MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_OK;

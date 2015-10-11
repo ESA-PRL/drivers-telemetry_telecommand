@@ -1,5 +1,5 @@
 rock_library(telemetry_telecommand
-    SOURCES comm.cpp tmgeneration.cpp simplethread.cpp rt.cpp param.cpp prr.cpp
+    SOURCES comm.cpp tmgeneration.cpp simplethread.cpp rt.cpp param.cpp prr.cpp rt_ade.cpp rt_mast.cpp rt_pancam.cpp rt_sa.cpp
     HEADERS comm.h ctrl_state.h simplethread.h linuxOrcc.h rt.h param.h prr.h utils.h)
 
 include_directories( 

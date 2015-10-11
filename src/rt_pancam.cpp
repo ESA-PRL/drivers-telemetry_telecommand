@@ -41,7 +41,7 @@ void RobotTask::computePanCam_Initialise(){
     PanCamState[PANCAM_ACTION_ID_INDEX]  = rtId;
     PanCamState[PANCAM_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
     
-    if (index >= (warmUpTimeout/theRobotProcedure->Clock->GetBasePeriod())) {
+    if (index >= (warmUpTimeout/1.0)) {
       PanCamState[PANCAM_OPER_MODE_INDEX]  = PANCAM_OPER_MODE_STNDBY;
       PanCamState[PANCAM_WAC_L_MODE_INDEX] = PANCAM_OPER_MODE_WAC_OFF;
       PanCamState[PANCAM_WAC_R_MODE_INDEX] = PANCAM_OPER_MODE_WAC_OFF;
@@ -99,7 +99,7 @@ void RobotTask::computePanCam_InitWACs(){
   PanCamState[PANCAM_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
 
   if (compute_completed == 0){
-    if (index >= (warmUpTimeout/theRobotProcedure->Clock->GetBasePeriod())) {
+    if (index >= (warmUpTimeout/1.0)) {
       PanCamState[PANCAM_OPER_MODE_INDEX]  = PANCAM_OPER_MODE_STNDBY;
       PanCamState[PANCAM_ACTION_ID_INDEX]  = 0;
       PanCamState[PANCAM_ACTION_RET_INDEX] = ACTION_RET_OK;
@@ -282,7 +282,7 @@ void RobotTask::computePanCam_WACAcqImage(){
     PanCamState[PANCAM_OPER_MODE_INDEX] = PANCAM_OPER_MODE_OPERATING;
     PanCamState[status_index] = current_status;
 
-    if (index >= (duration/theRobotProcedure->Clock->GetBasePeriod())) {
+    if (index >= (duration/1.0)) {
       
       PanCamState[PANCAM_OPER_MODE_INDEX]  = PANCAM_OPER_MODE_STNDBY;
       PanCamState[status_index] = final_status;
@@ -376,7 +376,7 @@ void RobotTask::computePanCam_WACGetImage(){
     PanCamState[PANCAM_OPER_MODE_INDEX] = PANCAM_OPER_MODE_OPERATING;
     PanCamState[status_index] = current_status;
 
-    if (index >= (duration/theRobotProcedure->Clock->GetBasePeriod())) {
+    if (index >= (duration/1.0)) {
       
       PanCamState[PANCAM_OPER_MODE_INDEX]  = PANCAM_OPER_MODE_STNDBY;
       PanCamState[status_index] = final_status;
@@ -518,7 +518,7 @@ void RobotTask::computePanCam_PIUSwitchOff(){
     PanCamState[PANCAM_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
     PanCamState[PANCAM_OPER_MODE_INDEX] =  PANCAM_OPER_MODE_SWITCHING_OFF;
 
-    if (index >= (duration/theRobotProcedure->Clock->GetBasePeriod())) {
+    if (index >= (duration/1.0)) {
       PanCamState[PANCAM_OPER_MODE_INDEX] = PANCAM_OPER_MODE_OFF;
       PanCamState[PANCAM_ACTION_ID_INDEX]  = 0;
       PanCamState[PANCAM_ACTION_RET_INDEX] = ACTION_RET_OK;
@@ -640,7 +640,7 @@ void RobotTask::computePanCam_FilterSel(){
     PanCamState[PANCAM_OPER_MODE_INDEX] = PANCAM_OPER_MODE_OPERATING;
     PanCamState[status_index] = PANCAM_OPER_MODE_WAC_FILTER_SELECTION;
     
-    if (index >= (duration/theRobotProcedure->Clock->GetBasePeriod())) {
+    if (index >= (duration/1.0)) {
       
       PanCamState[PANCAM_OPER_MODE_INDEX]  = PANCAM_OPER_MODE_STNDBY;
       PanCamState[status_index] = previous_status;
