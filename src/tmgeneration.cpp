@@ -48,6 +48,10 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
   if ( prr->GetParameters()->get( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ){
          std::cout << "Error getting SAState" << std::endl;
   }
+  
+  if ( prr->GetParameters()->get( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ){
+         std::cout << "Error getting SAState" << std::endl;
+  }
 
   if ( prr->GetParameters()->get( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ){
          std::cout << "Error getting SAState" << std::endl;
@@ -99,7 +103,7 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
   tmmsg += "TmPacket SA_STATE ";
   sprintf(buffer, "%d:", ctrl_time);
   tmmsg += buffer;
-  sprintf(buffer, "%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf;\n", 
+  sprintf(buffer, "%.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf;\n", 
 	  SAState[SA_STATUS_INDEX], 
 	  SAState[SA_LEFT_PRIMARY_STATUS_INDEX], 
 	  SAState[SA_LEFT_SECONDARY_STATUS_INDEX],
@@ -109,7 +113,8 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
 	  SAState[SA_CURRENT_Q2_INDEX],
 	  SAState[SA_CURRENT_Q3_INDEX],
 	  SAState[SA_CURRENT_Q4_INDEX],
-	  SAState[SA_ACTION_ID_INDEX]);
+	  SAState[SA_ACTION_ID_INDEX],
+	  SAState[SA_ACTION_RET_INDEX]);
   tmmsg += buffer;
 
   //

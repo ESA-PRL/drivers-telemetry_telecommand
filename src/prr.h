@@ -31,10 +31,19 @@
 #include "param.h"
 #include "rt.h"
 
+  class MyClock {
+	  public:
+	  double period;
+	  MyClock() { period = 0.2;}
+	  double GetBasePeriod() {return period;}
+  };
+  
 class RobotProcedure
 {
- protected:
+ public:
+  MyClock *Clock;
   
+ protected:
   std::string Name;
   
   int Status;

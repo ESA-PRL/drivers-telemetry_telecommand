@@ -31,7 +31,7 @@ void RobotTask::computeSA_LEFT_Initialise(){
   SAState[SA_ACTION_ID_INDEX]           = rtId;
   SAState[SA_ACTION_RET_INDEX]          = ACTION_RET_RUNNING;
   
-  if (index >= (switchOnTime/(1.0))) {
+  if (index >= (switchOnTime/(theRobotProcedure->Clock->GetBasePeriod()))) {
     SAState[SA_STATUS_INDEX]     = SA_OPER_MODE_STNDBY;
     SAState[SA_LEFT_PRIMARY_STATUS_INDEX] = SA_OPER_MODE_STNDBY;
     SAState[SA_LEFT_SECONDARY_STATUS_INDEX] = SA_OPER_MODE_STNDBY;
@@ -152,7 +152,7 @@ void RobotTask::computeSA_LEFT_PrimaryMoveTo(){
 	SAState[SA_DES_Q3_INDEX] = finalSAPose[2];
 	SAState[SA_DES_Q4_INDEX] = finalSAPose[3];
 
-	saCurrentTime = saCurrentTime + 1.0;
+	saCurrentTime = saCurrentTime + theRobotProcedure->Clock->GetBasePeriod();
   }
 
   //
@@ -272,7 +272,7 @@ void RobotTask::computeSA_LEFT_SecondaryMoveTo(){
 	SAState[SA_DES_Q3_INDEX] = finalSAPose[2];
 	SAState[SA_DES_Q4_INDEX] = finalSAPose[3];
 
-	saCurrentTime = saCurrentTime + 1.0;
+	saCurrentTime = saCurrentTime + theRobotProcedure->Clock->GetBasePeriod();
   }
 
   //
@@ -343,7 +343,7 @@ void RobotTask::computeSA_RIGHT_Initialise(){
   SAState[SA_ACTION_ID_INDEX]            = rtId;
   SAState[SA_ACTION_RET_INDEX]           = ACTION_RET_RUNNING;
   
-  if (index >= (switchOnTime/(1.0))) {
+  if (index >= (switchOnTime/(theRobotProcedure->Clock->GetBasePeriod()))) {
     SAState[SA_STATUS_INDEX]     = SA_OPER_MODE_STNDBY;
     SAState[SA_RIGHT_PRIMARY_STATUS_INDEX] = SA_OPER_MODE_STNDBY;
     SAState[SA_RIGHT_SECONDARY_STATUS_INDEX] = SA_OPER_MODE_STNDBY;
@@ -463,7 +463,7 @@ void RobotTask::computeSA_RIGHT_PrimaryMoveTo(){
 	SAState[SA_DES_Q3_INDEX] = finalSAPose[2];
 	SAState[SA_DES_Q4_INDEX] = finalSAPose[3];
 
-	saCurrentTime = saCurrentTime + 1.0;
+	saCurrentTime = saCurrentTime + theRobotProcedure->Clock->GetBasePeriod();
   }
 
   //
@@ -587,7 +587,7 @@ void RobotTask::computeSA_RIGHT_SecondaryMoveTo(){
 	SAState[SA_DES_Q3_INDEX] = finalSAPose[2];
 	SAState[SA_DES_Q4_INDEX] = finalSAPose[3];
 
-	saCurrentTime = saCurrentTime + 1.0;
+	saCurrentTime = saCurrentTime + theRobotProcedure->Clock->GetBasePeriod();
   }
 
   //

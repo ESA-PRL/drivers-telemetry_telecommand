@@ -36,7 +36,7 @@ void RobotTask::computeADE_LEFT_Initialise(){
   }
   
   if (index >= ((ade_duration + 10.0)
-		/ 1.0)) {
+		/ (theRobotProcedure->Clock->GetBasePeriod()))) {
     if (!strcmp(ade_id, "left")) {
       ADEState[ADE_STATUS_LEFT_INDEX] = ADE_OPER_MODE_STNDBY;
     } else if (!strcmp(ade_id, "right")) {
@@ -50,8 +50,8 @@ void RobotTask::computeADE_LEFT_Initialise(){
   } 
   else {
     
-    if (index >= ((ade_duration)
-	/ 1.0)) {
+    if (index >= (ade_duration)
+	/ (theRobotProcedure->Clock->GetBasePeriod())) {
       
       if (!strcmp(ade_id, "left")) {
 	ADEState[ADE_STATUS_LEFT_INDEX] = ADE_OPER_MODE_INIT;
@@ -132,7 +132,7 @@ void RobotTask::computeADE_LEFT_conf(){
     ADEState[ADE_ACTION_ID_INDEX] = rtId;
     ADEState[ADE_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
     
-    if (index >= (ade_duration / 1.0)) {
+    if (index >= (ade_duration / theRobotProcedure->Clock->GetBasePeriod())) {
       if (!strcmp(ade_id, "left")) {
 	ADEState[ADE_STATUS_LEFT_INDEX] = target_mode_id;
       } else if (!strcmp(ade_id, "right")) {
@@ -162,6 +162,7 @@ void RobotTask::computeADE_LEFT_conf(){
 void RobotTask::computeADE_LEFT_ReleaseHDRM(){ 
   
   std::cerr << rtName << std::endl;
+  rtId = 134;
   if ( theRobotProcedure->GetParameters()->get( "ADEState", 
 						DOUBLE, 
 						MAX_STATE_SIZE, 0, 
@@ -201,7 +202,7 @@ void RobotTask::computeADE_LEFT_ReleaseHDRM(){
     ADEState[ADE_ACTION_ID_INDEX] = rtId;
     ADEState[ADE_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
     
-    if (index >= (ade_duration / 1.0)) {
+    if (index >= (ade_duration / (theRobotProcedure->Clock->GetBasePeriod()))) {
       if (!strcmp(ade_id, "left")) {
 	ADEState[ADE_STATUS_LEFT_INDEX] = ADE_OPER_MODE_STNDBY_HDRM;
       } else if (!strcmp(ade_id, "right")) {
@@ -224,6 +225,8 @@ void RobotTask::computeADE_LEFT_ReleaseHDRM(){
       
       post_cond = 1;
     }
+
+    index++;
   }
 
   if ( theRobotProcedure->GetParameters()->set( "ADEState", 
@@ -312,7 +315,7 @@ void RobotTask::computeADE_RIGHT_Initialise(){
   }
 
   if (index >= ((ade_duration + 10.0)
-	  / 1.0)) {
+	  / (theRobotProcedure->Clock->GetBasePeriod()))) {
     if (!strcmp(ade_id, "left")) {
       ADEState[ADE_STATUS_LEFT_INDEX] = ADE_OPER_MODE_STNDBY;
     } else if (!strcmp(ade_id, "right")) {
@@ -325,8 +328,8 @@ void RobotTask::computeADE_RIGHT_Initialise(){
     ADEState[ADE_ACTION_RET_INDEX] = ACTION_RET_OK;
   } else {
     
-    if (index >= ((ade_duration)
-	/ 1.0)) {
+    if (index >= (ade_duration)
+	/ (theRobotProcedure->Clock->GetBasePeriod())) {
       
       if (!strcmp(ade_id, "left")) {
 	ADEState[ADE_STATUS_LEFT_INDEX] = ADE_OPER_MODE_INIT;
@@ -409,7 +412,7 @@ void RobotTask::computeADE_RIGHT_conf(){
     ADEState[ADE_ACTION_ID_INDEX] = rtId;
     ADEState[ADE_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
     
-    if (index >= (ade_duration / 1.0)) {
+    if (index >= (ade_duration / theRobotProcedure->Clock->GetBasePeriod())) {
       if (!strcmp(ade_id, "left")) {
 	ADEState[ADE_STATUS_LEFT_INDEX] = target_mode_id;
       } else if (!strcmp(ade_id, "right")) {
@@ -481,7 +484,7 @@ void RobotTask::computeADE_RIGHT_ReleaseHDRM(){
     ADEState[ADE_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
     
     if (index
-	>= (ade_duration / 1.0)) {
+	>= (ade_duration / (theRobotProcedure->Clock->GetBasePeriod()))) {
       if (!strcmp(ade_id, "left")) {
 	ADEState[ADE_STATUS_LEFT_INDEX] = ADE_OPER_MODE_STNDBY_HDRM;
       } else if (!strcmp(ade_id, "right")) {
@@ -504,6 +507,8 @@ void RobotTask::computeADE_RIGHT_ReleaseHDRM(){
       
       post_cond = 1;
     }
+
+    index++;
   }
 
   if ( theRobotProcedure->GetParameters()->set( "ADEState", 
@@ -561,4 +566,3 @@ void RobotTask::computeADE_RIGHT_SwitchOff(){
     std::cout << rtName << " failed" << std::endl;
   }
 }
-

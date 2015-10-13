@@ -9,7 +9,8 @@ RobotProcedure::RobotProcedure (std::string name)
 
 	GlobState = new Parameters(MAXPARAM);
 
-
+    Clock = new MyClock();
+    
 	for (int i =0; i<MAX_STATE_SIZE; i++) {
 	  State[i] = 0.0;
 	  ADEState[i] = 0.0;

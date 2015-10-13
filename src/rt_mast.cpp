@@ -26,7 +26,7 @@ void RobotTask::computeMAST_DEP_Initialise(){
   MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_INITIALISING;
   MastState[MAST_STATUS_INDEX]     = MAST_OPER_MODE_DEP_INITIALISE;
   
-  if (index >= (warmUpTimeout/1.0)) {
+  if (index >= (warmUpTimeout/theRobotProcedure->Clock->GetBasePeriod())) {
     
     // set the state
     MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_DEP_STNDBY;
@@ -147,7 +147,7 @@ void RobotTask::computeMAST_DEP_Deploy(){
 	MastState[MAST_DES_Q3_INDEX] = finalMASTPose[2];
 	MastState[MAST_DES_Q4_INDEX] = finalMASTPose[3];
 
-	mastCurrentTime = mastCurrentTime + 1.0;
+	mastCurrentTime = mastCurrentTime + theRobotProcedure->Clock->GetBasePeriod();
   }
 
   //
@@ -157,7 +157,7 @@ void RobotTask::computeMAST_DEP_Deploy(){
 
   }
 
-
+  
   if ( theRobotProcedure->GetParameters()->set( "MastState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) MastState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
@@ -237,7 +237,8 @@ void RobotTask::computeMAST_PTU_MoveTo(){
     for (int i = 0; i < MAST_DOF; i++) {
       jointMASTMaxSpeed[i] = MAST_MAX_ROTATION_SPEED;
     }
-    
+
+    mastTrajDuration = 1.0; // minimum duration
     for (int i = 0; i < MAST_DOF; i++) {
       jointMASTTrajDuration[i] = (fabs(finalMASTPose[i] - initMASTPose[i]))
 	/ (jointMASTMaxSpeed[i]);
@@ -278,6 +279,7 @@ void RobotTask::computeMAST_PTU_MoveTo(){
       
       for (int i = 0; i < MAST_DOF; i++) {
 	MastState[MAST_CURRENT_Q1_INDEX + i] = mastCurrentPose[i];
+	std::cerr << "mastCurrentPose[:" << i << "]:" << mastCurrentPose[i] << std::endl;
       }
       MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_PTU_MOVING;
     } 
@@ -296,7 +298,7 @@ void RobotTask::computeMAST_PTU_MoveTo(){
       compute_completed = 1;
     }	
     
-    mastCurrentTime = mastCurrentTime + 1.0;
+    mastCurrentTime = mastCurrentTime + theRobotProcedure->Clock->GetBasePeriod();
   }
   
   //
@@ -329,7 +331,7 @@ void RobotTask::computeMAST_SwitchOff(){
   MastState[MAST_ACTION_ID_INDEX]  = rtId;
   MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
   
-  if (index >= (duration/1.0)) {
+  if (index >= (duration/theRobotProcedure->Clock->GetBasePeriod())) {
     MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_OFF;
     MastState[MAST_ACTION_ID_INDEX]  = rtId;
     MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_OK;
