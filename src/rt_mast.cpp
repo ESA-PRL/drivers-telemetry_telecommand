@@ -169,24 +169,31 @@ void RobotTask::computeMAST_DEP_Deploy(){
 void RobotTask::computeMAST_PTU_Initialise(){ 
   
   std::cerr << rtName << std::endl; 
-  
   rtId = 813;
-  
-  if ( theRobotProcedure->GetParameters()->get( "MastState", 
-						DOUBLE, 
-						MAX_STATE_SIZE, 0, 
-						( char * ) MastState ) == ERROR ) {
+
+  if ( theRobotProcedure->GetParameters()->get( "MastState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) MastState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
-
-
+  double duration = 5.0; // sec
   
-  if ( theRobotProcedure->GetParameters()->set( "MastState", 
-						DOUBLE, 
-						MAX_STATE_SIZE, 0, 
-						( char * ) MastState ) == ERROR ) {
+  MastState[MAST_ACTION_ID_INDEX]  = rtId;
+  MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
+  MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_PTU_INITIALISE;
+ 
+  if (index >= (duration/theRobotProcedure->Clock->GetBasePeriod())) {
+    MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_PTU_STNDBY;
+    MastState[MAST_ACTION_ID_INDEX]  = 0;
+    MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_OK;
+    
+    post_cond = 1;
+  }
+
+  index++;
+
+  if ( theRobotProcedure->GetParameters()->set( "MastState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) MastState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
+ 
 }
 /**
  *

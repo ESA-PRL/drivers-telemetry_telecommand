@@ -17,10 +17,14 @@ void RobotTask::computeADE_LEFT_Initialise(){
 						( char * ) ADEState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
-  
+  rtId = 77; 
+
   if (param_completed == 0){
     strcpy(ade_id, "left");
     
+    ADEState[ADE_ACTION_ID_INDEX] = rtId;
+    ADEState[ADE_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
+
     if (!strcmp(ade_id, "left")) {
       ade_duration = ADE_LEFT_WARMUP_TIME;
     } else if (!strcmp(ade_id, "right")) {
@@ -82,7 +86,7 @@ void RobotTask::computeADE_LEFT_Initialise(){
 void RobotTask::computeADE_LEFT_conf(){ 
 
   std::cerr << rtName << std::endl; 
-
+  rtId= 83;
   if ( theRobotProcedure->GetParameters()->get( "ADEState", 
 						DOUBLE, 
 						MAX_STATE_SIZE, 0, 
@@ -268,7 +272,9 @@ void RobotTask::computeADE_LEFT_SwitchOff(){
 	ADEState[ADE_STATUS_LEFT_INDEX] = ADE_OPER_MODE_OFF;
       } else if (!strcmp(ade_id, "right")) {
 	ADEState[ADE_STATUS_RIGHT_INDEX] = ADE_OPER_MODE_OFF;
-      } 
+      }
+      ADEState[ADE_ACTION_ID_INDEX] = 0;
+      ADEState[ADE_ACTION_RET_INDEX] = ACTION_RET_OK;
       post_cond = 1;
     }
     index ++;
@@ -286,9 +292,9 @@ void RobotTask::computeADE_LEFT_SwitchOff(){
  *
  */
 void RobotTask::computeADE_RIGHT_Initialise(){ 
-
+ 
   std::cerr << rtName << std::endl; 
-
+  rtId = 81;
   if ( theRobotProcedure->GetParameters()->get( "ADEState", 
 						DOUBLE, 
 						MAX_STATE_SIZE, 0, 
@@ -297,6 +303,8 @@ void RobotTask::computeADE_RIGHT_Initialise(){
   }
 
   if (param_completed == 0){
+    ADEState[ADE_ACTION_ID_INDEX] = rtId;
+    ADEState[ADE_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
     
     strcpy(ade_id, "right");
     
@@ -363,7 +371,7 @@ void RobotTask::computeADE_RIGHT_Initialise(){
 void RobotTask::computeADE_RIGHT_conf(){ 
 
   std::cerr << rtName << std::endl; 
-
+  rtId = 80;
   if ( theRobotProcedure->GetParameters()->get( "ADEState", 
 						DOUBLE, 
 						MAX_STATE_SIZE, 0, 
@@ -444,7 +452,7 @@ void RobotTask::computeADE_RIGHT_conf(){
 void RobotTask::computeADE_RIGHT_ReleaseHDRM(){ 
 
   std::cerr << rtName << std::endl; 
-
+  rtId = 79;
   if ( theRobotProcedure->GetParameters()->get( "ADEState", 
 						DOUBLE, 
 						MAX_STATE_SIZE, 0, 
@@ -472,6 +480,8 @@ void RobotTask::computeADE_RIGHT_ReleaseHDRM(){
   }
 
   if (compute_completed == 0){
+    ADEState[ADE_ACTION_ID_INDEX] = rtId;
+    ADEState[ADE_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
     
     if (!strcmp(ade_id, "left")) {
       ADEState[ADE_STATUS_LEFT_INDEX] = ADE_OPER_MODE_OP_HDRM;
@@ -525,7 +535,7 @@ void RobotTask::computeADE_RIGHT_ReleaseHDRM(){
 void RobotTask::computeADE_RIGHT_SwitchOff(){ 
 
   std::cerr << rtName << std::endl; 
-
+  rtId= 78;
   if ( theRobotProcedure->GetParameters()->get( "ADEState", 
 						DOUBLE, 
 						MAX_STATE_SIZE, 0, 
@@ -546,14 +556,14 @@ void RobotTask::computeADE_RIGHT_SwitchOff(){
     ADEState[ADE_ACTION_ID_INDEX] = rtId;
     ADEState[ADE_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
 
-    std::cerr << index << std::endl;
-
     if (index > 5) {
       if (!strcmp(ade_id, "left")) {
 	ADEState[ADE_STATUS_LEFT_INDEX] = ADE_OPER_MODE_OFF;
       } else if (!strcmp(ade_id, "right")) {
 	ADEState[ADE_STATUS_RIGHT_INDEX] = ADE_OPER_MODE_OFF;
       } 
+      ADEState[ADE_ACTION_ID_INDEX] = 0;
+      ADEState[ADE_ACTION_RET_INDEX] = ACTION_RET_OK;
       post_cond = 1;
     }
     index ++;

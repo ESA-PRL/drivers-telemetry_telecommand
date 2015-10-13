@@ -244,7 +244,7 @@ void RobotTask::computeSA_LEFT_SecondaryMoveTo(){
 	    6*tFracDur*tFracDur*tFracDur*tFracDur*tFracDur;
 	  for (int i = 0; i<SA_DOF; i++) {
 	    saCurrentPose[i] = initSAPose[i] + (rt) * (finalSAPose[i] - initSAPose[i]);
-	    std::cerr << saCurrentPose[i] << " " << initSAPose[i] << " " << finalSAPose[i] << std::endl;
+	    //std::cerr << saCurrentPose[i] << " " << initSAPose[i] << " " << finalSAPose[i] << std::endl;
 	  }
 	  SAState[SA_STATUS_INDEX]              = SA_OPER_MODE_MOVING;
 	  SAState[SA_LEFT_SECONDARY_STATUS_INDEX] = SA_OPER_MODE_MOVING;

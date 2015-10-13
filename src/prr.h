@@ -34,7 +34,7 @@
   class MyClock {
 	  public:
 	  double period;
-	  MyClock() { period = 0.2;}
+	  MyClock() { period =1.0;}
 	  double GetBasePeriod() {return period;}
   };
   

@@ -142,10 +142,16 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
   if ( wac_l_prev_image == PanCamState[PANCAM_WAC_L_INDEX] )
   {
 	PanCamState[PANCAM_WAC_L_INDEX] = 0;
+        if ( prr->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ){
+            std::cout << "Error setting SAState" << std::endl;
+        }
   }
   if ( wac_r_prev_image == PanCamState[PANCAM_WAC_R_INDEX] )
   {
 	PanCamState[PANCAM_WAC_R_INDEX] = 0;
+        if ( prr->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ){
+           std::cout << "Error setting SAState" << std::endl;
+        }
   }
   tmmsg += "TmPacket PANCAM_STATE ";
   sprintf(buffer, "%d:", ctrl_time);
@@ -162,4 +168,5 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
   tmmsg += buffer;
   wac_l_prev_image=PanCamState[PANCAM_WAC_L_INDEX];
   wac_r_prev_image=PanCamState[PANCAM_WAC_R_INDEX];
+
 }
