@@ -53,6 +53,56 @@ static const short ABORT_ERROR_INDEX =  98;
 
 
 //
+// GNC indexes and modes
+//
+static const short GNC_STATUS_INDEX      =  0;
+static const short GNC_OPER_MODE_INDEX      =  0;
+static const short GNC_BMC1_TEMPERATURE_INDEX = 19;
+static const short GNC_BMC2_TEMPERATURE_INDEX  = 20;
+static const short GNC_BMC3_TEMPERATURE_INDEX = 21;
+static const short GNC_WHEEL_TEMPERATURE_INDEX = 22;
+static const short GNC_ROVER_POSEX_INDEX  = 23;
+static const short GNC_ROVER_POSEY_INDEX  = 24;
+static const short GNC_ROVER_POSEZ_INDEX  = 25;
+static const short GNC_ROVER_POSERX_INDEX = 26;
+static const short GNC_ROVER_POSERY_INDEX = 27;
+static const short GNC_ROVER_POSERZ_INDEX = 28;
+static const short GNC_TEMPERATURE_INDEX  = 29;
+static const short GNC_DATARATE_INDEX     = 30;
+static const short GNC_ACTION_ID_INDEX    = 31;
+static const short GNC_ACTION_RET_INDEX   = 32;
+static const short GNC_POWER_CONS_INDEX  = 37;
+static const short GNC_TOTAL_TRAVELED_DISTANCE_INDEX = 39;
+
+// constants for the status
+#define GNC_STATUS_FLAG_OFF    0
+#define GNC_STATUS_FLAG_STNDBY 1
+#define GNC_STATUS_FLAG_OPER   2
+
+#define GNC_OPER_MODE_OFF                0
+#define GNC_OPER_MODE_MONO               1
+#define GNC_OPER_MODE_INITIALISING       2
+#define GNC_OPER_MODE_STNDBY             3
+#define GNC_OPER_MODE_ABS_LOC            4
+#define GNC_OPER_MODE_NAVCAM_IMAGING     5
+#define GNC_OPER_MODE_LOCCAM_IMAGING     6
+#define GNC_OPER_MODE_NAV_PREP_PERC_EVAL 7
+#define GNC_OPER_MODE_PP_TRAV            8
+#define GNC_OPER_MODE_FPATH_TRAV_MOVE    9
+#define GNC_OPER_MODE_FPATH_TRAV_STNDBY  10
+#define GNC_OPER_MODE_PP_DRILL           11
+#define GNC_OPER_MODE_FPATH_DRILL_MOVE   12
+#define GNC_OPER_MODE_FPATH_DRILL_STNDBY 13
+#define GNC_OPER_MODE_LLO                14
+#define GNC_OPER_MODE_BEMA_DEPLOYMENT_1  15
+#define GNC_OPER_MODE_BEMA_DEPLOYMENT_2  16
+
+
+#define GNC_MIN_OPER_TEMPERATURE 210
+#define GNC_WARMUP_TIMEOUT       1000
+
+
+//
 // SA STATUS
 //
 static const short SA_STATUS_INDEX 	          = 0;
@@ -228,6 +278,8 @@ static const short PANCAM_HRC_COMPRESSION_LEVEL_INDEX = 12;
 
 static const short PANCAM_ACTION_ID_INDEX       = 13; // 12-nov-2010 (Action ID)
 static const short PANCAM_ACTION_RET_INDEX      = 14; // 12-nov-2010 (OK/ERROR/RUNNING)
+static const short PANCAM_WAC_L_INDEX           = 15; // Index of stored images
+static const short PANCAM_WAC_R_INDEX           = 16; // Index of stored images
 
 
 // PanCam Operational Modes
