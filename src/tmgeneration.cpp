@@ -14,26 +14,53 @@ static int ctrl_time = 0;
 static int wac_l_prev_image = 0;
 static int wac_r_prev_image = 0;
 
+// Copy of las state variables sent
+//static double lastState[MAX_STATE_SIZE];
+static double lastADEState[MAX_STATE_SIZE];
+static double lastSAState[MAX_STATE_SIZE];
+static double lastPanCamState[MAX_STATE_SIZE];
+static double lastMastState[MAX_STATE_SIZE];
+static double lastGNCState[MAX_STATE_SIZE];
+
+static bool first_time=false;
+
 void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
-  
+
  // State variables definition
- double State[MAX_STATE_SIZE];
- double ADEState[MAX_STATE_SIZE]; // Needed?
- double SAState[MAX_STATE_SIZE];  // Needed?
+ //double State[MAX_STATE_SIZE];
+ double ADEState[MAX_STATE_SIZE];
+ double SAState[MAX_STATE_SIZE];
  double PanCamState[MAX_STATE_SIZE];
  double MastState[MAX_STATE_SIZE];
  double GNCState[MAX_STATE_SIZE];
+ // flags for state changes
+
+ bool ADEStateChanged;
+ bool SAStateChanged;
+ bool PanCamStateChanged;
+ bool MastStateChanged;
+ bool GNCStateChanged;
+
 
   //
   // dummy initialisation of the TM
   //
+  if (first_time==false){
   for (int i=0; i<MAX_STATE_SIZE; i++) {
-    State[i] = 0.0;
+    //State[i] = 0.0;
     ADEState[i] = 0.0;
     SAState[i] = 0.0;
     PanCamState[i] = 0.0;
     MastState[i] = 0.0;
     GNCState[i] = 0.0;
+    //lastState[i] = 0.0;
+    lastADEState[i] = -100.0;
+    lastSAState[i] = -100.0;
+    lastPanCamState[i] = -100.0;
+    lastMastState[i] = -100.0;
+    lastGNCState[i] = -100.0;
+  }
+  first_time=true;
   }
 
 
@@ -61,11 +88,17 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
   char buffer[1024];
 
   //ctrl_time = prr->Clock->GetTime(); 
-  ctrl_time + 200; // 0.2 sec in msec
+  ctrl_time += 200; // 0.2 sec in msec
   
   //
   // GNC_STATE
   //
+  GNCStateChanged=false;
+  for (int i=0; i<MAX_STATE_SIZE; i++) {
+      if (GNCState[i]!=lastGNCState[i])
+          GNCStateChanged=true;
+  }
+  if (GNCStateChanged){
   tmmsg = "TmPacket GNC_STATE ";
   sprintf(buffer, "%d:", ctrl_time);
   tmmsg += buffer;
@@ -81,10 +114,20 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
       GNCState[GNC_ACTION_ID_INDEX]
       );
   tmmsg += buffer;
+  }
+  for (int i=0; i<MAX_STATE_SIZE; i++) {
+      lastGNCState[i]=GNCState[i];
+  }
 
   //
   // MAST_STATE
   //
+  MastStateChanged=false;
+  for (int i=0; i<MAX_STATE_SIZE; i++) {
+      if (MastState[i]!=lastMastState[i])
+          MastStateChanged=true;
+  }
+  if (MastStateChanged){
   tmmsg += "TmPacket MAST_STATE ";
   sprintf(buffer, "%d:", ctrl_time);
   tmmsg += buffer;
@@ -96,10 +139,20 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
       MastState[MAST_ACTION_RET_INDEX],
       MastState[MAST_ACTION_ID_INDEX]);
   tmmsg += buffer;
+  }
+  for (int i=0; i<MAX_STATE_SIZE; i++) {
+      lastMastState[i]=MastState[i];
+  }
 
   //
   // SA_STATE
   //
+  SAStateChanged=false;
+  for (int i=0; i<MAX_STATE_SIZE; i++) {
+      if (SAState[i]!=lastSAState[i])
+          SAStateChanged=true;
+  }
+  if (SAStateChanged){
   tmmsg += "TmPacket SA_STATE ";
   sprintf(buffer, "%d:", ctrl_time);
   tmmsg += buffer;
@@ -113,13 +166,24 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
 	  SAState[SA_CURRENT_Q2_INDEX],
 	  SAState[SA_CURRENT_Q3_INDEX],
 	  SAState[SA_CURRENT_Q4_INDEX],
-	  SAState[SA_ACTION_ID_INDEX],
-	  SAState[SA_ACTION_RET_INDEX]);
+	  SAState[SA_ACTION_RET_INDEX],
+	  SAState[SA_ACTION_ID_INDEX]);
   tmmsg += buffer;
+  }
+  for (int i=0; i<MAX_STATE_SIZE; i++) {
+      lastSAState[i]=SAState[i];
+  }
 
   //
   // ADE_STATE
   //
+  ADEStateChanged=false;
+  for (int i=0; i<MAX_STATE_SIZE; i++) {
+      if (ADEState[i]!=lastADEState[i]) {
+          ADEStateChanged=true;
+	}
+  }
+  if (ADEStateChanged){
   tmmsg += "TmPacket ADE_STATE ";
   sprintf(buffer, "%d:", ctrl_time);
   tmmsg += buffer;
@@ -132,13 +196,23 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
 	  ADEState[HDRM_SA_RIGHT_1_STATUS_INDEX],
 	  ADEState[HDRM_SA_RIGHT_2_STATUS_INDEX],
 	  ADEState[HDRM_SA_RIGHT_3_STATUS_INDEX],
-	  ADEState[ADE_ACTION_ID_INDEX],
-	  ADEState[ADE_ACTION_RET_INDEX]);
+	  ADEState[ADE_ACTION_RET_INDEX],
+	  ADEState[ADE_ACTION_ID_INDEX]);
   tmmsg += buffer;
+  }
+  for (int i=0; i<MAX_STATE_SIZE; i++) {
+      lastADEState[i]=ADEState[i];
+  }
 
   //
   // PanCam State
   //
+  PanCamStateChanged=false;
+  for (int i=0; i<MAX_STATE_SIZE; i++) {
+     if (PanCamState[i]!=lastPanCamState[i])
+         PanCamStateChanged=true;
+  }
+  if (PanCamStateChanged){
   if ( wac_l_prev_image == PanCamState[PANCAM_WAC_L_INDEX] )
   {
 	PanCamState[PANCAM_WAC_L_INDEX] = 0;
@@ -168,5 +242,10 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
   tmmsg += buffer;
   wac_l_prev_image=PanCamState[PANCAM_WAC_L_INDEX];
   wac_r_prev_image=PanCamState[PANCAM_WAC_R_INDEX];
-
+  }
+  for (int i=0; i<MAX_STATE_SIZE; i++) {
+      lastPanCamState[i]=PanCamState[i];
+  }
 }
+
+

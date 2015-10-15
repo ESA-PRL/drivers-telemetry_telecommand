@@ -419,7 +419,7 @@ void RobotTask::computePanCam_SwitchOff(){
 
   if (param_completed == 0){
 
-    if (1 != sscanf(rtParams, "%d %s", &tcRequestId, cameraid)) {
+    if (2 != sscanf(rtParams, "%d %s", &tcRequestId, cameraid)) {
       
       post_cond = 1;
       return;

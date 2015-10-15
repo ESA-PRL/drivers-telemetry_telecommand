@@ -247,7 +247,7 @@ void RobotTask::computeADE_LEFT_ReleaseHDRM(){
 void RobotTask::computeADE_LEFT_SwitchOff(){ 
 
   std::cerr << rtName << std::endl; 
-
+  rtId=60;
   if ( theRobotProcedure->GetParameters()->get( "ADEState", 
 						DOUBLE, 
 						MAX_STATE_SIZE, 0, 

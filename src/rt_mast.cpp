@@ -340,7 +340,7 @@ void RobotTask::computeMAST_SwitchOff(){
   
   if (index >= (duration/theRobotProcedure->Clock->GetBasePeriod())) {
     MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_OFF;
-    MastState[MAST_ACTION_ID_INDEX]  = rtId;
+    MastState[MAST_ACTION_ID_INDEX]  = 0;
     MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_OK;
     
     post_cond = 1;

@@ -261,16 +261,21 @@ void* CommTmServer::thread() {
     else {
       send_msg.clear();
       orcGetTmMsg(send_msg);
-
-      int result = SDLNet_TCP_Send(Client, 
+      if (send_msg.length()>0)
+      {
+      	int result = SDLNet_TCP_Send(Client, 
 				   (void *)(send_msg.c_str()), 
 				   send_msg.length());
-      if (result <= 0) { 
-	fprintf (stdout, "TmServer SDLNet_TCP_Send %s\n", SDLNet_GetError()); 
-	Connected = FALSE;
+        if (result <= 0) { 
+	  fprintf (stdout, "TmServer SDLNet_TCP_Send %s\n", SDLNet_GetError()); 
+	  Connected = FALSE;
+        }
+        else {
+	  sleep( 1 );
+        }
       }
       else {
-	sleep( 1 );
+	sleep (1);
       }
     }
   }
