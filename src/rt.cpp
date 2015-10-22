@@ -4,6 +4,12 @@
 #include "param.h"
 #include "prr.h"
 
+#define COMMS_SwitchOn_ID 150
+#define COMMS_Conf_ID 140
+#define DHS_Go2Nominal_ID 110
+#define DHS_Go2Reduced_ID 100
+#define DHS_Go2HighPwr_ID 120
+
 extern RobotProcedure*  theRobotProcedure;
 
 RobotTask::RobotTask (std::string name)
@@ -14,6 +20,20 @@ RobotTask::RobotTask (std::string name)
   if (( waitEndActionSem = orcSemCreate( ORCEMPTY ) ) == NULL ) {
     //EventStorage->displayError( RT_ERROR3, Clock->GetTime() );
   }
+  for (int i=0; i<MAX_STATE_SIZE; i++) {
+    State[i] = 0.0;
+    ADEState[i] = 0.0;
+    SAState[i] = 0.0;
+    PanCamState[i] = 0.0;
+    MastState[i] = 0.0;
+    GNCState[i] = 0.0;
+    TTCState[i] = 0.0;
+    DHSState[i] = 0.0;
+  }
+  dhs_go2_duration = 5.0;
+  comms_switchon_duration = 3.5; 
+  comms_conf_duration = 4.0;
+
   param_completed   = 0;
   init_completed    = 0;
   compute_completed = 0;
@@ -251,11 +271,25 @@ void RobotTask::computeBEMA_Deploy_2(){
     std::cout << rtName << " failed" << std::endl;
   }
 }
+
 void RobotTask::computeGNC_Initialise(){ 
   std::cerr << rtName << std::endl; 
   if ( theRobotProcedure->GetParameters()->get( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) GNCState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
+  static int index = 0; 
+  GNCState[GNC_ACTION_ID_INDEX]  = 754.0;
+  GNCState[GNC_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
+  GNCState[GNC_OPER_MODE_INDEX] = GNC_OPER_MODE_OFF; 
+  if (index == 10) {
+    GNCState[GNC_OPER_MODE_INDEX] = GNC_OPER_MODE_STNDBY;
+    GNCState[GNC_ACTION_RET_INDEX] = ACTION_RET_OK;
+    GNCState[GNC_ACTION_ID_INDEX]  = 0.0;
+    post_cond = 1;
+    index = 0;
+  }
+
+  index++;
   if ( theRobotProcedure->GetParameters()->set( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) GNCState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
@@ -272,10 +306,20 @@ void RobotTask::computeGNC_LLO(){
 }
 void RobotTask::computeGNC_SwitchOff(){ 
   std::cerr << rtName << std::endl; 
-  std::cerr << rtName << std::endl; 
   if ( theRobotProcedure->GetParameters()->get( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) GNCState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
+  GNCState[GNC_OPER_MODE_INDEX] = GNC_OPER_MODE_STNDBY; 
+  GNCState[GNC_ACTION_ID_INDEX]  = 753.0;
+  GNCState[GNC_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
+  if (index == 10) {
+    GNCState[GNC_OPER_MODE_INDEX] = GNC_OPER_MODE_OFF;
+    GNCState[GNC_ACTION_RET_INDEX] = ACTION_RET_OK;
+    GNCState[GNC_ACTION_ID_INDEX]  = 0.0;
+    post_cond = 1;
+    index = 0;
+  }
+  index++;
   if ( theRobotProcedure->GetParameters()->set( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) GNCState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
@@ -283,62 +327,406 @@ void RobotTask::computeGNC_SwitchOff(){
 
 void RobotTask::computeRV_WakeUp(){ 
   std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "State", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) State ) == ERROR ) {
+  if ( theRobotProcedure->GetParameters()->get( "TTCState", DOUBLE,
+						MAX_STATE_SIZE, 0,
+						( char * ) TTCState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
-  if ( theRobotProcedure->GetParameters()->set( "State", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) State ) == ERROR ) {
+
+  if (index == 10) {
+    post_cond = 1;
+  }
+
+  if ( theRobotProcedure->GetParameters()->get( "DHSState", DOUBLE,
+						MAX_STATE_SIZE, 0,
+						( char * ) DHSState ) == ERROR ) {
+    std::cout << rtName << " failed" << std::endl;
+  }
+
+  if (param_completed == 0){
+    param_completed = 1;
+  }
+  if (init_completed == 0){
+    // set the duration
+    rvr_duration = dhs_go2_duration + 
+      comms_switchon_duration +
+      comms_conf_duration +
+      comms_switchon_duration +
+      comms_conf_duration;
+
+    init_completed = 1;
+  }
+
+  if (compute_completed == 0){ 
+    // ActivateActionFromTask()("DHS_Go2Reduced", "");
+    // ActivateActionFromTask()("COMMS_SwitchOn", "MAIN");
+    // ActivateActionFromTask()("COMMS_Conf", "MAIN WH");
+    // ActivateActionFromTask()("COMMS_SwitchOn", "REDUNDANT");
+    // ActivateActionFromTask()("COMMS_Conf", "REDUNDANT WH");
+
+    if (index >= ((rvr_duration)/theRobotProcedure->Clock->GetBasePeriod())) {
+      
+      // because the previous action ("COMMS_Conf", "REDUNDANT WH") completed 
+      TTCState[COMMS_ACTION_ID_INDEX]  = 0;
+      TTCState[COMMS_ACTION_RET_INDEX] = ACTION_RET_OK;
+      TTCState[COMMS_REDUNDANT_STATUS_INDEX] = ORC_COMMS_STATE_WH_RX;
+      // finished
+      post_cond = 1;
+    }
+    else if (index >= ((dhs_go2_duration + 
+			comms_switchon_duration + 
+			comms_conf_duration +
+			comms_switchon_duration
+			) / 
+		       theRobotProcedure->Clock->GetBasePeriod())) {
+      // ActivateActionFromTask()("COMMS_Conf", "REDUNDANT WH");
+      TTCState[COMMS_ACTION_ID_INDEX]  = COMMS_Conf_ID;
+      TTCState[COMMS_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
+      
+      // because the previous action ("COMMS_SwitchOn", "REDUNDANT") completed 
+      TTCState[COMMS_REDUNDANT_STATUS_INDEX] = ORC_COMMS_STATE_INIT;
+    }
+    else if (index >= ((dhs_go2_duration + 
+			comms_switchon_duration + 
+			comms_conf_duration 
+			) / 
+		       theRobotProcedure->Clock->GetBasePeriod())) {
+      // ActivateActionFromTask()("COMMS_SwitchOn", "REDUNDANT");
+      TTCState[COMMS_ACTION_ID_INDEX]  = COMMS_SwitchOn_ID;
+      TTCState[COMMS_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
+
+      // because the previous action ("COMMS_Conf", "MAIN WH") completed 
+      TTCState[COMMS_MAIN_STATUS_INDEX] = ORC_COMMS_STATE_WH_RX;
+      TTCState[COMMS_ACTION_ID_INDEX]  = 0;
+      TTCState[COMMS_ACTION_RET_INDEX] = ACTION_RET_OK;
+    }
+    else if (index >= ((dhs_go2_duration + 
+			comms_switchon_duration 
+			) / 
+		       theRobotProcedure->Clock->GetBasePeriod())) {
+      // ActivateActionFromTask()("COMMS_Conf", "MAIN WH");
+      TTCState[COMMS_ACTION_ID_INDEX]  = COMMS_Conf_ID; 
+      TTCState[COMMS_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
+      // TTCState[COMMS_MAIN_STATUS_INDEX] = ORC_COMMS_STATE_INIT;
+      
+      // because the previous action (COMMS_SwitchOn) completed 
+    }
+    else if (index >= ((dhs_go2_duration 
+			) / 
+		       theRobotProcedure->Clock->GetBasePeriod())) {
+      // ActivateActionFromTask()("COMMS_SwitchOn", "MAIN");
+      TTCState[COMMS_ACTION_ID_INDEX]  = COMMS_SwitchOn_ID; 
+      TTCState[COMMS_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
+      TTCState[COMMS_MAIN_STATUS_INDEX] = ORC_COMMS_STATE_INIT;
+
+      // because the previous action (DHS_Go2Reduced) completed 
+      DHSState[DHS_STATUS_INDEX]     = DHS_OPER_MODE_REDUCED;
+      DHSState[DHS_ACTION_ID_INDEX]  = 0;
+      DHSState[DHS_ACTION_RET_INDEX] = ACTION_RET_OK;
+    }
+    else if (index >= 0 ) {
+      // ActivateActionFromTask()("DHS_Go2Reduced", "");
+      DHSState[DHS_ACTION_ID_INDEX]  = DHS_Go2Reduced_ID; 
+      DHSState[DHS_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
+    }
+    
+    index++;
+    
+  }
+
+  if (end_completed == 0){
+
+    end_completed = 1;
+  }
+
+  if ( theRobotProcedure->GetParameters()->set( "DHSState", DOUBLE,
+						MAX_STATE_SIZE, 0,
+						( char * ) DHSState ) == ERROR ) {
+    std::cout << rtName << " failed" << std::endl;
+  }
+  if ( theRobotProcedure->GetParameters()->set( "TTCState", DOUBLE,
+						MAX_STATE_SIZE, 0,
+						( char * ) TTCState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
 }
+
 void RobotTask::computeMMS_WaitAbsTime(){ 
   std::cerr << rtName << std::endl; 
 }
 void RobotTask::computeRV_Prepare4Comms(){ 
   std::cerr << rtName << std::endl; 
+  if ( theRobotProcedure->GetParameters()->get( "TTCState", DOUBLE,
+						MAX_STATE_SIZE, 0,
+						( char * ) TTCState ) == ERROR ) {
+    std::cout << rtName << " failed" << std::endl;
+  }
+
+  if (index == 10) {
+    post_cond = 1;
+  }
+
+  if ( theRobotProcedure->GetParameters()->get( "DHSState", DOUBLE,
+						MAX_STATE_SIZE, 0,
+						( char * ) DHSState ) == ERROR ) {
+    std::cout << rtName << " failed" << std::endl;
+  }
+
+  if (param_completed == 0){
+    param_completed = 1;
+  }
+  if (init_completed == 0){
+    rvr_duration = dhs_go2_duration + 
+      comms_conf_duration +
+      comms_conf_duration;
+    
+    init_completed = 1;
+  }
+  
+  if (compute_completed == 0){ 
+    
+    // ActivateActionFromTask()("COMMS_Conf", "MAIN LST");
+    // ActivateActionFromTask()("COMMS_Conf", "REDUNDANT LST");
+    // ActivateActionFromTask()("DHS_Go2HighPwr", "");
+
+    if (index >= ((rvr_duration)/theRobotProcedure->Clock->GetBasePeriod())) {
+      
+      // because the previous action ("DHS_Go2HighPwr") completed 
+      DHSState[DHS_STATUS_INDEX] = DHS_OPER_MODE_HIGHPOWER;
+      DHSState[DHS_ACTION_ID_INDEX]  = 0.0;
+      DHSState[DHS_ACTION_RET_INDEX] = ACTION_RET_OK;
+      
+      // finished
+      post_cond = 1;
+    }
+    else if (index >= ((dhs_go2_duration + 
+			comms_conf_duration
+			) / 
+		       theRobotProcedure->Clock->GetBasePeriod())) {
+      // ActivateActionFromTask()("DHS_Go2HighPwr", "")
+      DHSState[DHS_ACTION_ID_INDEX]  = DHS_Go2HighPwr_ID; 
+      DHSState[DHS_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
+      
+      // because the previous action (("COMMS_Conf", "REDUNDANT LST") completed 
+      TTCState[COMMS_REDUNDANT_STATUS_INDEX] = ORC_COMMS_STATE_LST_RX;
+      TTCState[COMMS_ACTION_ID_INDEX]  = 0;
+      TTCState[COMMS_ACTION_RET_INDEX] = ACTION_RET_OK;
+    }
+    else if (index >= ((dhs_go2_duration 
+			) / 
+		       theRobotProcedure->Clock->GetBasePeriod())) {
+      // ActivateActionFromTask()("COMMS_Conf", "REDUNDANT LST");
+      TTCState[COMMS_ACTION_ID_INDEX]  = COMMS_Conf_ID; 
+      TTCState[COMMS_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
+
+      // because the previous action ("COMMS_Conf", "MAIN LST") completed 
+      TTCState[COMMS_MAIN_STATUS_INDEX] = ORC_COMMS_STATE_LST_RX;
+    }
+    else if (index >= 0 ) {
+      // ActivateActionFromTask()("COMMS_Conf", "MAIN LST");
+      TTCState[COMMS_ACTION_ID_INDEX]  = COMMS_Conf_ID; 
+      TTCState[COMMS_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
+    }
+    
+    index++;
+    
+  }
+
+  if (end_completed == 0){
+
+    end_completed = 1;
+  }
+
+  if ( theRobotProcedure->GetParameters()->set( "DHSState", DOUBLE,
+						MAX_STATE_SIZE, 0,
+						( char * ) DHSState ) == ERROR ) {
+    std::cout << rtName << " failed" << std::endl;
+  }
+  if ( theRobotProcedure->GetParameters()->set( "TTCState", DOUBLE,
+						MAX_STATE_SIZE, 0,
+						( char * ) TTCState ) == ERROR ) {
+    std::cout << rtName << " failed" << std::endl;
+  }
 }
+
 void RobotTask::computeRV_PostComms(){ 
   std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "State", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) State ) == ERROR ) {
+
+  if ( theRobotProcedure->GetParameters()->get( "TTCState", DOUBLE,
+						MAX_STATE_SIZE, 0,
+						( char * ) TTCState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
-  if ( theRobotProcedure->GetParameters()->set( "State", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) State ) == ERROR ) {
+  if ( theRobotProcedure->GetParameters()->get( "DHSState", DOUBLE,
+						MAX_STATE_SIZE, 0,
+						( char * ) DHSState ) == ERROR ) {
+    std::cout << rtName << " failed" << std::endl;
+  }
+
+  if (param_completed == 0){
+    param_completed = 1;
+  }
+  if (init_completed == 0){
+    rvr_duration = comms_conf_duration +
+      comms_conf_duration + 
+      dhs_go2_duration;
+
+    init_completed = 1;
+  }
+  
+  if (compute_completed == 0){ 
+    
+  // ActivateActionFromTask()("COMMS_Conf", "MAIN WH");
+  // ActivateActionFromTask()("COMMS_Conf", "REDUNDANT WH");
+  // ActivateActionFromTask()("DHS_Go2Reduced", "");
+
+    if (index >= ((rvr_duration)/theRobotProcedure->Clock->GetBasePeriod())) {
+      
+      // because the previous action ("DHS_Go2Reduced", "") completed 
+      DHSState[DHS_STATUS_INDEX] = DHS_OPER_MODE_REDUCED;
+      DHSState[DHS_ACTION_ID_INDEX]  = 0.0;
+      DHSState[DHS_ACTION_RET_INDEX] = ACTION_RET_OK;
+      
+      // finished
+      post_cond = 1;
+    }
+    else if (index >= ((comms_conf_duration + 
+			comms_conf_duration
+			) / 
+		       theRobotProcedure->Clock->GetBasePeriod())) {
+      // ActivateActionFromTask()("DHS_Go2Reduced", "")
+      DHSState[DHS_ACTION_ID_INDEX]  = DHS_Go2Reduced_ID; 
+      DHSState[DHS_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
+      
+      // because the previous action (("COMMS_Conf", "REDUNDANT LST") completed 
+      TTCState[COMMS_REDUNDANT_STATUS_INDEX] = ORC_COMMS_STATE_LST_RX;
+      TTCState[COMMS_ACTION_ID_INDEX]  = 0.0;
+      TTCState[COMMS_ACTION_RET_INDEX] = ACTION_RET_OK;
+    }
+    else if (index >= (( comms_conf_duration
+			 ) / 
+		       theRobotProcedure->Clock->GetBasePeriod())) {
+      // ActivateActionFromTask()("COMMS_Conf", "REDUNDANT WH");
+      TTCState[COMMS_ACTION_ID_INDEX]  = COMMS_Conf_ID; 
+      TTCState[COMMS_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
+
+      // because the previous action ("COMMS_Conf", "MAIN WH") completed 
+      TTCState[COMMS_MAIN_STATUS_INDEX] = ORC_COMMS_STATE_LST_RX;
+    }
+    else if (index >= 0 ) {
+      // ActivateActionFromTask()("COMMS_Conf", "MAIN WH");
+      TTCState[COMMS_ACTION_ID_INDEX]  = COMMS_Conf_ID; 
+      TTCState[COMMS_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
+    }
+    
+    index++;
+    
+  }
+
+  if (end_completed == 0){
+
+    end_completed = 1;
+  }
+
+  if ( theRobotProcedure->GetParameters()->set( "DHSState", DOUBLE,
+						MAX_STATE_SIZE, 0,
+						( char * ) DHSState ) == ERROR ) {
+    std::cout << rtName << " failed" << std::endl;
+  }
+  if ( theRobotProcedure->GetParameters()->set( "TTCState", DOUBLE,
+						MAX_STATE_SIZE, 0,
+						( char * ) TTCState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
 }
+//
+//
+//
 void RobotTask::computeDHS_Go2Nominal(){ 
   std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "State", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) State ) == ERROR ) {
+  if ( theRobotProcedure->GetParameters()->get( "DHSState", 
+						DOUBLE, MAX_STATE_SIZE, 0, 
+						( char * ) State ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
-  if ( theRobotProcedure->GetParameters()->set( "State", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) State ) == ERROR ) {
+  
+  if (param_completed == 0){
+    param_completed = 1;
+  }
+  if (init_completed == 0){
+    init_completed = 1;
+  }
+  
+  if (compute_completed == 0){ 
+
+    DHSState[DHS_ACTION_ID_INDEX]  = DHS_Go2Nominal_ID; 
+    DHSState[DHS_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
+    
+    if (index >= ((dhs_go2_duration) / 
+		  theRobotProcedure->Clock->GetBasePeriod())) {
+      DHSState[DHS_STATUS_INDEX] = DHS_OPER_MODE_NOMINAL;
+      DHSState[DHS_ACTION_ID_INDEX]  = 0.0;
+      DHSState[DHS_ACTION_RET_INDEX] = ACTION_RET_OK;
+      post_cond = 1;
+    }
+  }
+  if (end_completed == 0){
+    end_completed = 1;
+  }
+  
+  index++;
+
+  if ( theRobotProcedure->GetParameters()->set( "DHSState", 
+						DOUBLE, MAX_STATE_SIZE, 0, 
+						( char * ) State ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
 }
+
 void RobotTask::computeRV_Prepare4Travel(){ 
+
   std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "State", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) State ) == ERROR ) {
+
+  if ( theRobotProcedure->GetParameters()->get( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) State ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
-  if ( theRobotProcedure->GetParameters()->set( "State", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) State ) == ERROR ) {
+  if (index == 10) {
+    post_cond = 1;
+  }
+
+  index++;
+
+  if ( theRobotProcedure->GetParameters()->set( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) State ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
 }
 void RobotTask::computeRV_Prepare4Night(){ 
   std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "State", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) State ) == ERROR ) {
+  if ( theRobotProcedure->GetParameters()->get( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) State ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
-  if ( theRobotProcedure->GetParameters()->set( "State", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) State ) == ERROR ) {
+  if (index == 10) {
+    post_cond = 1;
+  }
+
+  index++;
+
+  if ( theRobotProcedure->GetParameters()->set( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) State ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
 }
 void RobotTask::computeRV_Prepare4Dozing(){ 
   std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "State", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) State ) == ERROR ) {
+  if ( theRobotProcedure->GetParameters()->get( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) State ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
-  if ( theRobotProcedure->GetParameters()->set( "State", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) State ) == ERROR ) {
+  if (index == 10) {
+    post_cond = 1;
+  }
+
+  index++;
+
+  if ( theRobotProcedure->GetParameters()->set( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) State ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
 }
-

@@ -58,6 +58,8 @@ class RobotProcedure
   double MastState[MAX_STATE_SIZE];
   double PanCamState[MAX_STATE_SIZE];
   double GNCState[MAX_STATE_SIZE];
+  double TTCState[MAX_STATE_SIZE];
+  double DHSState[MAX_STATE_SIZE];
 
 
   char OrccadPath[ MAXFILENAME ];		// Orccad user Path

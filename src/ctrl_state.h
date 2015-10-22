@@ -27,6 +27,61 @@ static const short ABORT_INDEX =  99;
 static const short ABORT_ERROR_INDEX =  98;
 
 
+
+//##################################################################################
+//                          DHS PARAMETERS DEFINITION
+//
+//##################################################################################
+#define DHS_STATUS_INDEX          0
+#define DHS_POWER_CONS_INDEX      1
+#define DHS_DATARATE_INDEX        2
+
+#define DHS_ACTION_ID_INDEX        10 
+#define DHS_ACTION_RET_INDEX       11 
+
+#define DHS_OPER_MODE_OFF       0
+#define DHS_OPER_MODE_POWER_UP  1
+#define DHS_OPER_MODE_BOOT      2
+#define DHS_OPER_MODE_HIBERNATE 3
+#define DHS_OPER_MODE_LOWPOWER  4
+#define DHS_OPER_MODE_REDUCED   5
+#define DHS_OPER_MODE_NOMINAL   6
+#define DHS_OPER_MODE_HIGHPOWER 7
+#define DHS_OPER_MODE_RECOVERY  8
+
+#define ORC_TC_OFF    0
+#define ORC_TC_WH_RX  1
+#define ORC_TC_LST_RX 2
+
+//
+// The same Ids as in the CommsModel
+//
+#define ORC_COMMS_STATE_OFF  0 
+#define ORC_COMMS_STATE_INIT 1
+#define ORC_COMMS_STATE_WH_RX 2 
+#define ORC_COMMS_STATE_WH_HAILING 3 
+#define ORC_COMMS_STATE_LST_RX 4
+#define ORC_COMMS_STATE_LST_HAILING 5
+#define ORC_COMMS_STATE_WH_RXTX 6
+#define ORC_COMMS_STATE_LST_RXTX 7
+
+//##################################################################################
+//
+//                          COMMS PARAMETERS DEFINITION
+//
+//##################################################################################
+#define COMMS_CMD_INDEX 0
+#define TTC_DEFAULT_MIN_LINE_VOLTAGE  10
+
+#define COMMS_MAIN_STATUS_INDEX      0
+#define COMMS_REDUNDANT_STATUS_INDEX 1
+#define COMMS_MAIN_CMD_INDEX         2
+#define COMMS_REDUNDANT_CMD_INDEX    3
+
+#define COMMS_ACTION_ID_INDEX        10 
+#define COMMS_ACTION_RET_INDEX       11 
+
+
 //
 // RAMPS STATUS INFORMATION
 //
@@ -57,6 +112,12 @@ static const short ABORT_ERROR_INDEX =  98;
 //
 static const short GNC_STATUS_INDEX      =  0;
 static const short GNC_OPER_MODE_INDEX      =  0;
+static const short GNC_ROVER_BEMA_Q1_INDEX  = 13;
+static const short GNC_ROVER_BEMA_Q2_INDEX  = 14;
+static const short GNC_ROVER_BEMA_Q3_INDEX  = 15;
+static const short GNC_ROVER_BEMA_Q4_INDEX = 16;
+static const short GNC_ROVER_BEMA_Q5_INDEX = 17;
+static const short GNC_ROVER_BEMA_Q6_INDEX = 18;
 static const short GNC_BMC1_TEMPERATURE_INDEX = 19;
 static const short GNC_BMC2_TEMPERATURE_INDEX  = 20;
 static const short GNC_BMC3_TEMPERATURE_INDEX = 21;
@@ -280,7 +341,8 @@ static const short PANCAM_ACTION_ID_INDEX       = 13; // 12-nov-2010 (Action ID)
 static const short PANCAM_ACTION_RET_INDEX      = 14; // 12-nov-2010 (OK/ERROR/RUNNING)
 static const short PANCAM_WAC_L_INDEX           = 15; // Index of stored images
 static const short PANCAM_WAC_R_INDEX           = 16; // Index of stored images
-
+static const short LOCCAM_LOC_L_INDEX           = 17; // Index of stored images
+static const short LOCCAM_LOC_R_INDEX           = 18; // Index of stored images
 
 // PanCam Operational Modes
 #define PANCAM_OPER_MODE_OFF                    0

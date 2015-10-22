@@ -18,6 +18,8 @@ RobotProcedure::RobotProcedure (std::string name)
 	  MastState[i] = 0.0;
 	  PanCamState[i] = 0.0;
 	  GNCState[i] = 0.0;
+	  TTCState[i] = 0.0;
+	  DHSState[i] = 0.0;
 	}
 	//
 	// add the default global state 
@@ -60,6 +62,15 @@ RobotProcedure::RobotProcedure (std::string name)
 	if ( GetParameters()->add( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) GNCState ) == ERROR ) {
 	  std::cout << "Error in Prr::Init() GetParameters()->add() failed" << std::endl;
 	  Status = ERROR;
+	}
+
+	if ( GetParameters()->add( "TTCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) TTCState ) == ERROR ) {
+	  std::cerr << "Error in OrcProcXXX::Init() GetParameters()->add() failed" << std::endl;
+	  Status = ERROR; 
+	}
+	if ( GetParameters()->add( "DHSState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) DHSState ) == ERROR ) {
+	  std::cerr << "Error in OrcProcXXX::Init() GetParameters()->add() failed" << std::endl;
+	  Status = ERROR; 
 	}
 
 	Status = OK;

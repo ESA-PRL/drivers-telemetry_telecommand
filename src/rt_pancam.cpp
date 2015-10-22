@@ -87,6 +87,20 @@ void RobotTask::computePanCam_InitWACs(){
   }
 
   if (param_completed == 0){
+    if (2 != sscanf(rtParams, "%d %s", &tcRequestId, cameraid)) {
+      fprintf(stderr, "In  PanCam_InitWACs param failed\n");
+      post_cond = 1;
+      return;
+    }
+	
+    if (!strcmp(cameraid,"WAC_R")) {
+      status_index = PANCAM_WAC_R_MODE_INDEX;
+      final_status =  PANCAM_OPER_MODE_WAC_STANDBY;
+    }
+    else if (!strcmp(cameraid,"WAC_L")) {
+      status_index = PANCAM_WAC_L_MODE_INDEX;
+      final_status =  PANCAM_OPER_MODE_WAC_STANDBY;
+    }
     warmUpTimeout = 10.0;
     param_completed = 1;
   }
@@ -100,7 +114,7 @@ void RobotTask::computePanCam_InitWACs(){
 
   if (compute_completed == 0){
     if (index >= (warmUpTimeout/theRobotProcedure->Clock->GetBasePeriod())) {
-      PanCamState[PANCAM_OPER_MODE_INDEX]  = PANCAM_OPER_MODE_STNDBY;
+      PanCamState[status_index] = final_status;
       PanCamState[PANCAM_ACTION_ID_INDEX]  = 0;
       PanCamState[PANCAM_ACTION_RET_INDEX] = ACTION_RET_OK;
       post_cond = 1;

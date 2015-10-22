@@ -88,7 +88,7 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
   char buffer[1024];
 
   //ctrl_time = prr->Clock->GetTime(); 
-  ctrl_time += 200; // 0.2 sec in msec
+  ctrl_time += 1000; // 1.02 sec in msec
   
   //
   // GNC_STATE
@@ -102,7 +102,7 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
   tmmsg = "TmPacket GNC_STATE ";
   sprintf(buffer, "%d:", ctrl_time);
   tmmsg += buffer;
-  sprintf(buffer, "%.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf;\n",
+  sprintf(buffer, "%.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf;\n",
       GNCState[GNC_OPER_MODE_INDEX],
       GNCState[GNC_ROVER_POSEX_INDEX],
       GNCState[GNC_ROVER_POSEY_INDEX],
@@ -110,6 +110,12 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
       GNCState[GNC_ROVER_POSERX_INDEX],
       GNCState[GNC_ROVER_POSERY_INDEX],
       GNCState[GNC_ROVER_POSERZ_INDEX],
+      GNCState[GNC_ROVER_BEMA_Q1_INDEX],
+      GNCState[GNC_ROVER_BEMA_Q2_INDEX],
+      GNCState[GNC_ROVER_BEMA_Q3_INDEX],
+      GNCState[GNC_ROVER_BEMA_Q4_INDEX],
+      GNCState[GNC_ROVER_BEMA_Q5_INDEX],
+      GNCState[GNC_ROVER_BEMA_Q6_INDEX],
       GNCState[GNC_ACTION_RET_INDEX],
       GNCState[GNC_ACTION_ID_INDEX]
       );
@@ -187,15 +193,29 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
   tmmsg += "TmPacket ADE_STATE ";
   sprintf(buffer, "%d:", ctrl_time);
   tmmsg += buffer;
-  sprintf(buffer, "%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf;\n", 
+  sprintf(buffer, "%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf;\n", 
 	  ADEState[ADE_STATUS_LEFT_INDEX], 
 	  ADEState[ADE_STATUS_RIGHT_INDEX], 
+	  ADEState[HDRM_BODY_1_STATUS_INDEX],
+	  ADEState[HDRM_BODY_2_STATUS_INDEX], 
+	  ADEState[HDRM_BODY_3_STATUS_INDEX], 
+	  ADEState[HDRM_DRILL_1_STATUS_INDEX],
+	  ADEState[HDRM_DRILL_2_STATUS_INDEX],
+	  ADEState[HDRM_MAST_STATUS_INDEX],
 	  ADEState[HDRM_SA_LEFT_1_STATUS_INDEX],
 	  ADEState[HDRM_SA_LEFT_2_STATUS_INDEX], 
 	  ADEState[HDRM_SA_LEFT_3_STATUS_INDEX], 
 	  ADEState[HDRM_SA_RIGHT_1_STATUS_INDEX],
 	  ADEState[HDRM_SA_RIGHT_2_STATUS_INDEX],
 	  ADEState[HDRM_SA_RIGHT_3_STATUS_INDEX],
+	  ADEState[HDRM_UMBILICAL_1_STATUS_INDEX],
+	  ADEState[HDRM_UMBILICAL_2_STATUS_INDEX], 
+	  ADEState[HDRM_WHEEL_FL_STATUS_INDEX],
+	  ADEState[HDRM_WHEEL_FR_STATUS_INDEX], 
+	  ADEState[HDRM_WHEEL_ML_STATUS_INDEX], 
+	  ADEState[HDRM_WHEEL_MR_STATUS_INDEX],
+	  ADEState[HDRM_WHEEL_RL_STATUS_INDEX],
+	  ADEState[HDRM_WHEEL_RR_STATUS_INDEX],
 	  ADEState[ADE_ACTION_RET_INDEX],
 	  ADEState[ADE_ACTION_ID_INDEX]);
   tmmsg += buffer;
@@ -207,12 +227,7 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
   //
   // PanCam State
   //
-  PanCamStateChanged=false;
-  for (int i=0; i<MAX_STATE_SIZE; i++) {
-     if (PanCamState[i]!=lastPanCamState[i])
-         PanCamStateChanged=true;
-  }
-  if (PanCamStateChanged){
+  
   if ( wac_l_prev_image == PanCamState[PANCAM_WAC_L_INDEX] )
   {
 	PanCamState[PANCAM_WAC_L_INDEX] = 0;
@@ -227,21 +242,30 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
            std::cout << "Error setting SAState" << std::endl;
         }
   }
+  wac_l_prev_image=PanCamState[PANCAM_WAC_L_INDEX];
+  wac_r_prev_image=PanCamState[PANCAM_WAC_R_INDEX];
+ 
+  PanCamStateChanged=false;
+  for (int i=0; i<MAX_STATE_SIZE; i++) {
+     if (PanCamState[i]!=lastPanCamState[i])
+         PanCamStateChanged=true;
+  }
+  if (PanCamStateChanged){
   tmmsg += "TmPacket PANCAM_STATE ";
   sprintf(buffer, "%d:", ctrl_time);
   tmmsg += buffer;
-  sprintf(buffer, "%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf;\n",
+  sprintf(buffer, "%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf;\n",
       PanCamState[PANCAM_OPER_MODE_INDEX],
       PanCamState[PANCAM_WAC_L_MODE_INDEX],
       PanCamState[PANCAM_WAC_R_MODE_INDEX],
       PanCamState[PANCAM_HRC_MODE_INDEX],
       PanCamState[PANCAM_WAC_L_INDEX],
       PanCamState[PANCAM_WAC_R_INDEX],
+      PanCamState[LOCCAM_LOC_L_INDEX],
+      PanCamState[LOCCAM_LOC_R_INDEX],
       PanCamState[PANCAM_ACTION_RET_INDEX],
       PanCamState[PANCAM_ACTION_ID_INDEX]);
   tmmsg += buffer;
-  wac_l_prev_image=PanCamState[PANCAM_WAC_L_INDEX];
-  wac_r_prev_image=PanCamState[PANCAM_WAC_R_INDEX];
   }
   for (int i=0; i<MAX_STATE_SIZE; i++) {
       lastPanCamState[i]=PanCamState[i];

@@ -20,6 +20,8 @@ class RobotTask : public SimpleThread
   double PanCamState[MAX_STATE_SIZE];
   double MastState[MAX_STATE_SIZE];
   double GNCState[MAX_STATE_SIZE];
+  double TTCState[MAX_STATE_SIZE];
+  double DHSState[MAX_STATE_SIZE];
   
   /** The Id of the Robot Task */
   int rtId;
@@ -80,6 +82,12 @@ class RobotTask : public SimpleThread
   // all trajectories
   double tFracDur;
   double rt;
+
+  // RVR durations
+  double rvr_duration;
+  double dhs_go2_duration;
+  double comms_switchon_duration;
+  double comms_conf_duration;
 
  protected:	
 

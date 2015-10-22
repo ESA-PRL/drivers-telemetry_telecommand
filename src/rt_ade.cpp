@@ -3,6 +3,14 @@
 #include "prr.h"
 #include "ctrl_state.h"
 
+#define ADE_LEFT_Initialise_ID 2100
+#define ADE_RIGHT_Initialise_ID 2101
+#define ADE_LEFT_conf_ID 2102
+#define ADE_RIGHT_conf_ID 2103
+#define ADE_LEFT_ReleaseHDRM_ID 2104
+#define ADE_RIGHT_ReleaseHDRM_ID 2105
+#define ADE_LEFT_SwitchOff_ID 2106
+#define ADE_RIGHT_SwitchOff_ID 2107
 
 extern RobotProcedure*  theRobotProcedure;
 
@@ -17,7 +25,7 @@ void RobotTask::computeADE_LEFT_Initialise(){
 						( char * ) ADEState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
-  rtId = 77; 
+  rtId = ADE_LEFT_Initialise_ID; 
 
   if (param_completed == 0){
     strcpy(ade_id, "left");
@@ -86,7 +94,7 @@ void RobotTask::computeADE_LEFT_Initialise(){
 void RobotTask::computeADE_LEFT_conf(){ 
 
   std::cerr << rtName << std::endl; 
-  rtId= 83;
+  rtId= ADE_LEFT_conf_ID;
   if ( theRobotProcedure->GetParameters()->get( "ADEState", 
 						DOUBLE, 
 						MAX_STATE_SIZE, 0, 
@@ -166,7 +174,7 @@ void RobotTask::computeADE_LEFT_conf(){
 void RobotTask::computeADE_LEFT_ReleaseHDRM(){ 
   
   std::cerr << rtName << std::endl;
-  rtId = 134;
+  rtId = ADE_LEFT_ReleaseHDRM_ID;
   if ( theRobotProcedure->GetParameters()->get( "ADEState", 
 						DOUBLE, 
 						MAX_STATE_SIZE, 0, 
@@ -212,8 +220,26 @@ void RobotTask::computeADE_LEFT_ReleaseHDRM(){
       } else if (!strcmp(ade_id, "right")) {
 	ADEState[ADE_STATUS_RIGHT_INDEX] = ADE_OPER_MODE_STNDBY_HDRM;
       }
-      
-      if (!strcmp(hdrm_id, "HDRM_SA_LEFT_1")) {
+
+      if (!strcmp(hdrm_id, "HDRM_BODY_1")) {
+	ADEState[HDRM_BODY_1_STATUS_INDEX] = HDRM_ON;
+      }
+      else if (!strcmp(hdrm_id, "HDRM_BODY_2")) {
+	ADEState[HDRM_BODY_2_STATUS_INDEX] = HDRM_ON;
+      }
+      else if (!strcmp(hdrm_id, "HDRM_BODY_3")) {
+	ADEState[HDRM_BODY_3_STATUS_INDEX] = HDRM_ON;
+      }      
+      else if (!strcmp(hdrm_id, "HDRM_DRILL_1")) {
+	ADEState[HDRM_DRILL_1_STATUS_INDEX] = HDRM_ON;
+      }
+      else if (!strcmp(hdrm_id, "HDRM_DRILL_2")) {
+	ADEState[HDRM_DRILL_2_STATUS_INDEX] = HDRM_ON;
+      }      
+      else if (!strcmp(hdrm_id, "HDRM_MAST")) {
+	ADEState[HDRM_MAST_STATUS_INDEX] = HDRM_ON;
+      }      
+      else if (!strcmp(hdrm_id, "HDRM_SA_LEFT_1")) {
 	ADEState[HDRM_SA_LEFT_1_STATUS_INDEX] = HDRM_ON;
       }
       else if (!strcmp(hdrm_id, "HDRM_SA_LEFT_2")) {
@@ -221,6 +247,30 @@ void RobotTask::computeADE_LEFT_ReleaseHDRM(){
       }
       else if (!strcmp(hdrm_id, "HDRM_SA_LEFT_3")) {
 	ADEState[HDRM_SA_LEFT_3_STATUS_INDEX] = HDRM_ON;
+      }
+      else if (!strcmp(hdrm_id, "HDRM_UMBILICAL_1")) {
+	ADEState[HDRM_UMBILICAL_1_STATUS_INDEX] = HDRM_ON;
+      }
+      else if (!strcmp(hdrm_id, "HDRM_UMBILICAL_2")) {
+	ADEState[HDRM_UMBILICAL_2_STATUS_INDEX] = HDRM_ON;
+      }
+      else if (!strcmp(hdrm_id, "HDRM_WHEEL_FL")) {
+	ADEState[HDRM_WHEEL_FL_STATUS_INDEX] = HDRM_ON;
+      }
+      else if (!strcmp(hdrm_id, "HDRM_WHEEL_FR")) {
+	ADEState[HDRM_WHEEL_FR_STATUS_INDEX] = HDRM_ON;
+      }      
+      else if (!strcmp(hdrm_id, "HDRM_WHEEL_ML")) {
+	ADEState[HDRM_WHEEL_ML_STATUS_INDEX] = HDRM_ON;
+      }      
+      else if (!strcmp(hdrm_id, "HDRM_WHEEL_MR")) {
+	ADEState[HDRM_WHEEL_MR_STATUS_INDEX] = HDRM_ON;
+      }
+      else if (!strcmp(hdrm_id, "HDRM_WHEEL_RL")) {
+	ADEState[HDRM_WHEEL_RL_STATUS_INDEX] = HDRM_ON;
+      }
+      else if (!strcmp(hdrm_id, "HDRM_WHEEL_RR")) {
+	ADEState[HDRM_WHEEL_RR_STATUS_INDEX] = HDRM_ON;
       }
 
       // Set Action ID and Ret val
@@ -247,7 +297,7 @@ void RobotTask::computeADE_LEFT_ReleaseHDRM(){
 void RobotTask::computeADE_LEFT_SwitchOff(){ 
 
   std::cerr << rtName << std::endl; 
-  rtId=60;
+  rtId=ADE_LEFT_SwitchOff_ID;
   if ( theRobotProcedure->GetParameters()->get( "ADEState", 
 						DOUBLE, 
 						MAX_STATE_SIZE, 0, 
@@ -294,7 +344,7 @@ void RobotTask::computeADE_LEFT_SwitchOff(){
 void RobotTask::computeADE_RIGHT_Initialise(){ 
  
   std::cerr << rtName << std::endl; 
-  rtId = 81;
+  rtId = ADE_RIGHT_Initialise_ID;
   if ( theRobotProcedure->GetParameters()->get( "ADEState", 
 						DOUBLE, 
 						MAX_STATE_SIZE, 0, 
@@ -371,7 +421,7 @@ void RobotTask::computeADE_RIGHT_Initialise(){
 void RobotTask::computeADE_RIGHT_conf(){ 
 
   std::cerr << rtName << std::endl; 
-  rtId = 80;
+  rtId = ADE_RIGHT_conf_ID;
   if ( theRobotProcedure->GetParameters()->get( "ADEState", 
 						DOUBLE, 
 						MAX_STATE_SIZE, 0, 
@@ -452,7 +502,7 @@ void RobotTask::computeADE_RIGHT_conf(){
 void RobotTask::computeADE_RIGHT_ReleaseHDRM(){ 
 
   std::cerr << rtName << std::endl; 
-  rtId = 79;
+  rtId = ADE_RIGHT_ReleaseHDRM_ID;
   if ( theRobotProcedure->GetParameters()->get( "ADEState", 
 						DOUBLE, 
 						MAX_STATE_SIZE, 0, 
@@ -535,7 +585,7 @@ void RobotTask::computeADE_RIGHT_ReleaseHDRM(){
 void RobotTask::computeADE_RIGHT_SwitchOff(){ 
 
   std::cerr << rtName << std::endl; 
-  rtId= 78;
+  rtId= ADE_RIGHT_SwitchOff_ID;
   if ( theRobotProcedure->GetParameters()->get( "ADEState", 
 						DOUBLE, 
 						MAX_STATE_SIZE, 0, 
