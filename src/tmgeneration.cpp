@@ -100,7 +100,8 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
   }
   if (GNCStateChanged){
   tmmsg = "TmPacket GNC_STATE ";
-  sprintf(buffer, "%d:", ctrl_time);
+//  sprintf(buffer, "%.2lf %.2lf %.2lf %.2lf %d:", GNCState[GNC_ROVER_POSEX_INDEX], GNCState[GNC_ROVER_POSEY_INDEX], MastState[MAST_CURRENT_Q2_INDEX], MastState[MAST_CURRENT_Q3_INDEX], ctrl_time);
+  sprintf(buffer, " %d:", ctrl_time);
   tmmsg += buffer;
   sprintf(buffer, "%.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf;\n",
       GNCState[GNC_OPER_MODE_INDEX],
@@ -135,7 +136,8 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
   }
   if (MastStateChanged){
   tmmsg += "TmPacket MAST_STATE ";
-  sprintf(buffer, "%d:", ctrl_time);
+  //sprintf(buffer, "%.2lf %.2lf %.2lf %.2lf %d:", GNCState[GNC_ROVER_POSEX_INDEX], GNCState[GNC_ROVER_POSEY_INDEX], MastState[MAST_CURRENT_Q2_INDEX], MastState[MAST_CURRENT_Q3_INDEX], ctrl_time);
+  sprintf(buffer, " %d:", ctrl_time);
   tmmsg += buffer;
   sprintf(buffer, "%.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf;\n",
       MastState[MAST_STATUS_INDEX],
@@ -160,7 +162,8 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
   }
   if (SAStateChanged){
   tmmsg += "TmPacket SA_STATE ";
-  sprintf(buffer, "%d:", ctrl_time);
+  //sprintf(buffer, "%.2lf %.2lf %.2lf %.2lf %d:", GNCState[GNC_ROVER_POSEX_INDEX], GNCState[GNC_ROVER_POSEY_INDEX], MastState[MAST_CURRENT_Q2_INDEX], MastState[MAST_CURRENT_Q3_INDEX], ctrl_time);
+  sprintf(buffer, " %d:", ctrl_time);
   tmmsg += buffer;
   sprintf(buffer, "%.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf;\n", 
 	  SAState[SA_STATUS_INDEX], 
@@ -191,7 +194,8 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
   }
   if (ADEStateChanged){
   tmmsg += "TmPacket ADE_STATE ";
-  sprintf(buffer, "%d:", ctrl_time);
+  //sprintf(buffer, "%.2lf %.2lf %.2lf %.2lf %d:", GNCState[GNC_ROVER_POSEX_INDEX], GNCState[GNC_ROVER_POSEY_INDEX], MastState[MAST_CURRENT_Q2_INDEX], MastState[MAST_CURRENT_Q3_INDEX], ctrl_time);
+  sprintf(buffer, " %d:", ctrl_time);
   tmmsg += buffer;
   sprintf(buffer, "%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf;\n", 
 	  ADEState[ADE_STATUS_LEFT_INDEX], 
@@ -252,7 +256,8 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
   }
   if (PanCamStateChanged){
   tmmsg += "TmPacket PANCAM_STATE ";
-  sprintf(buffer, "%d:", ctrl_time);
+  //sprintf(buffer, "%.2lf %.2lf %.2lf %.2lf %d:", GNCState[GNC_ROVER_POSEX_INDEX], GNCState[GNC_ROVER_POSEY_INDEX], MastState[MAST_CURRENT_Q2_INDEX], MastState[MAST_CURRENT_Q3_INDEX], ctrl_time);
+  sprintf(buffer, " %d:", ctrl_time);
   tmmsg += buffer;
   sprintf(buffer, "%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf;\n",
       PanCamState[PANCAM_OPER_MODE_INDEX],
