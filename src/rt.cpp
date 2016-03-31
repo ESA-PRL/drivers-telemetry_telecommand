@@ -3,14 +3,13 @@
 #include "rt.h"
 #include "param.h"
 #include "prr.h"
+#include "RobotProcedure.h"
 
 #define COMMS_SwitchOn_ID 150
 #define COMMS_Conf_ID 140
 #define DHS_Go2Nominal_ID 110
 #define DHS_Go2Reduced_ID 100
 #define DHS_Go2HighPwr_ID 120
-
-extern RobotProcedure*  theRobotProcedure;
 
 RobotTask::RobotTask (std::string name)
 {
