@@ -341,8 +341,13 @@ static const short PANCAM_ACTION_ID_INDEX       = 13; // 12-nov-2010 (Action ID)
 static const short PANCAM_ACTION_RET_INDEX      = 14; // 12-nov-2010 (OK/ERROR/RUNNING)
 static const short PANCAM_WAC_L_INDEX           = 15; // Index of stored images
 static const short PANCAM_WAC_R_INDEX           = 16; // Index of stored images
-static const short LOCCAM_LOC_L_INDEX           = 17; // Index of stored images
-static const short LOCCAM_LOC_R_INDEX           = 18; // Index of stored images
+static const short PANCAM_PAN_STEREO_INDEX      = 17; // Index of stored images
+static const short LOCCAM_FLOC_L_INDEX          = 18; // Index of stored images
+static const short LOCCAM_FLOC_R_INDEX          = 19; // Index of stored images
+static const short LOCCAM_FLOC_STEREO_INDEX     = 20; // Index of stored images
+static const short LOCCAM_RLOC_L_INDEX          = 21; // Index of stored images
+static const short LOCCAM_RLOC_R_INDEX          = 22; // Index of stored images
+static const short LOCCAM_RLOC_STEREO_INDEX     = 23; // Index of stored images
 
 // PanCam Operational Modes
 #define PANCAM_OPER_MODE_OFF                    0

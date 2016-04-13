@@ -13,6 +13,13 @@ static int ctrl_time = 0;
 
 static int wac_l_prev_image = 0;
 static int wac_r_prev_image = 0;
+static int wac_stereo_prev_image = 0;
+static int floc_r_prev_image = 0;
+static int floc_l_prev_image = 0;
+static int floc_stereo_prev_image = 0;
+static int rloc_l_prev_image = 0;
+static int rloc_r_prev_image = 0;
+static int rloc_stereo_prev_image = 0;
 
 // Copy of las state variables sent
 //static double lastState[MAX_STATE_SIZE];
@@ -246,8 +253,65 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
            std::cout << "Error setting SAState" << std::endl;
         }
   }
+  if ( wac_stereo_prev_image == PanCamState[PANCAM_PAN_STEREO_INDEX] )
+  {
+	PanCamState[PANCAM_PAN_STEREO_INDEX] = 0;
+        if ( prr->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ){
+            std::cout << "Error setting SAState" << std::endl;
+        }
+  }
+  if ( floc_l_prev_image == PanCamState[LOCCAM_FLOC_L_INDEX] )
+  {
+	PanCamState[LOCCAM_FLOC_L_INDEX] = 0;
+        if ( prr->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ){
+           std::cout << "Error setting SAState" << std::endl;
+        }
+  }
+  if ( floc_r_prev_image == PanCamState[LOCCAM_FLOC_R_INDEX] )
+  {
+	PanCamState[LOCCAM_FLOC_R_INDEX] = 0;
+        if ( prr->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ){
+            std::cout << "Error setting SAState" << std::endl;
+        }
+  }
+  if ( floc_stereo_prev_image == PanCamState[LOCCAM_FLOC_STEREO_INDEX] )
+  {
+	PanCamState[LOCCAM_FLOC_STEREO_INDEX] = 0;
+        if ( prr->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ){
+           std::cout << "Error setting SAState" << std::endl;
+        }
+  }
+  if ( rloc_l_prev_image == PanCamState[LOCCAM_RLOC_L_INDEX] )
+  {
+	PanCamState[LOCCAM_RLOC_L_INDEX] = 0;
+        if ( prr->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ){
+           std::cout << "Error setting SAState" << std::endl;
+        }
+  }
+  if ( rloc_r_prev_image == PanCamState[LOCCAM_RLOC_R_INDEX] )
+  {
+	PanCamState[LOCCAM_RLOC_R_INDEX] = 0;
+        if ( prr->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ){
+            std::cout << "Error setting SAState" << std::endl;
+        }
+  }
+  if ( rloc_stereo_prev_image == PanCamState[LOCCAM_RLOC_STEREO_INDEX] )
+  {
+	PanCamState[LOCCAM_RLOC_STEREO_INDEX] = 0;
+        if ( prr->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ){
+           std::cout << "Error setting SAState" << std::endl;
+        }
+  }
+ 
   wac_l_prev_image=PanCamState[PANCAM_WAC_L_INDEX];
   wac_r_prev_image=PanCamState[PANCAM_WAC_R_INDEX];
+  wac_stereo_prev_image=PanCamState[PANCAM_PAN_STEREO_INDEX];
+  floc_l_prev_image=PanCamState[LOCCAM_FLOC_L_INDEX];
+  floc_r_prev_image=PanCamState[LOCCAM_FLOC_R_INDEX];
+  floc_stereo_prev_image=PanCamState[LOCCAM_FLOC_STEREO_INDEX];
+  rloc_l_prev_image=PanCamState[LOCCAM_RLOC_L_INDEX];
+  rloc_r_prev_image=PanCamState[LOCCAM_RLOC_R_INDEX];
+  rloc_stereo_prev_image=PanCamState[LOCCAM_RLOC_STEREO_INDEX];
  
   PanCamStateChanged=false;
   for (int i=0; i<MAX_STATE_SIZE; i++) {
@@ -259,15 +323,17 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
   //sprintf(buffer, "%.2lf %.2lf %.2lf %.2lf %d:", GNCState[GNC_ROVER_POSEX_INDEX], GNCState[GNC_ROVER_POSEY_INDEX], MastState[MAST_CURRENT_Q2_INDEX], MastState[MAST_CURRENT_Q3_INDEX], ctrl_time);
   sprintf(buffer, " %d:", ctrl_time);
   tmmsg += buffer;
-  sprintf(buffer, "%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf;\n",
+  sprintf(buffer, "%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf;\n",
       PanCamState[PANCAM_OPER_MODE_INDEX],
-      PanCamState[PANCAM_WAC_L_MODE_INDEX],
-      PanCamState[PANCAM_WAC_R_MODE_INDEX],
-      PanCamState[PANCAM_HRC_MODE_INDEX],
       PanCamState[PANCAM_WAC_L_INDEX],
       PanCamState[PANCAM_WAC_R_INDEX],
-      PanCamState[LOCCAM_LOC_L_INDEX],
-      PanCamState[LOCCAM_LOC_R_INDEX],
+      PanCamState[PANCAM_PAN_STEREO_INDEX],
+      PanCamState[LOCCAM_FLOC_L_INDEX],
+      PanCamState[LOCCAM_FLOC_R_INDEX],
+      PanCamState[LOCCAM_FLOC_STEREO_INDEX],
+      PanCamState[LOCCAM_RLOC_L_INDEX],
+      PanCamState[LOCCAM_RLOC_R_INDEX],
+      PanCamState[LOCCAM_RLOC_STEREO_INDEX],
       PanCamState[PANCAM_ACTION_RET_INDEX],
       PanCamState[PANCAM_ACTION_ID_INDEX]);
   tmmsg += buffer;
