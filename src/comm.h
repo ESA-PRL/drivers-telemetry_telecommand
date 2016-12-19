@@ -80,8 +80,9 @@ class CommTmServer : public CommServer
 {
  private:
  RobotProcedure* prr;
+// ActiveMQTMSender *activemqTMSender;
  public:
-  CommTmServer(int port, RobotProcedure* prr);
+  CommTmServer(int port, RobotProcedure* prr/*, ActiveMQTMSender *tmsender*/);
   ~CommTmServer(){};
   void orcGetTmMsg(std::string &tmmsg);
   void* thread ();

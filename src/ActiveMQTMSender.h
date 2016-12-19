@@ -1,5 +1,5 @@
-#ifndef ActiveMQFilesClient_H
-#define ActiveMQFilesClient_H
+#ifndef ActiveMQTMSender_H
+#define ActiveMQTMSender_H
 
 #include <activemq/library/ActiveMQCPP.h>
 #include <decaf/lang/Thread.h>
@@ -35,22 +35,28 @@ using namespace cms;
 using namespace std;
 
 
-class ActiveMQFilesClient: public SimpleThread {
-  
+class ActiveMQTMSender: public SimpleThread {
+
  public:
   
-  Connection* connectionFilesTextMsg;
-  Connection* connectionFiles;
+  Connection* connectionMonitor;
   
-  Session* sessionFilesTextMsg;
-  Session* sessionFiles;
+  Session* sessionMonitor;
+   
   
-  Destination* destinationFilesTextMsg;
-  Destination* destinationFiles;
+  Destination* gncexoterDestinationMonitoring;
+  MessageProducer* gncexoterProducerMonitoring;
   
-  MessageProducer* producerFilesTextMsg;
-  MessageProducer* producerFiles;
+  Destination* mastDestinationMonitoring;
+  MessageProducer* mastProducerMonitoring;
   
+  Destination* pancamDestinationMonitoring;
+  MessageProducer* pancamProducerMonitoring;
+  
+  Destination* saDestinationMonitoring;
+  MessageProducer* saProducerMonitoring;
+ 
+
   int numMessages;
   bool useTopic;
   bool sessionTransacted;
@@ -58,33 +64,31 @@ class ActiveMQFilesClient: public SimpleThread {
   int simVersionId;
   char simJobId[80];
   char simUserName[80];
-  char mqFilesTextMsgServerURL[240];
-  char mqFilesServerURL[240];
-
-
+  char mqMonitoringServerURL[240];
+  
+  
   bool isConnected;
- 
+  string topicname;
+
 public:
     
-  ActiveMQFilesClient(int numMessages, 
-		      bool useTopic = false, 
-		      bool sessionTransacted = false);
+  ActiveMQTMSender(int numMessages, 
+			bool useTopic = false, 
+			bool sessionTransacted = false,
+			string topic_str = "TM");
   
-      int init();
-      
- 
-      virtual ~ActiveMQFilesClient();
+  int init();
+  
+  
+  virtual ~ActiveMQTMSender();
+  
+  void close();
+  
+  void* thread ();
 
-      int sendStartMsg(const char *msg_text) ;
-
-      int sendMsg(const char *msg_text) ;
-
-    void close();
-
-    void* thread ();
-private:
- 
-    void cleanup();
+ private:
+  
+  void cleanup();
 };
  
 #endif

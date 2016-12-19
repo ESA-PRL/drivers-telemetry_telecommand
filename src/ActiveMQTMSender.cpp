@@ -2,20 +2,18 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include "ActiveMQMonitorClient.h"
+#include "ActiveMQTMSender.h"
 #include "GeneralSupportLibrary.h"
 
 //extern int handleTcMsg(AutomatonExecMach* canal, char *msg);
 //extern orc_ProcRoverCtrl  *m_procRoverCtrl; 
 
-ActiveMQMonitorClient::ActiveMQMonitorClient(int numMessages, 
+ActiveMQTMSender::ActiveMQTMSender(int numMessages, 
 					     bool useTopic, 
 					     bool sessionTransacted,
 					     string topic_str) :
   connectionMonitor(NULL),
-  sessionMonitor(NULL),
-  destinationMonitoring(NULL),
-  producerMonitoring(NULL),
+  sessionMonitor(NULL), 
   numMessages(numMessages),
   useTopic(useTopic),
   sessionTransacted(sessionTransacted),
@@ -23,6 +21,8 @@ ActiveMQMonitorClient::ActiveMQMonitorClient(int numMessages,
   topicname(topic_str)
 {
 
+    strcpy(mqMonitoringServerURL, "192.168.200.236:9009");
+/*
     FILE* configFile;
     char configFileName[1024];
     sprintf(configFileName, "./activeMQ.conf");
@@ -54,46 +54,26 @@ ActiveMQMonitorClient::ActiveMQMonitorClient(int numMessages,
 				 &simVersionId) == ERROR) {
       return ;
     }
-
+*/
     createThread();
 }
       
 
-ActiveMQMonitorClient::~ActiveMQMonitorClient(){
+ActiveMQTMSender::~ActiveMQTMSender(){
   cleanup();
 }
 
-void ActiveMQMonitorClient::close() {
+void ActiveMQTMSender::close() {
   this->cleanup();
 }
 
-
-int ActiveMQMonitorClient::sendMsg(const char *msg_text) {
-  if (sessionMonitor == NULL) {
-    return ERROR;
-  }
-
-  string sim_job_str(simJobId);
-  std::auto_ptr<TextMessage> message(sessionMonitor->createTextMessage(msg_text));
-  message->setStringProperty("JOBID", sim_job_str);
-  message->setStringProperty("STATUS", "SIMALIVE");
-  try {
-    if (producerMonitoring != NULL) {
-      producerMonitoring->send( message.get()); // message.get()
-    }
-  } catch (CMSException& e) {
-    e.printStackTrace();
-    std::cout << "ActiveMQMonitorClient - exception detected while sending message" << std::endl;
-    isConnected = false;
-  }
-}
-
-void* ActiveMQMonitorClient::thread() {
+void* ActiveMQTMSender::thread() {
   
   while (true) {
     
     if (!isConnected) {
       
+      std::cout << "ActiveMQTMSender:" << " connecting" <<  std::endl;
       try {
 	string broker_uri("tcp://"+ string(mqMonitoringServerURL) +"?timeout=3000");
 	// Create a ConnectionFactory
@@ -103,7 +83,7 @@ void* ActiveMQMonitorClient::thread() {
 	// Create a Connection
 	connectionMonitor = connectionFactory->createConnection();
 	if (connectionMonitor == NULL) {
-	  std::cerr << "ActiveMQMonitorClient - connection is null" << std::endl;
+	  std::cerr << "ActiveMQTMSender - connection is null" << std::endl;
 	  return NULL;
 	}
 	connectionMonitor->start();
@@ -116,44 +96,76 @@ void* ActiveMQMonitorClient::thread() {
 	}
 	
 	if (sessionMonitor == NULL) {
-	  std::cerr << "ActiveMQMonitorClient - sessionMonitor is null" << std::endl;
+	  std::cerr << "ActiveMQTMSender - sessionMonitor is null" << std::endl;
 	  return NULL;
 	}
 	
-	string sim_version_id_str(simJobId);
-	
-	ostringstream convert;
-	convert << simVersionId ;
-	string sim_id_str = convert.str();
-	// create the 'monitoring' topic
-	// string monitoring_topic("SIMULATOR." + sim_id_str + ".MONITORING");
-	string monitoring_topic(topicname);
-	
-	
-	// std::to_string(simJobId) + "
-	
-	destinationMonitoring = sessionMonitor->createTopic(monitoring_topic);
-	if (destinationMonitoring == NULL) {
-	  std::cerr << "ActiveMQMonitorClient - destinationMonitoring is null" << std::endl;
+ 
+	string gncexoter_str("GNC_STATE");
+	string mast_str("MAST_STATE");
+	string pancam_str("PANCAM_STATE");
+	string sa_str("SA_STATE");
+
+	gncexoterDestinationMonitoring = sessionMonitor->createTopic(gncexoter_str);
+	if (gncexoterDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
 	  return NULL;
 	}
-	
-	
-	// Create a MessageProducer from the Session to the Topic or Queue
-	producerMonitoring = sessionMonitor->createProducer(destinationMonitoring);
-	if (producerMonitoring == NULL) {
-	  std::cerr << "ActiveMQMonitorClient - producerMonitoring is null" << std::endl;
+	gncexoterProducerMonitoring = sessionMonitor->createProducer(gncexoterDestinationMonitoring);
+	if (gncexoterProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
 	  return NULL;
 	}
-	producerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	gncexoterProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
 	isConnected = true;
 	
+	mastDestinationMonitoring = sessionMonitor->createTopic(mast_str);
+	if (mastDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	mastProducerMonitoring = sessionMonitor->createProducer(mastDestinationMonitoring);
+	if (mastProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	mastProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+  	
+	pancamDestinationMonitoring = sessionMonitor->createTopic(pancam_str);
+	if (pancamDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	pancamProducerMonitoring = sessionMonitor->createProducer(pancamDestinationMonitoring);
+	if (pancamProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	pancamProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+	
+	saDestinationMonitoring = sessionMonitor->createTopic(sa_str);
+	if (saDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	saProducerMonitoring = sessionMonitor->createProducer(saDestinationMonitoring);
+	if (saProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	saProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+ 
+
+	std::cout << "ActiveMQTMSender:" << " connected" <<  std::endl;
+	isConnected = true;
 	
       } catch (CMSException& e) {
 	e.printStackTrace();
-	std::cerr << "ActiveMQMonitorClient - exception detected" << std::endl;
-	sessionMonitor = NULL;
-	producerMonitoring = NULL;
+	std::cerr << "ActiveMQTMSender - exception detected" << std::endl;
+	sessionMonitor = NULL; 
 	isConnected = false;
 	
       }
@@ -166,7 +178,7 @@ void* ActiveMQMonitorClient::thread() {
 }
 
 
-void ActiveMQMonitorClient::cleanup() {
+void ActiveMQTMSender::cleanup() {
   
   if (connectionMonitor != NULL) {
     try {
@@ -176,6 +188,7 @@ void ActiveMQMonitorClient::cleanup() {
     }
   }
   
+  /*
   // Destroy resources.
   try {
     if ( producerMonitoring != NULL) {
@@ -193,5 +206,6 @@ void ActiveMQMonitorClient::cleanup() {
   } catch (CMSException& e) {
     e.printStackTrace();
   }
+  */
 }
  

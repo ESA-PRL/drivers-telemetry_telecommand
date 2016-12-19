@@ -1,5 +1,5 @@
-#ifndef ActiveMQAdminClient_H
-#define ActiveMQAdminClient_H
+#ifndef ActiveMQAdmin_H
+#define ActiveMQAdmin_H
 
 #include <activemq/library/ActiveMQCPP.h>
 #include <decaf/lang/Thread.h>
@@ -21,8 +21,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <memory>
-
-#include "simplethread.h" 
+#include "utils.h"
 
 using namespace activemq::core;
 using namespace decaf::util::concurrent;
@@ -31,48 +30,71 @@ using namespace decaf::lang;
 using namespace cms;
 using namespace std;
 
-class ActiveMQAdminClient: public SimpleThread {
+//#include "ProcRoverCtrl.h"
 
- public:
-  
+#include "linuxOrcc.h"
+//#include "canal.h"
+#include "simplethread.h"
+
+//extern orc_ProcRoverCtrl  *m_procRoverCtrl; 
+
+class ActiveMQAdmin : public SimpleThread {
+
+ private:
+
   Connection* connectionAdmin;
 
   Session* sessionAdmin;
-
+  
   Destination* destinationInternalStatus;
 
   MessageProducer* producerInternalStatus;
   
   int numMessages;
-  
   bool useTopic;
-  
   bool sessionTransacted;
- 
-  int simVersionId;
   
-  char simJobId[80];
-  
-  char simUserName[80];
-  
-  char mqManagementServerURL[240];
+  char mqManagementServerURL[80];
 
   bool isConnected;
-
-public:
+  //  ActiveMQAdmin(const ActiveMQAdmin&);
+  //  ActiveMQAdmin& operator=(const ActiveMQAdmin&);
+  
+ public:
+  
+  ActiveMQAdmin(int numMessages, 
+		bool useTopic = false, 
+		bool sessionTransacted = false) :
+    connectionAdmin(NULL),
+    sessionAdmin(NULL),
+    destinationInternalStatus(NULL),
+    producerInternalStatus(NULL),
+    numMessages(numMessages),
+    useTopic(useTopic),
+    sessionTransacted(sessionTransacted),
+    isConnected(false)
+    //,brokerURI(brokerURI) 
+      {
+	createThread();
+      };
     
-  ActiveMQAdminClient(int numMessages, 
-		      bool useTopic = false, 
-		      bool sessionTransacted = false);
+    int initAdmin(char *mgmnt_url);
     
-    virtual ~ActiveMQAdminClient();
+    
+    virtual ~ActiveMQAdmin() noexcept(true);
+    
+    int sendMessage(string msg);
+    
+    int sendStartActivityMsg(const char *msg);
+    
+    int sendEndActivityMsg();
     
     int sendSimAliveMsg();
     
     void close();
-
-    void* thread ();
     
+    void* thread ();
+  
  private:
     
     void cleanup();
