@@ -341,6 +341,88 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
   for (int i=0; i<MAX_STATE_SIZE; i++) {
       lastPanCamState[i]=PanCamState[i];
   }
+ 
+    if (activemqTMSender->isConnected) {
+       
+      try {
+int seq = 1;
+  struct timeval tp;
+  gettimeofday(&tp, NULL);
+  long long time1 = (long long) tp.tv_sec * 1000L + tp.tv_usec / 1000;
+
+	std::auto_ptr<TextMessage> mastMessage(activemqTMSender->sessionMonitor->createTextMessage
+					      ("I'm a Gnc message"));
+	mastMessage->setIntProperty("Status",2);
+	mastMessage->setFloatProperty("Deploy joint",7);
+	mastMessage->setFloatProperty("Pan",8);
+	mastMessage->setFloatProperty("Tilt",9);;
+	mastMessage->setIntProperty("iter",seq);
+	mastMessage->setIntProperty("Action status",1);
+	mastMessage->setIntProperty("Action Id",3);
+	mastMessage->setLongProperty("time",time1);
+	activemqTMSender->mastProducerMonitoring->send(mastMessage.get()); 
+
+
+	std::auto_ptr<TextMessage> gncexoterMessage(activemqTMSender->sessionMonitor->createTextMessage
+					      ("I'm a gncexoter message"));
+	gncexoterMessage->setIntProperty("Status",2);
+	gncexoterMessage->setFloatProperty("X",1);
+	gncexoterMessage->setFloatProperty("Y",2);
+	gncexoterMessage->setFloatProperty("Z",3);
+	gncexoterMessage->setFloatProperty("RX",4);
+	gncexoterMessage->setFloatProperty("RY",5);
+	gncexoterMessage->setFloatProperty("RZ",6);
+	gncexoterMessage->setFloatProperty("Bema Q1",7);
+	gncexoterMessage->setFloatProperty("Bema Q2",8);
+	gncexoterMessage->setFloatProperty("Bema Q3",9);;
+	gncexoterMessage->setFloatProperty("Bema Q4",10);
+	gncexoterMessage->setFloatProperty("Bema Q5",11);
+	gncexoterMessage->setFloatProperty("Bema Q6",12);
+	gncexoterMessage->setIntProperty("Action status",1);
+	gncexoterMessage->setIntProperty("Action Id",3);
+	gncexoterMessage->setIntProperty("iter",seq);
+	gncexoterMessage->setLongProperty("time",time1);
+	activemqTMSender->gncexoterProducerMonitoring->send(gncexoterMessage.get()); 
+
+
+	std::auto_ptr<TextMessage> pancamMessage(activemqTMSender->sessionMonitor->createTextMessage
+					      ("I'm a pancam message"));
+	pancamMessage->setIntProperty("PANCAM Status",2);
+	pancamMessage->setFloatProperty("WAC_L",1);
+	pancamMessage->setFloatProperty("WAC_R",2);
+	pancamMessage->setFloatProperty("WAC Stereo",3);
+	pancamMessage->setFloatProperty("FLOC_L",4);
+	pancamMessage->setFloatProperty("FLOC_R",5);
+	pancamMessage->setFloatProperty("FLOC Stereo",6);
+	pancamMessage->setFloatProperty("RLOC_L",7);
+	pancamMessage->setFloatProperty("LOC_R",8);
+	pancamMessage->setFloatProperty("RLOC Stereo",9);
+	pancamMessage->setIntProperty("Action status",1);
+	pancamMessage->setIntProperty("Action Id",3);
+	pancamMessage->setIntProperty("iter",seq);
+	pancamMessage->setLongProperty("time",time1);
+	activemqTMSender->pancamProducerMonitoring->send(pancamMessage.get()); 
+
+
+	std::auto_ptr<TextMessage> saMessage(activemqTMSender->sessionMonitor->createTextMessage
+					      ("I'm a sa message"));
+	saMessage->setIntProperty("Status",2);
+	saMessage->setFloatProperty("Q1",7);
+	saMessage->setFloatProperty("Q2",8);
+	saMessage->setFloatProperty("Q3",9);
+	saMessage->setFloatProperty("Q4",10);
+	saMessage->setIntProperty("Action status",1);
+	saMessage->setIntProperty("Action Id",3);
+	saMessage->setIntProperty("iter",seq);
+	saMessage->setLongProperty("time",time1);
+	activemqTMSender->saProducerMonitoring->send(saMessage.get()); 
+ 
+      } catch (CMSException& e) {
+	e.printStackTrace();
+	std::cout << "tmgeneration (ActiveMQTMSender) - exception detected" << std::endl;
+	activemqTMSender->isConnected = false;
+      }
+    }
 }
 
 

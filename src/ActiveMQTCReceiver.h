@@ -60,7 +60,8 @@ class ActiveMQTCReceiver : public ExceptionListener,
   bool sessionTransacted;
   std::string brokerURI;
   bool isConnected;
- private:
+
+  std::list <CommandInfo*> cmdList; 
   
   ActiveMQTCReceiver(const ActiveMQTCReceiver&);
   ActiveMQTCReceiver& operator=(const ActiveMQTCReceiver&);
@@ -97,6 +98,8 @@ class ActiveMQTCReceiver : public ExceptionListener,
     // registered as an ExceptionListener with the connection.
     virtual void onException(const CMSException& ex AMQCPP_UNUSED);
     
+  void addCommandInfo(CommandInfo *);
+  CommandInfo* extractCommandInfo(); 
  private:
     void cleanup();
 

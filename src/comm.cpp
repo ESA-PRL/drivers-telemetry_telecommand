@@ -202,7 +202,7 @@ void* CommTcReplyServer::thread() {
 	sleep(1);
       }	
       else {
-	fprintf (stdout, "CommTcReplyServer accepted connection\n", SDLNet_GetError());
+	fprintf (stdout, "CommTcReplyServer accepted connection %s\n", SDLNet_GetError());
 	Connected = 1; 
       }
     }				
@@ -220,10 +220,10 @@ void* CommTcReplyServer::thread() {
 }
 
 
-CommTmServer::CommTmServer(int port, RobotProcedure* prr/*, ActiveMQTMSender* actmqtmsender*/): CommServer(port) {
+CommTmServer::CommTmServer(int port, RobotProcedure* prr, ActiveMQTMSender* actmqtmsender): CommServer(port) {
 
-  this->prr=prr;
-  //this.activemqTMSender = actmqtmsender; 
+  this->prr = prr;
+  this->activemqTMSender = actmqtmsender; 
   fprintf (stdout, "=== CommTmServer::CommTmServer \n");
   if ( createThread() == ERROR ) {
     fprintf (stdout, "=== CommTmServer::createThread failed \n");

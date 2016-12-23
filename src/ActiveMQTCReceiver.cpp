@@ -1,5 +1,9 @@
 
+#include "comm.h"
 #include "ActiveMQTCReceiver.h"
+
+
+int handleActiveMQTcMsg(ActiveMQTCReceiver *, char *msg);
 
 ActiveMQTCReceiver::~ActiveMQTCReceiver() {
   cleanup();
@@ -9,6 +13,18 @@ void ActiveMQTCReceiver::close() {
   this->cleanup();
 }
  
+void ActiveMQTCReceiver::addCommandInfo(CommandInfo *cmd_info) {
+  cmdList.push_back( cmd_info ); 
+}
+CommandInfo* ActiveMQTCReceiver::extractCommandInfo() {
+  std::list<CommandInfo*>::iterator pr; 
+  if (cmdList.size() == 0) {
+    return NULL;
+  }
+  pr = cmdList.begin();
+  cmdList.clear();
+  return (*pr);
+}
 void* ActiveMQTCReceiver::thread() {
   
   while (true) {
@@ -74,7 +90,7 @@ void ActiveMQTCReceiver::onMessage(const cms::Message* message) {
     
     if (textMessage != NULL) {
       text = textMessage->getText();
-      // handleTcMsg(m_procRoverCtrl->GetCanal(), (char *) text.c_str());
+      handleActiveMQTcMsg(this, (char *) text.c_str());
     } else {
       text = "NOT A TEXTMESSAGE!";
     }
@@ -122,4 +138,63 @@ void ActiveMQTCReceiver::cleanup() {
   } catch (CMSException& e) {
     e.printStackTrace();
   }
+}
+
+int handleActiveMQTcMsg(ActiveMQTCReceiver *tc_receiver, char *msg) {
+  
+  char ackid[80], 
+    actionname[80], 
+    actioncmd[80], 
+    actionparam[280];
+  int rcv_rc, send_rc, cmd_id;
+  
+  std::cerr << " - handleTcMsg: ->" << msg << "<--" << std::endl;
+  
+  // 
+  // Count the number off tokens
+  // 
+  char tmp_msg[1024];
+  strcpy(tmp_msg, msg);
+  int total_tokens_nbr = 0;
+  char *tmp_token_str = strtok(tmp_msg, " ");
+  while(tmp_token_str != NULL) {
+    total_tokens_nbr++;
+    tmp_token_str = strtok(NULL, " ");
+  }
+
+  strcpy(actionparam, "\0");
+  int tokens_nbr = 0;
+  char *token_str = strtok(msg, " ");
+  while(token_str != NULL) {
+    tokens_nbr++;
+    if (tokens_nbr == 1) {
+      strcpy(ackid, token_str);
+      strcat(actionparam, ackid);
+      strcat(actionparam, " ");
+    }
+    else if (tokens_nbr == 5) {
+      strcpy(actionname, token_str);
+      strcpy(actioncmd, "START");
+    }
+    else if (tokens_nbr > 6 && tokens_nbr <= total_tokens_nbr) {
+      strcat(actionparam, token_str);
+      if (tokens_nbr < (total_tokens_nbr)) strcat(actionparam, " ");
+    }
+    token_str = strtok(NULL, " ");
+  }
+  
+  std::cerr << "Name of the Action ->" << actionname << "<--" << std::endl
+	    << "Action Cmd = ->" << actioncmd << "<--" << std::endl
+	    << "Action Params = ->" << actionparam << "<--" << std::endl;
+  
+  if (!strcmp(actioncmd, "START")) {
+    CommandInfo *cmd_info = new CommandInfo(actionname, actionparam);
+    // tc_server->addCommandInfo(cmd_info);
+  }
+  else
+    {
+      std::cout << "action " << actionname << " to be executed by Rock" << std::endl;
+    }
+return OK;
+
 }
