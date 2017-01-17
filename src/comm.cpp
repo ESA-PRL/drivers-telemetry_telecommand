@@ -237,6 +237,7 @@ void* CommTmServer::thread() {
   IPaddress ip;
   string send_msg;
   
+/*
   if (SDLNet_ResolveHost(&ip, NULL, Port) == -1) {
     fprintf (stdout, "SDLNet_ResolveHost %s\n", SDLNet_GetError());
     theStatus = ERROR;
@@ -246,10 +247,13 @@ void* CommTmServer::thread() {
     fprintf (stdout, "SDLNet_TCP_Open %s\n", SDLNet_GetError());
     theStatus = ERROR;
   } 
-  
+  */
   while (Running == TRUE) {
     
     if (Connected == FALSE) {
+      
+	Connected = TRUE;
+/*
       Client = SDLNet_TCP_Accept(Server); 
       if (!Client) { 
 	//fprintf (stdout, "SDLNet_TCP_Accept %s\n", SDLNet_GetError()); 
@@ -258,12 +262,15 @@ void* CommTmServer::thread() {
       else {
 	Connected = TRUE;
       }
+*/
     }				
     else {
       send_msg.clear();
       orcGetTmMsg(send_msg);
       if (send_msg.length()>0)
       {
+        int result = 1;
+/*
       	int result = SDLNet_TCP_Send(Client, 
 				   (void *)(send_msg.c_str()), 
 				   send_msg.length());
@@ -274,6 +281,7 @@ void* CommTmServer::thread() {
         else {
 	  sleep( 1 );
         }
+*/sleep( 1 );
       }
       else {
 	sleep (1);

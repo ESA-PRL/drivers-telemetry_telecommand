@@ -89,7 +89,8 @@ void ActiveMQTCReceiver::onMessage(const cms::Message* message) {
     string text = "";
     
     if (textMessage != NULL) {
-      text = textMessage->getText();
+      //text = textMessage->getText();
+      text = textMessage->getStringProperty("TCLINE");
       handleActiveMQTcMsg(this, (char *) text.c_str());
     } else {
       text = "NOT A TEXTMESSAGE!";
@@ -189,7 +190,7 @@ int handleActiveMQTcMsg(ActiveMQTCReceiver *tc_receiver, char *msg) {
   
   if (!strcmp(actioncmd, "START")) {
     CommandInfo *cmd_info = new CommandInfo(actionname, actionparam);
-    // tc_server->addCommandInfo(cmd_info);
+    tc_receiver->addCommandInfo(cmd_info);
   }
   else
     {

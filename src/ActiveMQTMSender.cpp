@@ -21,7 +21,7 @@ ActiveMQTMSender::ActiveMQTMSender(int numMessages,
   topicname(topic_str)
 {
 
-    strcpy(mqMonitoringServerURL, "192.168.200.236:9009");
+    strcpy(mqMonitoringServerURL, "192.168.200.212:9009");
 /*
     FILE* configFile;
     char configFileName[1024];
@@ -105,6 +105,8 @@ void* ActiveMQTMSender::thread() {
 	string mast_str("MAST_STATE");
 	string pancam_str("PANCAM_STATE");
 	string sa_str("SA_STATE");
+	string ade_str("ADE_STATE");
+	string image_str("IMAGE");
 
 	gncexoterDestinationMonitoring = sessionMonitor->createTopic(gncexoter_str);
 	if (gncexoterDestinationMonitoring == NULL) {
@@ -157,8 +159,33 @@ void* ActiveMQTMSender::thread() {
 	}
 	saProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
 	isConnected = true;
- 
+        
+        adeDestinationMonitoring = sessionMonitor->createTopic(ade_str);
+	if (adeDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	adeProducerMonitoring = sessionMonitor->createProducer(adeDestinationMonitoring);
+	if (adeProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	adeProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
 
+	imageDestinationMonitoring = sessionMonitor->createTopic(image_str);
+	if (imageDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	imageProducerMonitoring = sessionMonitor->createProducer(imageDestinationMonitoring);
+	if (imageProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	imageProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+ 
 	std::cout << "ActiveMQTMSender:" << " connected" <<  std::endl;
 	isConnected = true;
 	

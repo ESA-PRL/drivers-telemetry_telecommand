@@ -52,7 +52,7 @@ void* ActiveMQAdmin::thread() {
     
     if (!isConnected) {
 
-      strcpy(mqManagementServerURL, "192.168.200.236:9009");
+      strcpy(mqManagementServerURL, "192.168.200.212:9009");
       std::cout << "ActiveMQAdmin:" << " connecting" <<  std::endl;
       try {
 /*
