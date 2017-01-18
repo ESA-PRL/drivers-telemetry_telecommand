@@ -33,7 +33,7 @@ static bool first_time=false;
 
 int CommTmServer::sendImageMessage(int seq, long time, int size, 
 				   const unsigned char * data, 
-				   MessageProducer* messproducer) {
+				   MessageProducer* messproducer, double * transform) {
   std::auto_ptr<BytesMessage> 
     imageMessage(activemqTMSender->
 		 sessionMonitor->createBytesMessage((const unsigned char *)data, size));
@@ -44,14 +44,36 @@ int CommTmServer::sendImageMessage(int seq, long time, int size,
     imageMessage->setBooleanProperty("Bigendian", true);
     imageMessage->setIntProperty("Step",1);
     imageMessage->setLongProperty("time",time);
-    imageMessage->setFloatProperty("X",0.0);
-    imageMessage->setFloatProperty("Y",0.0);
-    imageMessage->setFloatProperty("Z",1.0);
-    imageMessage->setFloatProperty("qX",0.354);
-    imageMessage->setFloatProperty("qY",0.354);
-    imageMessage->setFloatProperty("qZ",0.146);
-    imageMessage->setFloatProperty("qW",0.854);
+    imageMessage->setFloatProperty("X",transform[0]);
+    imageMessage->setFloatProperty("Y",transform[1]);
+    imageMessage->setFloatProperty("Z",transform[2]);
+    imageMessage->setFloatProperty("qX",transform[3]);
+    imageMessage->setFloatProperty("qY",transform[4]);
+    imageMessage->setFloatProperty("qZ",transform[5]);
+    imageMessage->setFloatProperty("qW",transform[6]);
     messproducer->send(imageMessage.get()); 
+}
+
+int CommTmServer::sendDEMMessage(int seq, long time, int size, 
+				   std::vector<unsigned char> data, 
+				   MessageProducer* messproducer, double * transform) {
+  std::auto_ptr<StreamMessage> 
+    demMessage(activemqTMSender->
+		 sessionMonitor->createStreamMessage());
+    demMessage->writeBytes(data);
+    demMessage->setStringProperty("filename","toto.obj");
+    demMessage->setStringProperty("Method","DEM");
+    demMessage->setIntProperty("Size",size);
+    demMessage->setIntProperty("Seq",seq);
+    demMessage->setLongProperty("time",time);
+    demMessage->setFloatProperty("X",transform[0]);
+    demMessage->setFloatProperty("Y",transform[1]);
+    demMessage->setFloatProperty("Z",transform[2]);
+    demMessage->setFloatProperty("qX",transform[3]);
+    demMessage->setFloatProperty("qY",transform[4]);
+    demMessage->setFloatProperty("qZ",transform[5]);
+    demMessage->setFloatProperty("qW",transform[6]);
+    messproducer->send(demMessage.get()); 
 }
 
 void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
