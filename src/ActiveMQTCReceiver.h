@@ -68,20 +68,24 @@ class ActiveMQTCReceiver : public ExceptionListener,
   
  public:
   
-  ActiveMQTCReceiver(const std::string& brokerURI, int numMessages, bool useTopic = false, bool sessionTransacted = false, int waitMillis = 30000) :
-  latch(1),
-  doneLatch(numMessages),
-  connection(NULL),
-  session(NULL),
-  destination(NULL),
-  consumer(NULL),
-  waitMillis(waitMillis),
-  useTopic(useTopic),
-  sessionTransacted(sessionTransacted),
-    brokerURI(brokerURI) {
-    isConnected = false;
-    createThread();
-  }
+  ActiveMQTCReceiver(const std::string& brokerURI, 
+		     int numMessages, 
+		     bool useTopic = false, 
+		     bool sessionTransacted = false, int waitMillis = 30000) :
+    latch(1),
+    doneLatch(numMessages),
+    connection(NULL),
+    session(NULL),
+    destination(NULL),
+    consumer(NULL),
+    waitMillis(waitMillis),
+    useTopic(useTopic),
+    sessionTransacted(sessionTransacted),
+    brokerURI(brokerURI) 
+      {
+	isConnected = false;
+	createThread();
+      }
     
     virtual ~ActiveMQTCReceiver();
     

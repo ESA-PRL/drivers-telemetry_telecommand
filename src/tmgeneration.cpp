@@ -63,7 +63,7 @@ int CommTmServer::sendDEMMessage(int seq, long time, int size,
     demMessage->writeBytes(data);
     demMessage->setStringProperty("filename","toto.obj");
     demMessage->setStringProperty("Method","DEM");
-    demMessage->setIntProperty("Size",size);
+    demMessage->setIntProperty("size",size);
     demMessage->setIntProperty("Seq",seq);
     demMessage->setLongProperty("time",time);
     demMessage->setFloatProperty("X",transform[0]);

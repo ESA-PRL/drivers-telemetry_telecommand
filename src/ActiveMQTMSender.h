@@ -62,29 +62,60 @@ class ActiveMQTMSender: public SimpleThread {
   Destination* imageDestinationMonitoring;
   MessageProducer* imageProducerMonitoring;
  
+  Destination* imageFLocDestinationMonitoring;
+  MessageProducer* imageFLocProducerMonitoring;
+ 
+  Destination* imageRLocDestinationMonitoring;
+  MessageProducer* imageRLocProducerMonitoring;
+ 
+  Destination* imagePanCamDestinationMonitoring;
+  MessageProducer* imagePanCamProducerMonitoring;
+ 
   Destination* demDestinationMonitoring;
   MessageProducer* demProducerMonitoring;
  
+  Destination* demFLocDestinationMonitoring;
+  MessageProducer* demFLocProducerMonitoring;
+  
+  Destination* demRLocDestinationMonitoring;
+  MessageProducer* demRLocProducerMonitoring;
+  
+  Destination* demPanCamDestinationMonitoring;
+  MessageProducer* demPanCamProducerMonitoring;
+ 
+  std::string brokerURI;
   int numMessages;
   bool useTopic;
   bool sessionTransacted;
- 
-  int simVersionId;
-  char simJobId[80];
-  char simUserName[80];
-  char mqMonitoringServerURL[240];
-  
   
   bool isConnected;
   string topicname;
 
 public:
-    
-  ActiveMQTMSender(int numMessages, 
-			bool useTopic = false, 
-			bool sessionTransacted = false,
-			string topic_str = "TM");
-  
+  ActiveMQTMSender(const std::string& brokerURI, 
+		   int numMessages, 
+		   bool useTopic = false, 
+		   bool sessionTransacted = false,
+		   string topic_str = "TM"):
+    connectionMonitor(NULL),
+    sessionMonitor(NULL), 
+    numMessages(numMessages),
+    useTopic(useTopic),
+    sessionTransacted(sessionTransacted),
+    topicname(topic_str),
+    brokerURI(brokerURI) 
+      {
+	isConnected = false;
+	createThread();
+      }
+
+    /*
+      ActiveMQTMSender(const std::string& brokerURI, 
+      int numMessages, 
+      bool useTopic = false, 
+      bool sessionTransacted = false,
+      string topic_str = "TM");
+    */
   int init();
   
   

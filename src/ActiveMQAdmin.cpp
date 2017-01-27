@@ -52,30 +52,12 @@ void* ActiveMQAdmin::thread() {
     
     if (!isConnected) {
 
-      strcpy(mqManagementServerURL, "192.168.200.219:9009");
       std::cout << "ActiveMQAdmin:" << " connecting" <<  std::endl;
       try {
-/*
 	
-	FILE* configFile;
-	char configFileName[1024];
-	sprintf(configFileName, "./activeMQ.conf");
-	if ((configFile = fopen(configFileName, "r")) == NULL) {
-	  std::cerr << configFileName << "activeMQ.conf file not identified" 
-		    << std::endl;
-	  return NULL;
-	}
-
-	if (GeneralSupport::ReadString(configFile, "MANAGEMENT_MQ_SERVER_URL", 
-				       mqManagementServerURL) == ERROR) {
-	  return NULL;
-	}
-*/
-	
-	string broker_uri("tcp://" + string(mqManagementServerURL) + "?timeout=3000");
 	// Create a ConnectionFactory
 	auto_ptr<ConnectionFactory> 
-	  connectionFactory(ConnectionFactory::createCMSConnectionFactory(broker_uri));
+	  connectionFactory(ConnectionFactory::createCMSConnectionFactory(brokerURI));
 	
 	// Create a Connection
 	connectionAdmin = connectionFactory->createConnection();

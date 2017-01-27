@@ -50,19 +50,18 @@ class ActiveMQAdmin : public SimpleThread {
 
   MessageProducer* producerInternalStatus;
   
+  std::string brokerURI;
   int numMessages;
   bool useTopic;
   bool sessionTransacted;
   
-  char mqManagementServerURL[80];
 
   bool isConnected;
-  //  ActiveMQAdmin(const ActiveMQAdmin&);
-  //  ActiveMQAdmin& operator=(const ActiveMQAdmin&);
   
  public:
   
-  ActiveMQAdmin(int numMessages, 
+  ActiveMQAdmin(const std::string& brokerURI, 
+		int numMessages, 
 		bool useTopic = false, 
 		bool sessionTransacted = false) :
     connectionAdmin(NULL),
@@ -72,8 +71,8 @@ class ActiveMQAdmin : public SimpleThread {
     numMessages(numMessages),
     useTopic(useTopic),
     sessionTransacted(sessionTransacted),
-    isConnected(false)
-    //,brokerURI(brokerURI) 
+    isConnected(false),
+    brokerURI(brokerURI) 
       {
 	createThread();
       };
