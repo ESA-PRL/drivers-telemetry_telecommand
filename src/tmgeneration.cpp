@@ -54,14 +54,24 @@ int CommTmServer::sendImageMessage(int seq, long time, int size,
     messproducer->send(imageMessage.get()); 
 }
 
-int CommTmServer::sendDEMMessage(int seq, long time, int size, 
+int CommTmServer::sendFileMessage(const char* filename, int size, 
+				   const unsigned char * data, 
+				   MessageProducer* messproducer) {
+  std::auto_ptr<BytesMessage> 
+    fileMessage(activemqTMSender->
+		 sessionMonitor->createBytesMessage((const unsigned char *)data, size));
+    fileMessage->setStringProperty("filename",filename);
+   messproducer->send(fileMessage.get()); 
+}
+
+int CommTmServer::sendDEMMessage(const char* filename, int seq, long time, int size, 
 				   std::vector<unsigned char> data, 
 				   MessageProducer* messproducer, double * transform) {
   std::auto_ptr<StreamMessage> 
     demMessage(activemqTMSender->
 		 sessionMonitor->createStreamMessage());
     demMessage->writeBytes(data);
-    demMessage->setStringProperty("filename","toto.obj");
+    demMessage->setStringProperty("filename",filename);
     demMessage->setStringProperty("Method","DEM");
     demMessage->setIntProperty("size",size);
     demMessage->setIntProperty("Seq",seq);
@@ -181,8 +191,8 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
 		GNCState[GNC_ACTION_ID_INDEX]
 		);
 	tmmsg += buffer;
-	
-	std::auto_ptr<TextMessage> gncexoterMessage(activemqTMSender->sessionMonitor->createTextMessage
+
+        std::auto_ptr<TextMessage> gncexoterMessage(activemqTMSender->sessionMonitor->createTextMessage
 						    ("I'm a gncexoter message"));
 	gncexoterMessage->setIntProperty("iter",seq);
 	gncexoterMessage->setLongProperty("time",time1);

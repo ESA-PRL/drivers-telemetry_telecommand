@@ -53,6 +53,7 @@ void* ActiveMQTMSender::thread() {
 	string sa_str("SA_STATE");
 	string ade_str("ADE_STATE");
 	string image_str("IMAGE");
+	string file_str("ROVERFILETRANSFER");
 	string dem_str("DEM");
 	string img_floc_str("IMAGE_FLOC");
 	string img_rloc_str("IMAGE_RLOC");
@@ -139,6 +140,19 @@ void* ActiveMQTMSender::thread() {
 	  return NULL;
 	}
 	imageProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+        
+        fileDestinationMonitoring = sessionMonitor->createTopic(file_str);
+	if (fileDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	fileProducerMonitoring = sessionMonitor->createProducer(fileDestinationMonitoring);
+	if (fileProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	fileProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
 	isConnected = true;
 
         imageFLocDestinationMonitoring = sessionMonitor->createTopic(img_floc_str);
