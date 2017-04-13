@@ -31,9 +31,7 @@ namespace telemetry_telecommand
         enum Mode
         {
             ONE_SHOT,
-            PERIOD_1,
-            PERIOD_2,
-            PERIOD_3,
+            PERIODIC,
             STOP
         };
 
@@ -50,6 +48,7 @@ namespace telemetry_telecommand
         {
             ProductType productType;
             Mode productMode;
+            uint64_t usecPeriod; // only applicable for mode==PERIODIC
         } Telecommand;
 
     }
