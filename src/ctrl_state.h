@@ -134,6 +134,14 @@ static const short GNC_ACTION_ID_INDEX    = 31;
 static const short GNC_ACTION_RET_INDEX   = 32;
 static const short GNC_POWER_CONS_INDEX  = 37;
 static const short GNC_TOTAL_TRAVELED_DISTANCE_INDEX = 39;
+static const short GNC_TEMPERATURE_WHEEL1_INDEX  = 40;
+static const short GNC_TEMPERATURE_WHEEL2_INDEX  = 41;
+static const short GNC_TEMPERATURE_WHEEL3_INDEX  = 42;
+static const short GNC_TEMPERATURE_WHEEL4_INDEX  = 43;
+static const short GNC_TEMPERATURE_WHEEL5_INDEX  = 44;
+static const short GNC_TEMPERATURE_WHEEL6_INDEX  = 45;
+static const short GNC_TRAJECTORY_STATUS_INDEX  =  50;
+
 
 // constants for the status
 #define GNC_STATUS_FLAG_OFF    0
@@ -348,10 +356,13 @@ static const short LOCCAM_FLOC_STEREO_INDEX     = 20; // Index of stored images
 static const short LOCCAM_RLOC_L_INDEX          = 21; // Index of stored images
 static const short LOCCAM_RLOC_R_INDEX          = 22; // Index of stored images
 static const short LOCCAM_RLOC_STEREO_INDEX     = 23; // Index of stored images
+static const short HAZCAM_FHAZ_STEREO_INDEX     = 24; // Index of stored images
+static const short TOF_INDEX                    = 25; // Index of stored images
+static const short LIDAR_INDEX                  = 26; // Index of stored images
 
 // PanCam Operational Modes
 #define PANCAM_OPER_MODE_OFF                    0
-#define PANCAM_OPER_MODE_INITIALISING 		1
+#define PANCAM_OPER_MODE_INITIALISING 		    1
 #define PANCAM_OPER_MODE_WACS_INITIALISE        2    
 #define PANCAM_OPER_MODE_HRC_INITIALISE         3    
 #define PANCAM_OPER_MODE_STNDBY                 4

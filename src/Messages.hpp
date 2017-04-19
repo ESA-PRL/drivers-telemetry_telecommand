@@ -30,9 +30,9 @@ namespace telemetry_telecommand
 
         enum Mode
         {
-            ONE_SHOT,
-            PERIODIC,
-            STOP
+            STOP=-1,
+            ONE_SHOT=0,
+            PERIODIC=1
         };
 
         typedef struct
