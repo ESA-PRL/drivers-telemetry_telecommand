@@ -30,6 +30,7 @@ namespace telemetry_telecommand
 
         enum Mode
         {
+            CONTINUOUS=-2,
             STOP=-1,
             ONE_SHOT=0,
             PERIODIC=1
