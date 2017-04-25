@@ -57,10 +57,12 @@ void* ActiveMQTMSender::thread() {
 	string dem_str("DEM");
 	string img_floc_str("IMAGE_FLOC");
 	string img_rloc_str("IMAGE_RLOC");
-	string img_pan_cam_str("IMAGE_PANCAM");
+	string img_pan_cam_str("IMAGE_MAST");
 	string dem_floc_str("DEM_FLOC");
 	string dem_rloc_str("DEM_RLOC");
-	string dem_pan_cam_str("DEM_PANCAM");
+	string dem_pan_cam_str("DEM_MAST");
+	string dist_pan_cam_str("DIST_MAST");
+	string pc_pan_cam_str("PC_MAST");
 
 
 
@@ -244,6 +246,32 @@ void* ActiveMQTMSender::thread() {
 	  return NULL;
 	}
 	demPanCamProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+
+    distPanCamDestinationMonitoring = sessionMonitor->createTopic(dist_pan_cam_str);
+	if (distPanCamDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	distPanCamProducerMonitoring = sessionMonitor->createProducer(distPanCamDestinationMonitoring);
+	if (distPanCamProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	distPanCamProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+    
+    pcPanCamDestinationMonitoring = sessionMonitor->createTopic(pc_pan_cam_str);
+	if (pcPanCamDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	pcPanCamProducerMonitoring = sessionMonitor->createProducer(pcPanCamDestinationMonitoring);
+	if (pcPanCamProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	pcPanCamProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
 	isConnected = true;
 
 	std::cout << "ActiveMQTMSender:" << " connected" <<  std::endl;

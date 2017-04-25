@@ -86,6 +86,12 @@ class ActiveMQTMSender: public SimpleThread {
   Destination* demPanCamDestinationMonitoring;
   MessageProducer* demPanCamProducerMonitoring;
  
+  Destination* distPanCamDestinationMonitoring;
+  MessageProducer* distPanCamProducerMonitoring;
+
+  Destination* pcPanCamDestinationMonitoring;
+  MessageProducer* pcPanCamProducerMonitoring;
+
   std::string brokerURI;
   int numMessages;
   bool useTopic;
