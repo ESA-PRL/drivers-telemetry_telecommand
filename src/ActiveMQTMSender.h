@@ -44,54 +44,92 @@ class ActiveMQTMSender: public SimpleThread {
   Session* sessionMonitor;
    
   
-  Destination* gncexoterDestinationMonitoring;
-  MessageProducer* gncexoterProducerMonitoring;
+  Destination* gncDestinationMonitoring;
+  MessageProducer* gncProducerMonitoring;
   
-  Destination* mastDestinationMonitoring;
-  MessageProducer* mastProducerMonitoring;
+  Destination* ptuDestinationMonitoring;
+  MessageProducer* ptuProducerMonitoring;
   
-  Destination* pancamDestinationMonitoring;
-  MessageProducer* pancamProducerMonitoring;
-  
-  Destination* saDestinationMonitoring;
-  MessageProducer* saProducerMonitoring;
- 
-  Destination* adeDestinationMonitoring;
-  MessageProducer* adeProducerMonitoring;
- 
-  Destination* imageDestinationMonitoring;
-  MessageProducer* imageProducerMonitoring;
- 
   Destination* fileDestinationMonitoring;
   MessageProducer* fileProducerMonitoring;
- 
-  Destination* imageFLocDestinationMonitoring;
-  MessageProducer* imageFLocProducerMonitoring;
- 
-  Destination* imageRLocDestinationMonitoring;
-  MessageProducer* imageRLocProducerMonitoring;
- 
-  Destination* imagePanCamDestinationMonitoring;
-  MessageProducer* imagePanCamProducerMonitoring;
- 
-  Destination* demDestinationMonitoring;
-  MessageProducer* demProducerMonitoring;
- 
-  Destination* demFLocDestinationMonitoring;
-  MessageProducer* demFLocProducerMonitoring;
-  
-  Destination* demRLocDestinationMonitoring;
-  MessageProducer* demRLocProducerMonitoring;
-  
-  Destination* demPanCamDestinationMonitoring;
-  MessageProducer* demPanCamProducerMonitoring;
- 
-  Destination* distPanCamDestinationMonitoring;
-  MessageProducer* distPanCamProducerMonitoring;
 
-  Destination* pcPanCamDestinationMonitoring;
-  MessageProducer* pcPanCamProducerMonitoring;
+  /********* img **********/ 
+  Destination* imgMastDestinationMonitoring;
+  MessageProducer* imgMastProducerMonitoring;
 
+  Destination* imgFrontDestinationMonitoring;
+  MessageProducer* imgFrontProducerMonitoring;
+
+  Destination* imgLidarDestinationMonitoring;
+  MessageProducer* imgLidarProducerMonitoring;
+
+  Destination* imgTofDestinationMonitoring;
+  MessageProducer* imgTofProducerMonitoring;
+
+  Destination* imgHazcamDestinationMonitoring;
+  MessageProducer* imgHazcamProducerMonitoring;
+
+  Destination* imgRearDestinationMonitoring;
+  MessageProducer* imgRearProducerMonitoring;
+
+  /********* dist **********/ 
+  Destination* distMastDestinationMonitoring;
+  MessageProducer* distMastProducerMonitoring;
+
+  Destination* distFrontDestinationMonitoring;
+  MessageProducer* distFrontProducerMonitoring;
+
+  Destination* distLidarDestinationMonitoring;
+  MessageProducer* distLidarProducerMonitoring;
+
+  Destination* distTofDestinationMonitoring;
+  MessageProducer* distTofProducerMonitoring;
+
+  Destination* distHazcamDestinationMonitoring;
+  MessageProducer* distHazcamProducerMonitoring;
+
+  Destination* distRearDestinationMonitoring;
+  MessageProducer* distRearProducerMonitoring;
+  
+  /********* pc **********/ 
+  Destination* pcMastDestinationMonitoring;
+  MessageProducer* pcMastProducerMonitoring;
+
+  Destination* pcFrontDestinationMonitoring;
+  MessageProducer* pcFrontProducerMonitoring;
+
+  Destination* pcLidarDestinationMonitoring;
+  MessageProducer* pcLidarProducerMonitoring;
+
+  Destination* pcTofDestinationMonitoring;
+  MessageProducer* pcTofProducerMonitoring;
+
+  Destination* pcHazcamDestinationMonitoring;
+  MessageProducer* pcHazcamProducerMonitoring;
+
+  Destination* pcRearDestinationMonitoring;
+  MessageProducer* pcRearProducerMonitoring;
+
+  /********* dem **********/ 
+  Destination* demMastDestinationMonitoring;
+  MessageProducer* demMastProducerMonitoring;
+
+  Destination* demFrontDestinationMonitoring;
+  MessageProducer* demFrontProducerMonitoring;
+
+  Destination* demLidarDestinationMonitoring;
+  MessageProducer* demLidarProducerMonitoring;
+
+  Destination* demTofDestinationMonitoring;
+  MessageProducer* demTofProducerMonitoring;
+
+  Destination* demHazcamDestinationMonitoring;
+  MessageProducer* demHazcamProducerMonitoring;
+
+  Destination* demRearDestinationMonitoring;
+  MessageProducer* demRearProducerMonitoring;
+ 
+ 
   std::string brokerURI;
   int numMessages;
   bool useTopic;

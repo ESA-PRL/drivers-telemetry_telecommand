@@ -181,37 +181,37 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
 		GNCState[GNC_ROVER_POSERX_INDEX],
 		GNCState[GNC_ROVER_POSERY_INDEX],
 		GNCState[GNC_ROVER_POSERZ_INDEX],
-		GNCState[GNC_ROVER_BEMA_Q1_INDEX],
-		GNCState[GNC_ROVER_BEMA_Q2_INDEX],
-		GNCState[GNC_ROVER_BEMA_Q3_INDEX],
-		GNCState[GNC_ROVER_BEMA_Q4_INDEX],
-		GNCState[GNC_ROVER_BEMA_Q5_INDEX],
-		GNCState[GNC_ROVER_BEMA_Q6_INDEX],
+		GNCState[GNC_ROVER_DEPLOYMENT_Q1_INDEX],
+		GNCState[GNC_ROVER_DEPLOYMENT_Q2_INDEX],
+		GNCState[GNC_ROVER_DEPLOYMENT_Q3_INDEX],
+		GNCState[GNC_ROVER_DEPLOYMENT_Q4_INDEX],
+		GNCState[GNC_ROVER_DEPLOYMENT_Q5_INDEX],
+		GNCState[GNC_ROVER_DEPLOYMENT_Q6_INDEX],
 		GNCState[GNC_ACTION_RET_INDEX],
 		GNCState[GNC_ACTION_ID_INDEX]
 		);
 	tmmsg += buffer;
 
-        std::auto_ptr<TextMessage> gncexoterMessage(activemqTMSender->sessionMonitor->createTextMessage
-						    ("I'm a gncexoter message"));
-	gncexoterMessage->setIntProperty("iter",seq);
-	gncexoterMessage->setLongProperty("time",time1);
-	gncexoterMessage->setIntProperty("Status",(int)GNCState[GNC_OPER_MODE_INDEX]);
-	gncexoterMessage->setFloatProperty("X", GNCState[GNC_ROVER_POSEX_INDEX]);
-	gncexoterMessage->setFloatProperty("Y", GNCState[GNC_ROVER_POSEY_INDEX]);
-	gncexoterMessage->setFloatProperty("Z", GNCState[GNC_ROVER_POSEZ_INDEX]);
-	gncexoterMessage->setFloatProperty("RX", GNCState[GNC_ROVER_POSERX_INDEX]);
-	gncexoterMessage->setFloatProperty("RY", GNCState[GNC_ROVER_POSERY_INDEX]);
-	gncexoterMessage->setFloatProperty("RZ", GNCState[GNC_ROVER_POSERZ_INDEX]);
-	gncexoterMessage->setFloatProperty("BemaQ1", GNCState[GNC_ROVER_BEMA_Q1_INDEX]);
-	gncexoterMessage->setFloatProperty("BemaQ2", GNCState[GNC_ROVER_BEMA_Q2_INDEX]);
-	gncexoterMessage->setFloatProperty("BemaQ3", GNCState[GNC_ROVER_BEMA_Q3_INDEX]);;
-	gncexoterMessage->setFloatProperty("BemaQ4", GNCState[GNC_ROVER_BEMA_Q4_INDEX]);
-	gncexoterMessage->setFloatProperty("BemaQ5", GNCState[GNC_ROVER_BEMA_Q5_INDEX]);
-	gncexoterMessage->setFloatProperty("BemaQ6", GNCState[GNC_ROVER_BEMA_Q6_INDEX]);
-	gncexoterMessage->setIntProperty("ActionStatus", (int)GNCState[GNC_ACTION_RET_INDEX]);
-	gncexoterMessage->setIntProperty("ActionId", (int)GNCState[GNC_ACTION_ID_INDEX]);
-	activemqTMSender->gncexoterProducerMonitoring->send(gncexoterMessage.get()); 
+        std::auto_ptr<TextMessage> gncMessage(activemqTMSender->sessionMonitor->createTextMessage
+						    ("I'm a gnc message"));
+	gncMessage->setIntProperty("iter",seq);
+	gncMessage->setLongProperty("time",time1);
+	gncMessage->setIntProperty("Status",(int)GNCState[GNC_OPER_MODE_INDEX]);
+	gncMessage->setFloatProperty("X", GNCState[GNC_ROVER_POSEX_INDEX]);
+	gncMessage->setFloatProperty("Y", GNCState[GNC_ROVER_POSEY_INDEX]);
+	gncMessage->setFloatProperty("Z", GNCState[GNC_ROVER_POSEZ_INDEX]);
+	gncMessage->setFloatProperty("RX", GNCState[GNC_ROVER_POSERX_INDEX]);
+	gncMessage->setFloatProperty("RY", GNCState[GNC_ROVER_POSERY_INDEX]);
+	gncMessage->setFloatProperty("RZ", GNCState[GNC_ROVER_POSERZ_INDEX]);
+	gncMessage->setFloatProperty("DEPLOYMENTQ1", GNCState[GNC_ROVER_DEPLOYMENT_Q1_INDEX]);
+	gncMessage->setFloatProperty("DEPLOYMENTQ2", GNCState[GNC_ROVER_DEPLOYMENT_Q2_INDEX]);
+	gncMessage->setFloatProperty("DEPLOYMENTQ3", GNCState[GNC_ROVER_DEPLOYMENT_Q3_INDEX]);;
+	gncMessage->setFloatProperty("DEPLOYMENTQ4", GNCState[GNC_ROVER_DEPLOYMENT_Q4_INDEX]);
+	gncMessage->setFloatProperty("DEPLOYMENTQ5", GNCState[GNC_ROVER_DEPLOYMENT_Q5_INDEX]);
+	gncMessage->setFloatProperty("DEPLOYMENTQ6", GNCState[GNC_ROVER_DEPLOYMENT_Q6_INDEX]);
+	gncMessage->setIntProperty("ActionStatus", (int)GNCState[GNC_ACTION_RET_INDEX]);
+	gncMessage->setIntProperty("ActionId", (int)GNCState[GNC_ACTION_ID_INDEX]);
+	activemqTMSender->gncProducerMonitoring->send(gncMessage.get()); 
 	
       }
       for (int i=0; i<MAX_STATE_SIZE; i++) {
@@ -219,7 +219,7 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
       }
       
       //
-      // MAST_STATE
+      // PTU_STATE
       //
       MastStateChanged=false;
       for (int i=0; i<MAX_STATE_SIZE; i++) {
@@ -249,137 +249,14 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
 	mastMessage->setFloatProperty("Tilt", MastState[MAST_CURRENT_Q3_INDEX]);
 	mastMessage->setIntProperty("ActionStatus", (int)MastState[MAST_ACTION_RET_INDEX]);
 	mastMessage->setIntProperty("ActionId", (int)MastState[MAST_ACTION_ID_INDEX]);
-	activemqTMSender->mastProducerMonitoring->send(mastMessage.get()); 
+	activemqTMSender->ptuProducerMonitoring->send(mastMessage.get()); 
 	
       }
       for (int i=0; i<MAX_STATE_SIZE; i++) {
 	lastMastState[i]=MastState[i];
       }
       
-      //
-      // SA_STATE
-      //
-      SAStateChanged=false;
-      for (int i=0; i<MAX_STATE_SIZE; i++) {
-	if (SAState[i]!=lastSAState[i])
-          SAStateChanged=true;
-      }
-      if (SAStateChanged){
-	tmmsg += "TmPacket SA_STATE ";
-	sprintf(buffer, " %d:", ctrl_time);
-	tmmsg += buffer;
-	sprintf(buffer, "%.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf;\n", 
-		SAState[SA_STATUS_INDEX], 
-		SAState[SA_LEFT_PRIMARY_STATUS_INDEX], 
-		SAState[SA_LEFT_SECONDARY_STATUS_INDEX],
-		SAState[SA_RIGHT_PRIMARY_STATUS_INDEX], 
-		SAState[SA_RIGHT_SECONDARY_STATUS_INDEX], 
-		SAState[SA_CURRENT_Q1_INDEX],
-		SAState[SA_CURRENT_Q2_INDEX],
-		SAState[SA_CURRENT_Q3_INDEX],
-		SAState[SA_CURRENT_Q4_INDEX],
-		SAState[SA_ACTION_RET_INDEX],
-		SAState[SA_ACTION_ID_INDEX]);
-	tmmsg += buffer;
-	
-	std::auto_ptr<TextMessage> saMessage(activemqTMSender->sessionMonitor->createTextMessage
-					     ("I'm a sa message"));
-	saMessage->setIntProperty("iter",seq);
-	saMessage->setLongProperty("time",time1);
-	saMessage->setIntProperty("Status", (int)SAState[SA_STATUS_INDEX]);
-	saMessage->setIntProperty("Status1", (int)SAState[SA_LEFT_PRIMARY_STATUS_INDEX]);
-	saMessage->setIntProperty("Status2", (int)SAState[SA_LEFT_SECONDARY_STATUS_INDEX]);
-	saMessage->setIntProperty("Status3", (int)SAState[SA_RIGHT_PRIMARY_STATUS_INDEX]);
-	saMessage->setIntProperty("Status4", (int)SAState[SA_RIGHT_SECONDARY_STATUS_INDEX]);
-	saMessage->setFloatProperty("Q1", SAState[SA_CURRENT_Q1_INDEX]);
-	saMessage->setFloatProperty("Q2", SAState[SA_CURRENT_Q2_INDEX]);
-	saMessage->setFloatProperty("Q3", SAState[SA_CURRENT_Q3_INDEX]);
-	saMessage->setFloatProperty("Q4", SAState[SA_CURRENT_Q4_INDEX]);
-	saMessage->setIntProperty("ActionStatus", SAState[SA_ACTION_RET_INDEX]);
-	saMessage->setIntProperty("ActionId", SAState[SA_ACTION_ID_INDEX]);
-	activemqTMSender->saProducerMonitoring->send(saMessage.get()); 
-	
-	
-      }
-      for (int i=0; i<MAX_STATE_SIZE; i++) {
-	lastSAState[i]=SAState[i];
-      }
-      
-      //
-      // ADE_STATE
-      //
-      ADEStateChanged=false;
-      for (int i=0; i<MAX_STATE_SIZE; i++) {
-	if (ADEState[i]!=lastADEState[i]) {
-          ADEStateChanged=true;
-	}
-      }
-      if (ADEStateChanged){
-	tmmsg += "TmPacket ADE_STATE ";
-	sprintf(buffer, " %d:", ctrl_time);
-	tmmsg += buffer;
-	sprintf(buffer, "%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf;\n", 
-		ADEState[ADE_STATUS_LEFT_INDEX], 
-		ADEState[ADE_STATUS_RIGHT_INDEX], 
-		ADEState[HDRM_BODY_1_STATUS_INDEX],
-		ADEState[HDRM_BODY_2_STATUS_INDEX], 
-		ADEState[HDRM_BODY_3_STATUS_INDEX], 
-		ADEState[HDRM_DRILL_1_STATUS_INDEX],
-		ADEState[HDRM_DRILL_2_STATUS_INDEX],
-		ADEState[HDRM_MAST_STATUS_INDEX],
-		ADEState[HDRM_SA_LEFT_1_STATUS_INDEX],
-		ADEState[HDRM_SA_LEFT_2_STATUS_INDEX], 
-		ADEState[HDRM_SA_LEFT_3_STATUS_INDEX], 
-		ADEState[HDRM_SA_RIGHT_1_STATUS_INDEX],
-		ADEState[HDRM_SA_RIGHT_2_STATUS_INDEX],
-		ADEState[HDRM_SA_RIGHT_3_STATUS_INDEX],
-		ADEState[HDRM_UMBILICAL_1_STATUS_INDEX],
-		ADEState[HDRM_UMBILICAL_2_STATUS_INDEX], 
-		ADEState[HDRM_WHEEL_FL_STATUS_INDEX],
-		ADEState[HDRM_WHEEL_FR_STATUS_INDEX], 
-		ADEState[HDRM_WHEEL_ML_STATUS_INDEX], 
-		ADEState[HDRM_WHEEL_MR_STATUS_INDEX],
-		ADEState[HDRM_WHEEL_RL_STATUS_INDEX],
-		ADEState[HDRM_WHEEL_RR_STATUS_INDEX],
-		ADEState[ADE_ACTION_RET_INDEX],
-		ADEState[ADE_ACTION_ID_INDEX]);
-	tmmsg += buffer;
-
-
-	std::auto_ptr<TextMessage> adeMessage(activemqTMSender->sessionMonitor->createTextMessage
-					     ("I'm a ade message"));
-	adeMessage->setIntProperty("iter",seq);
-	adeMessage->setLongProperty("time",time1);
-	adeMessage->setIntProperty("StatusLeft", (int)ADEState[ADE_STATUS_LEFT_INDEX]); 
-	adeMessage->setIntProperty("StatusRight", (int)ADEState[ADE_STATUS_RIGHT_INDEX]); 
-	adeMessage->setIntProperty("HDRMB1", (int)ADEState[HDRM_BODY_1_STATUS_INDEX]);
-	adeMessage->setIntProperty("HDRMB2", (int)ADEState[HDRM_BODY_2_STATUS_INDEX]); 
-	adeMessage->setIntProperty("HDRMB3", (int)ADEState[HDRM_BODY_3_STATUS_INDEX]); 
-	adeMessage->setIntProperty("DRILL1", (int)ADEState[HDRM_DRILL_1_STATUS_INDEX]);
-	adeMessage->setIntProperty("DRILL2", (int)ADEState[HDRM_DRILL_2_STATUS_INDEX]);
-	adeMessage->setIntProperty("HDRMMast", (int)ADEState[HDRM_MAST_STATUS_INDEX]);
-	adeMessage->setIntProperty("HDRM_SA_L1", (int)ADEState[HDRM_SA_LEFT_1_STATUS_INDEX]);
-	adeMessage->setIntProperty("HDRM_SA_L2", (int)ADEState[HDRM_SA_LEFT_2_STATUS_INDEX]); 
-	adeMessage->setIntProperty("HDRM_SA_L3", (int)ADEState[HDRM_SA_LEFT_3_STATUS_INDEX]); 
-	adeMessage->setIntProperty("HDRM_SA_R1", (int)ADEState[HDRM_SA_RIGHT_1_STATUS_INDEX]);
-	adeMessage->setIntProperty("HDRM_SA_R2", (int)ADEState[HDRM_SA_RIGHT_2_STATUS_INDEX]);
-	adeMessage->setIntProperty("HDRM_SA_R3", (int)ADEState[HDRM_SA_RIGHT_3_STATUS_INDEX]);
-	adeMessage->setIntProperty("HDRM_UMB_1", (int)ADEState[HDRM_UMBILICAL_1_STATUS_INDEX]);
-	adeMessage->setIntProperty("HDRM_UMB_2", (int)ADEState[HDRM_UMBILICAL_2_STATUS_INDEX]); 
-	adeMessage->setIntProperty("HDRM_WHEEL_FL", (int)ADEState[HDRM_WHEEL_FL_STATUS_INDEX]);
-	adeMessage->setIntProperty("HDRM_WHEEL_FR", (int)ADEState[HDRM_WHEEL_FR_STATUS_INDEX]); 
-	adeMessage->setIntProperty("HDRM_WHEEL_ML", (int)ADEState[HDRM_WHEEL_ML_STATUS_INDEX]); 
-	adeMessage->setIntProperty("HDRM_WHEEL_MR", (int)ADEState[HDRM_WHEEL_MR_STATUS_INDEX]);
-	adeMessage->setIntProperty("HDRM_WHEEL_RL", (int)ADEState[HDRM_WHEEL_RL_STATUS_INDEX]);
-	adeMessage->setIntProperty("HDRM_WHEEL_RR", (int)ADEState[HDRM_WHEEL_RR_STATUS_INDEX]);
-	adeMessage->setIntProperty("ActionStatus", (int)ADEState[ADE_ACTION_RET_INDEX]);
-	adeMessage->setIntProperty("ActionId", (int)ADEState[ADE_ACTION_ID_INDEX]);
-	activemqTMSender->adeProducerMonitoring->send(adeMessage.get()); 
-      }
-      for (int i=0; i<MAX_STATE_SIZE; i++) {
-	lastADEState[i]=ADEState[i];
-      }
-      
+/*      
       //
       // PanCam State
       //
@@ -504,7 +381,7 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
       for (int i=0; i<MAX_STATE_SIZE; i++) {
 	lastPanCamState[i]=PanCamState[i];
       }
-
+*/
       //      std::cout << "Sent" << std::endl;
     } catch (CMSException& e) {
       e.printStackTrace();
