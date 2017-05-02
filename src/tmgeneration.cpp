@@ -9,23 +9,9 @@
 
 #include <stdio.h>
 
-static int ctrl_time = 0;
-
-static int wac_l_prev_image = 0;
-static int wac_r_prev_image = 0;
-static int wac_stereo_prev_image = 0;
-static int floc_r_prev_image = 0;
-static int floc_l_prev_image = 0;
-static int floc_stereo_prev_image = 0;
-static int rloc_l_prev_image = 0;
-static int rloc_r_prev_image = 0;
-static int rloc_stereo_prev_image = 0;
-
 // Copy of las state variables sent
 //static double lastState[MAX_STATE_SIZE];
-static double lastADEState[MAX_STATE_SIZE];
-static double lastSAState[MAX_STATE_SIZE];
-static double lastPanCamState[MAX_STATE_SIZE];
+static double lastLOCOMState[MAX_STATE_SIZE];
 static double lastMastState[MAX_STATE_SIZE];
 static double lastGNCState[MAX_STATE_SIZE];
 
@@ -90,16 +76,11 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
 
  // State variables definition
  //double State[MAX_STATE_SIZE];
- double ADEState[MAX_STATE_SIZE];
- double SAState[MAX_STATE_SIZE];
- double PanCamState[MAX_STATE_SIZE];
+ double LOCOMState[MAX_STATE_SIZE];
  double MastState[MAX_STATE_SIZE];
  double GNCState[MAX_STATE_SIZE];
  // flags for state changes
-
- bool ADEStateChanged;
- bool SAStateChanged;
- bool PanCamStateChanged;
+ bool LOCOMStateChanged;
  bool MastStateChanged;
  bool GNCStateChanged;
 
@@ -107,18 +88,12 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
   //
   // dummy initialisation of the TM
   //
-  if (first_time==false){
+  if (!first_time){
   for (int i=0; i<MAX_STATE_SIZE; i++) {
-    //State[i] = 0.0;
-    ADEState[i] = 0.0;
-    SAState[i] = 0.0;
-    PanCamState[i] = 0.0;
+    LOCOMState[i] = 0.0;
     MastState[i] = 0.0;
     GNCState[i] = 0.0;
-    //lastState[i] = 0.0;
-    lastADEState[i] = -100.0;
-    lastSAState[i] = -100.0;
-    lastPanCamState[i] = -100.0;
+    lastLOCOMState[i] = -100.0;
     lastMastState[i] = -100.0;
     lastGNCState[i] = -100.0;
   }
@@ -134,24 +109,10 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
          std::cout << "Error getting MastState" << std::endl;
   }
 
-  if ( prr->GetParameters()->get( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ){
-         std::cout << "Error getting SAState" << std::endl;
-  }
-  
-  if ( prr->GetParameters()->get( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ){
-         std::cout << "Error getting SAState" << std::endl;
+  if ( prr->GetParameters()->get( "LOCOMState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) LOCOMState ) == ERROR ){
+         std::cout << "Error getting LOCOMState" << std::endl;
   }
 
-  if ( prr->GetParameters()->get( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ){
-         std::cout << "Error getting SAState" << std::endl;
-  }
-
-  char buffer[1024];
-
-  //ctrl_time = prr->Clock->GetTime(); 
-  ctrl_time += 1000; // 1.02 sec in msec
-  
- 
   if (activemqTMSender->isConnected) {
     
     try {
@@ -170,47 +131,18 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
       }
       if (GNCStateChanged){
 	tmmsg = "TmPacket GNC_STATE ";
-	//  sprintf(buffer, "%.2lf %.2lf %.2lf %.2lf %d:", GNCState[GNC_ROVER_POSEX_INDEX], GNCState[GNC_ROVER_POSEY_INDEX], MastState[MAST_CURRENT_Q2_INDEX], MastState[MAST_CURRENT_Q3_INDEX], ctrl_time);
-	sprintf(buffer, " %d:", ctrl_time);
-	tmmsg += buffer;
-	sprintf(buffer, "%.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf;\n",
-		GNCState[GNC_OPER_MODE_INDEX],
-		GNCState[GNC_ROVER_POSEX_INDEX],
-		GNCState[GNC_ROVER_POSEY_INDEX],
-		GNCState[GNC_ROVER_POSEZ_INDEX],
-		GNCState[GNC_ROVER_POSERX_INDEX],
-		GNCState[GNC_ROVER_POSERY_INDEX],
-		GNCState[GNC_ROVER_POSERZ_INDEX],
-		GNCState[GNC_ROVER_DEPLOYMENT_Q1_INDEX],
-		GNCState[GNC_ROVER_DEPLOYMENT_Q2_INDEX],
-		GNCState[GNC_ROVER_DEPLOYMENT_Q3_INDEX],
-		GNCState[GNC_ROVER_DEPLOYMENT_Q4_INDEX],
-		GNCState[GNC_ROVER_DEPLOYMENT_Q5_INDEX],
-		GNCState[GNC_ROVER_DEPLOYMENT_Q6_INDEX],
-		GNCState[GNC_ACTION_RET_INDEX],
-		GNCState[GNC_ACTION_ID_INDEX]
-		);
-	tmmsg += buffer;
-
-        std::auto_ptr<TextMessage> gncMessage(activemqTMSender->sessionMonitor->createTextMessage
+	
+    std::auto_ptr<TextMessage> gncMessage(activemqTMSender->sessionMonitor->createTextMessage
 						    ("I'm a gnc message"));
 	gncMessage->setIntProperty("iter",seq);
 	gncMessage->setLongProperty("time",time1);
-	gncMessage->setIntProperty("Status",(int)GNCState[GNC_OPER_MODE_INDEX]);
 	gncMessage->setFloatProperty("X", GNCState[GNC_ROVER_POSEX_INDEX]);
 	gncMessage->setFloatProperty("Y", GNCState[GNC_ROVER_POSEY_INDEX]);
 	gncMessage->setFloatProperty("Z", GNCState[GNC_ROVER_POSEZ_INDEX]);
 	gncMessage->setFloatProperty("RX", GNCState[GNC_ROVER_POSERX_INDEX]);
 	gncMessage->setFloatProperty("RY", GNCState[GNC_ROVER_POSERY_INDEX]);
 	gncMessage->setFloatProperty("RZ", GNCState[GNC_ROVER_POSERZ_INDEX]);
-	gncMessage->setFloatProperty("DEPLOYMENTQ1", GNCState[GNC_ROVER_DEPLOYMENT_Q1_INDEX]);
-	gncMessage->setFloatProperty("DEPLOYMENTQ2", GNCState[GNC_ROVER_DEPLOYMENT_Q2_INDEX]);
-	gncMessage->setFloatProperty("DEPLOYMENTQ3", GNCState[GNC_ROVER_DEPLOYMENT_Q3_INDEX]);;
-	gncMessage->setFloatProperty("DEPLOYMENTQ4", GNCState[GNC_ROVER_DEPLOYMENT_Q4_INDEX]);
-	gncMessage->setFloatProperty("DEPLOYMENTQ5", GNCState[GNC_ROVER_DEPLOYMENT_Q5_INDEX]);
-	gncMessage->setFloatProperty("DEPLOYMENTQ6", GNCState[GNC_ROVER_DEPLOYMENT_Q6_INDEX]);
-	gncMessage->setIntProperty("ActionStatus", (int)GNCState[GNC_ACTION_RET_INDEX]);
-	gncMessage->setIntProperty("ActionId", (int)GNCState[GNC_ACTION_ID_INDEX]);
+	gncMessage->setIntProperty("Trajectory_STATUS", GNCState[GNC_TRAJECTORY_STATUS_INDEX]);
 	activemqTMSender->gncProducerMonitoring->send(gncMessage.get()); 
 	
       }
@@ -228,23 +160,12 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
       }
       if (MastStateChanged){
 	tmmsg += "TmPacket MAST_STATE ";
-	sprintf(buffer, " %d:", ctrl_time);
-	tmmsg += buffer;
-	sprintf(buffer, "%.2lf, %.2lf, %.2lf, %.2lf, %.2lf, %.2lf;\n",
-		MastState[MAST_STATUS_INDEX],
-		MastState[MAST_CURRENT_Q1_INDEX],
-		MastState[MAST_CURRENT_Q2_INDEX],
-		MastState[MAST_CURRENT_Q3_INDEX],
-		MastState[MAST_ACTION_RET_INDEX],
-		MastState[MAST_ACTION_ID_INDEX]);
-	tmmsg += buffer;
-	
+		
 	std::auto_ptr<TextMessage> mastMessage(activemqTMSender->sessionMonitor->createTextMessage
-					       ("I'm a Gnc message"));
+					       ("I'm a mast message"));
 	mastMessage->setIntProperty("iter",seq);
 	mastMessage->setLongProperty("time",time1);
 	mastMessage->setIntProperty("Status", (int)MastState[MAST_STATUS_INDEX]);
-	mastMessage->setFloatProperty("DeployJoint", MastState[MAST_CURRENT_Q1_INDEX]);
 	mastMessage->setFloatProperty("Pan", MastState[MAST_CURRENT_Q2_INDEX]);
 	mastMessage->setFloatProperty("Tilt", MastState[MAST_CURRENT_Q3_INDEX]);
 	mastMessage->setIntProperty("ActionStatus", (int)MastState[MAST_ACTION_RET_INDEX]);
@@ -255,133 +176,59 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
       for (int i=0; i<MAX_STATE_SIZE; i++) {
 	lastMastState[i]=MastState[i];
       }
-      
-/*      
+        
       //
-      // PanCam State
-      //
-      
-      if ( wac_l_prev_image == PanCamState[PANCAM_WAC_L_INDEX] )
-	{
-	  PanCamState[PANCAM_WAC_L_INDEX] = 0;
-	  if ( prr->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ){
-            std::cout << "Error setting SAState" << std::endl;
-	  }
-	}
-      if ( wac_r_prev_image == PanCamState[PANCAM_WAC_R_INDEX] )
-	{
-	  PanCamState[PANCAM_WAC_R_INDEX] = 0;
-	  if ( prr->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ){
-	    std::cout << "Error setting SAState" << std::endl;
-	  }
-	}
-      if ( wac_stereo_prev_image == PanCamState[PANCAM_PAN_STEREO_INDEX] )
-	{
-	  PanCamState[PANCAM_PAN_STEREO_INDEX] = 0;
-	  if ( prr->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ){
-            std::cout << "Error setting SAState" << std::endl;
-	  }
-	}
-      if ( floc_l_prev_image == PanCamState[LOCCAM_FLOC_L_INDEX] )
-	{
-	  PanCamState[LOCCAM_FLOC_L_INDEX] = 0;
-	  if ( prr->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ){
-	    std::cout << "Error setting SAState" << std::endl;
-	  }
-	}
-      if ( floc_r_prev_image == PanCamState[LOCCAM_FLOC_R_INDEX] )
-	{
-	  PanCamState[LOCCAM_FLOC_R_INDEX] = 0;
-	  if ( prr->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ){
-            std::cout << "Error setting SAState" << std::endl;
-	  }
-	}
-      if ( floc_stereo_prev_image == PanCamState[LOCCAM_FLOC_STEREO_INDEX] )
-	{
-	  PanCamState[LOCCAM_FLOC_STEREO_INDEX] = 0;
-	  if ( prr->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ){
-	    std::cout << "Error setting SAState" << std::endl;
-	  }
-	}
-      if ( rloc_l_prev_image == PanCamState[LOCCAM_RLOC_L_INDEX] )
-	{
-	  PanCamState[LOCCAM_RLOC_L_INDEX] = 0;
-	  if ( prr->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ){
-	    std::cout << "Error setting SAState" << std::endl;
-	  }
-	}
-      if ( rloc_r_prev_image == PanCamState[LOCCAM_RLOC_R_INDEX] )
-	{
-	  PanCamState[LOCCAM_RLOC_R_INDEX] = 0;
-	  if ( prr->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ){
-            std::cout << "Error setting SAState" << std::endl;
-	  }
-	}
-      if ( rloc_stereo_prev_image == PanCamState[LOCCAM_RLOC_STEREO_INDEX] )
-	{
-	  PanCamState[LOCCAM_RLOC_STEREO_INDEX] = 0;
-	  if ( prr->GetParameters()->set( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ){
-	    std::cout << "Error setting SAState" << std::endl;
-	  }
-	}
-      
-      wac_l_prev_image=PanCamState[PANCAM_WAC_L_INDEX];
-      wac_r_prev_image=PanCamState[PANCAM_WAC_R_INDEX];
-      wac_stereo_prev_image=PanCamState[PANCAM_PAN_STEREO_INDEX];
-      floc_l_prev_image=PanCamState[LOCCAM_FLOC_L_INDEX];
-      floc_r_prev_image=PanCamState[LOCCAM_FLOC_R_INDEX];
-      floc_stereo_prev_image=PanCamState[LOCCAM_FLOC_STEREO_INDEX];
-      rloc_l_prev_image=PanCamState[LOCCAM_RLOC_L_INDEX];
-      rloc_r_prev_image=PanCamState[LOCCAM_RLOC_R_INDEX];
-      rloc_stereo_prev_image=PanCamState[LOCCAM_RLOC_STEREO_INDEX];
-      
-      PanCamStateChanged=false;
+      // LOCOM State
+      //      
+   
+      LOCOMStateChanged=false;
       for (int i=0; i<MAX_STATE_SIZE; i++) {
-	if (PanCamState[i]!=lastPanCamState[i])
-	  PanCamStateChanged=true;
+	if (LOCOMState[i]!=lastLOCOMState[i])
+	  LOCOMStateChanged=true;
       }
-      if (PanCamStateChanged){
-	tmmsg += "TmPacket PANCAM_STATE ";
-	sprintf(buffer, " %d:", ctrl_time);
-	tmmsg += buffer;
-	sprintf(buffer, "%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf,%.2lf;\n",
-		PanCamState[PANCAM_OPER_MODE_INDEX],
-		PanCamState[PANCAM_WAC_L_INDEX],
-		PanCamState[PANCAM_WAC_R_INDEX],
-		PanCamState[PANCAM_PAN_STEREO_INDEX],
-		PanCamState[LOCCAM_FLOC_L_INDEX],
-		PanCamState[LOCCAM_FLOC_R_INDEX],
-		PanCamState[LOCCAM_FLOC_STEREO_INDEX],
-		PanCamState[LOCCAM_RLOC_L_INDEX],
-		PanCamState[LOCCAM_RLOC_R_INDEX],
-		PanCamState[LOCCAM_RLOC_STEREO_INDEX],
-		PanCamState[PANCAM_ACTION_RET_INDEX],
-		PanCamState[PANCAM_ACTION_ID_INDEX]);
-	tmmsg += buffer;
+      if (LOCOMStateChanged){
+	tmmsg += "TmPacket LOCOM_STATE ";
 	
-	std::auto_ptr<TextMessage> pancamMessage(activemqTMSender->sessionMonitor->createTextMessage
-						 ("I'm a pancam message"));
-	pancamMessage->setIntProperty("iter",seq);
-	pancamMessage->setLongProperty("time",time1);
-	pancamMessage->setIntProperty("Status", (int)PanCamState[PANCAM_OPER_MODE_INDEX]);
-	pancamMessage->setIntProperty("WAC_L", (int)PanCamState[PANCAM_WAC_L_INDEX]);
-	pancamMessage->setIntProperty("WAC_R", (int)PanCamState[PANCAM_WAC_R_INDEX]);
-	pancamMessage->setIntProperty("WAC_Stereo", (int)PanCamState[PANCAM_PAN_STEREO_INDEX]);
-	pancamMessage->setIntProperty("FLOC_L", (int)PanCamState[LOCCAM_FLOC_L_INDEX]);
-	pancamMessage->setIntProperty("FLOC_R", (int)PanCamState[LOCCAM_FLOC_R_INDEX]);
-	pancamMessage->setIntProperty("FLOC_Stereo", (int)PanCamState[LOCCAM_FLOC_STEREO_INDEX]);
-	pancamMessage->setIntProperty("RLOC_L", (int)PanCamState[LOCCAM_RLOC_L_INDEX]);
-	pancamMessage->setIntProperty("RLOC_R", (int)PanCamState[LOCCAM_RLOC_R_INDEX]);
-	pancamMessage->setIntProperty("RLOC_Stereo", (int)PanCamState[LOCCAM_RLOC_STEREO_INDEX]);
-	pancamMessage->setIntProperty("ActionStatus", (int)PanCamState[PANCAM_ACTION_RET_INDEX]);
-	pancamMessage->setIntProperty("ActionId", (int)PanCamState[PANCAM_ACTION_ID_INDEX]);
-	activemqTMSender->pancamProducerMonitoring->send(pancamMessage.get()); 
+	std::auto_ptr<TextMessage> locomMessage(activemqTMSender->sessionMonitor->createTextMessage
+						 ("I'm a locom message"));
+	locomMessage->setIntProperty("iter",seq);
+	locomMessage->setLongProperty("time",time1);
+	locomMessage->setFloatProperty("SpeedFL", LOCOMState[GNC_ROVER_WHEEL1_SPEED_INDEX]);
+	locomMessage->setFloatProperty("SpeedFR", LOCOMState[GNC_ROVER_WHEEL2_SPEED_INDEX]);
+	locomMessage->setFloatProperty("SpeedCL", LOCOMState[GNC_ROVER_WHEEL3_SPEED_INDEX]);
+	locomMessage->setFloatProperty("SpeedCR", LOCOMState[GNC_ROVER_WHEEL4_SPEED_INDEX]);
+	locomMessage->setFloatProperty("SpeedRL", LOCOMState[GNC_ROVER_WHEEL5_SPEED_INDEX]);
+	locomMessage->setFloatProperty("SpeedRR", LOCOMState[GNC_ROVER_WHEEL6_SPEED_INDEX]);
+	locomMessage->setFloatProperty("AngleFL", LOCOMState[GNC_ROVER_STEER1_POSITION_INDEX]);
+	locomMessage->setFloatProperty("AngleFR", LOCOMState[GNC_ROVER_STEER2_POSITION_INDEX]);
+	locomMessage->setFloatProperty("AngleRL", LOCOMState[GNC_ROVER_STEER5_POSITION_INDEX]);
+	locomMessage->setFloatProperty("AngleRR", LOCOMState[GNC_ROVER_STEER6_POSITION_INDEX]);
+	locomMessage->setFloatProperty("CurrentFL", LOCOMState[GNC_ROVER_WHEEL1_CURRENT_INDEX]);
+	locomMessage->setFloatProperty("CurrentFR", LOCOMState[GNC_ROVER_WHEEL2_CURRENT_INDEX]);
+	locomMessage->setFloatProperty("CurrentCL", LOCOMState[GNC_ROVER_WHEEL3_CURRENT_INDEX]);
+	locomMessage->setFloatProperty("CurrentCR", LOCOMState[GNC_ROVER_WHEEL4_CURRENT_INDEX]);
+	locomMessage->setFloatProperty("CurrentRL", LOCOMState[GNC_ROVER_WHEEL5_CURRENT_INDEX]);
+	locomMessage->setFloatProperty("CurrentRR", LOCOMState[GNC_ROVER_WHEEL6_CURRENT_INDEX]);
+	locomMessage->setFloatProperty("CurrentSFL", LOCOMState[GNC_ROVER_STEER1_CURRENT_INDEX]);
+	locomMessage->setFloatProperty("CurrentSFR", LOCOMState[GNC_ROVER_STEER2_CURRENT_INDEX]);
+	locomMessage->setFloatProperty("CurrentSRL", LOCOMState[GNC_ROVER_STEER5_CURRENT_INDEX]);
+	locomMessage->setFloatProperty("CurrentSRR", LOCOMState[GNC_ROVER_STEER6_CURRENT_INDEX]);
+	locomMessage->setFloatProperty("LeftRocker", LOCOMState[GNC_ROVER_LEFT_ROCKER_INDEX]);
+	locomMessage->setFloatProperty("RightRocker", LOCOMState[GNC_ROVER_RIGHT_ROCKER_INDEX]);
+	locomMessage->setFloatProperty("LeftBogie", LOCOMState[GNC_ROVER_LEFT_BOGIE_INDEX]);
+	locomMessage->setFloatProperty("RightBogie", LOCOMState[GNC_ROVER_RIGHT_BOGIE_INDEX]);
+	locomMessage->setFloatProperty("TemperatureFL", LOCOMState[GNC_ROVER_WHEEL1_TEMPERATURE_INDEX]);
+	locomMessage->setFloatProperty("TemperatureFR", LOCOMState[GNC_ROVER_WHEEL2_TEMPERATURE_INDEX]);
+	locomMessage->setFloatProperty("TemperatureCL", LOCOMState[GNC_ROVER_WHEEL3_TEMPERATURE_INDEX]);
+	locomMessage->setFloatProperty("TemperatureCR", LOCOMState[GNC_ROVER_WHEEL4_TEMPERATURE_INDEX]);
+	locomMessage->setFloatProperty("TemperatureRL", LOCOMState[GNC_ROVER_WHEEL5_TEMPERATURE_INDEX]);
+	locomMessage->setFloatProperty("TemperatureRR", LOCOMState[GNC_ROVER_WHEEL6_TEMPERATURE_INDEX]);
+	activemqTMSender->locomProducerMonitoring->send(locomMessage.get()); 
 	
       }
       for (int i=0; i<MAX_STATE_SIZE; i++) {
-	lastPanCamState[i]=PanCamState[i];
+	    lastLOCOMState[i]=LOCOMState[i];
       }
-*/
       //      std::cout << "Sent" << std::endl;
     } catch (CMSException& e) {
       e.printStackTrace();

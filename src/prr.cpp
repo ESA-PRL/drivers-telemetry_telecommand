@@ -20,6 +20,7 @@ RobotProcedure::RobotProcedure (std::string name)
 	  GNCState[i] = 0.0;
 	  TTCState[i] = 0.0;
 	  DHSState[i] = 0.0;
+	  LOCOMState[i] = 0.0;	  
 	}
 	//
 	// add the default global state 
@@ -53,6 +54,13 @@ RobotProcedure::RobotProcedure (std::string name)
 	// add the default global state 
 	// 
 	if ( GetParameters()->add( "PanCamState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) PanCamState ) == ERROR ) {
+	  std::cout << "Error in OrcProcVimanco::Init() GetParameters()->add() failed" << std::endl;
+	  Status = ERROR;
+	}
+	//
+	// add the default global state 
+	// 
+	if ( GetParameters()->add( "LOCOMState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) LOCOMState ) == ERROR ) {
 	  std::cout << "Error in OrcProcVimanco::Init() GetParameters()->add() failed" << std::endl;
 	  Status = ERROR;
 	}

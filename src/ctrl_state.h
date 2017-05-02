@@ -134,12 +134,12 @@ static const short GNC_ACTION_ID_INDEX    = 31;
 static const short GNC_ACTION_RET_INDEX   = 32;
 static const short GNC_POWER_CONS_INDEX  = 37;
 static const short GNC_TOTAL_TRAVELED_DISTANCE_INDEX = 39;
-static const short GNC_TEMPERATURE_WHEEL1_INDEX  = 40;
-static const short GNC_TEMPERATURE_WHEEL2_INDEX  = 41;
-static const short GNC_TEMPERATURE_WHEEL3_INDEX  = 42;
-static const short GNC_TEMPERATURE_WHEEL4_INDEX  = 43;
-static const short GNC_TEMPERATURE_WHEEL5_INDEX  = 44;
-static const short GNC_TEMPERATURE_WHEEL6_INDEX  = 45;
+static const short GNC_ROVER_WHEEL1_TEMPERATURE_INDEX  = 40;
+static const short GNC_ROVER_WHEEL2_TEMPERATURE_INDEX  = 41;
+static const short GNC_ROVER_WHEEL3_TEMPERATURE_INDEX  = 42;
+static const short GNC_ROVER_WHEEL4_TEMPERATURE_INDEX  = 43;
+static const short GNC_ROVER_WHEEL5_TEMPERATURE_INDEX  = 44;
+static const short GNC_ROVER_WHEEL6_TEMPERATURE_INDEX  = 45;
 static const short GNC_TRAJECTORY_STATUS_INDEX  =  50;
 static const short GNC_ROVER_WHEEL1_SPEED_INDEX = 51;
 static const short GNC_ROVER_WHEEL2_SPEED_INDEX = 52;
@@ -157,10 +157,14 @@ static const short GNC_ROVER_WHEEL3_CURRENT_INDEX = 63;
 static const short GNC_ROVER_WHEEL4_CURRENT_INDEX = 64;
 static const short GNC_ROVER_WHEEL5_CURRENT_INDEX = 65;
 static const short GNC_ROVER_WHEEL6_CURRENT_INDEX = 66;
-static const short GNC_ROVER_LEFT_ROCKER_INDEX = 67;
-static const short GNC_ROVER_RIGHT_ROCKER_INDEX = 68;
-static const short GNC_ROVER_LEFT_BOGIE_INDEX = 69;
-static const short GNC_ROVER_RIGHT_BOGIE_INDEX = 70;
+static const short GNC_ROVER_STEER1_CURRENT_INDEX = 67;
+static const short GNC_ROVER_STEER2_CURRENT_INDEX = 68;
+static const short GNC_ROVER_STEER5_CURRENT_INDEX = 69;
+static const short GNC_ROVER_STEER6_CURRENT_INDEX = 70;
+static const short GNC_ROVER_LEFT_ROCKER_INDEX = 71;
+static const short GNC_ROVER_RIGHT_ROCKER_INDEX = 72;
+static const short GNC_ROVER_LEFT_BOGIE_INDEX = 73;
+static const short GNC_ROVER_RIGHT_BOGIE_INDEX = 74;
 
 
 // constants for the status

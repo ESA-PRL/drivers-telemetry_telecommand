@@ -49,11 +49,7 @@ void* ActiveMQTMSender::thread() {
  
 	string gnc_str("GNC_STATE");
 	string ptu_str("PTU_STATE");
-	//string pancam_str("PANCAM_STATE");
-	//string sa_str("SA_STATE");
-	//string ade_str("ADE_STATE");
-	//string image_str("IMAGE");
-	//string dem_str("DEM");
+	string locom_str("LOCOM_STATE");
 	string img_mast_str("IMAGE_MAST");
 	string dist_mast_str("DIST_MAST");
 	string pc_mast_str("PC_MAST");
@@ -107,6 +103,20 @@ void* ActiveMQTMSender::thread() {
 	  return NULL;
 	}
 	ptuProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+	
+	/******** LOCOM *********/
+	locomDestinationMonitoring = sessionMonitor->createTopic(locom_str);
+	if (locomDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	locomProducerMonitoring = sessionMonitor->createProducer(locomDestinationMonitoring);
+	if (locomProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	locomProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
 	isConnected = true;
        
     /******** FILE *********/

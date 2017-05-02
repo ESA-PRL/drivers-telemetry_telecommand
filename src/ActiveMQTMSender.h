@@ -50,6 +50,9 @@ class ActiveMQTMSender: public SimpleThread {
   Destination* ptuDestinationMonitoring;
   MessageProducer* ptuProducerMonitoring;
   
+  Destination* locomDestinationMonitoring;
+  MessageProducer* locomProducerMonitoring;
+  
   Destination* fileDestinationMonitoring;
   MessageProducer* fileProducerMonitoring;
 
