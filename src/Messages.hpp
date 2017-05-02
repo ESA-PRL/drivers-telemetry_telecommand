@@ -25,7 +25,8 @@ namespace telemetry_telecommand
             IMAGE,
             DISTANCE,
             POINT_CLOUD,
-            DEM
+            DEM,
+            ALL
         };
 
         enum Mode
