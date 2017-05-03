@@ -15,9 +15,9 @@ static double lastLOCOMState[MAX_STATE_SIZE];
 static double lastMastState[MAX_STATE_SIZE];
 static double lastGNCState[MAX_STATE_SIZE];
 
-static bool first_time=false;
+static bool first_time=true;
 
-int CommTmServer::sendImageMessage(int seq, long time, int size, 
+int CommTmServer::sendImageMessage(int seq, long time, const char* date, int size, 
 				   const unsigned char * data, 
 				   MessageProducer* messproducer, double * transform) {
   std::auto_ptr<BytesMessage> 
@@ -29,6 +29,7 @@ int CommTmServer::sendImageMessage(int seq, long time, int size,
     imageMessage->setIntProperty("Width",1024);
     imageMessage->setBooleanProperty("Bigendian", true);
     imageMessage->setIntProperty("Step",1);
+    imageMessage->setStringPorperty("Date",date);
     imageMessage->setLongProperty("time",time);
     imageMessage->setFloatProperty("X",transform[0]);
     imageMessage->setFloatProperty("Y",transform[1]);
@@ -50,7 +51,7 @@ int CommTmServer::sendFileMessage(const char* filename, int size,
    messproducer->send(fileMessage.get()); 
 }
 
-int CommTmServer::sendDEMMessage(const char* filename, int seq, long time, int size, 
+int CommTmServer::sendDEMMessage(const char* filename, int seq, long time, const char* date, int size, 
 				   std::vector<unsigned char> data, 
 				   MessageProducer* messproducer, double * transform) {
   std::auto_ptr<StreamMessage> 
@@ -61,6 +62,7 @@ int CommTmServer::sendDEMMessage(const char* filename, int seq, long time, int s
     demMessage->setStringProperty("Method","DEM");
     demMessage->setIntProperty("size",size);
     demMessage->setIntProperty("Seq",seq);
+    demMessage->setStringPorperty("Date",date);
     demMessage->setLongProperty("time",time);
     demMessage->setFloatProperty("X",transform[0]);
     demMessage->setFloatProperty("Y",transform[1]);
@@ -88,7 +90,7 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
   //
   // dummy initialisation of the TM
   //
-  if (!first_time){
+  if (first_time){
   for (int i=0; i<MAX_STATE_SIZE; i++) {
     LOCOMState[i] = 0.0;
     MastState[i] = 0.0;
@@ -97,7 +99,7 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
     lastMastState[i] = -100.0;
     lastGNCState[i] = -100.0;
   }
-  first_time=true;
+  first_time=false;
   }
 
 
@@ -132,7 +134,7 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
       if (GNCStateChanged){
 	tmmsg = "TmPacket GNC_STATE ";
 	
-    std::auto_ptr<TextMessage> gncMessage(activemqTMSender->sessionMonitor->createTextMessage
+    	std::auto_ptr<TextMessage> gncMessage(activemqTMSender->sessionMonitor->createTextMessage
 						    ("I'm a gnc message"));
 	gncMessage->setIntProperty("iter",seq);
 	gncMessage->setLongProperty("time",time1);
