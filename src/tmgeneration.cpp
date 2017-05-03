@@ -29,7 +29,7 @@ int CommTmServer::sendImageMessage(int seq, long time, const char* date, int siz
     imageMessage->setIntProperty("Width",1024);
     imageMessage->setBooleanProperty("Bigendian", true);
     imageMessage->setIntProperty("Step",1);
-    imageMessage->setStringPorperty("Date",date);
+    imageMessage->setStringProperty("Date",date);
     imageMessage->setLongProperty("time",time);
     imageMessage->setFloatProperty("X",transform[0]);
     imageMessage->setFloatProperty("Y",transform[1]);
@@ -62,7 +62,7 @@ int CommTmServer::sendDEMMessage(const char* filename, int seq, long time, const
     demMessage->setStringProperty("Method","DEM");
     demMessage->setIntProperty("size",size);
     demMessage->setIntProperty("Seq",seq);
-    demMessage->setStringPorperty("Date",date);
+    demMessage->setStringProperty("Date",date);
     demMessage->setLongProperty("time",time);
     demMessage->setFloatProperty("X",transform[0]);
     demMessage->setFloatProperty("Y",transform[1]);
@@ -161,7 +161,7 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
           MastStateChanged=true;
       }
       if (MastStateChanged){
-	tmmsg += "TmPacket MAST_STATE ";
+	tmmsg += "TmPacket PTU_STATE ";
 		
 	std::auto_ptr<TextMessage> mastMessage(activemqTMSender->sessionMonitor->createTextMessage
 					       ("I'm a mast message"));
@@ -170,8 +170,8 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
 	mastMessage->setIntProperty("Status", (int)MastState[MAST_STATUS_INDEX]);
 	mastMessage->setFloatProperty("Pan", MastState[MAST_CURRENT_Q2_INDEX]);
 	mastMessage->setFloatProperty("Tilt", MastState[MAST_CURRENT_Q3_INDEX]);
-	mastMessage->setIntProperty("ActionStatus", (int)MastState[MAST_ACTION_RET_INDEX]);
-	mastMessage->setIntProperty("ActionId", (int)MastState[MAST_ACTION_ID_INDEX]);
+	//mastMessage->setIntProperty("ActionStatus", (int)MastState[MAST_ACTION_RET_INDEX]);
+	//mastMessage->setIntProperty("ActionId", (int)MastState[MAST_ACTION_ID_INDEX]);
 	activemqTMSender->ptuProducerMonitoring->send(mastMessage.get()); 
 	
       }
