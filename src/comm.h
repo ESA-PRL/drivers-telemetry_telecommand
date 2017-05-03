@@ -86,9 +86,9 @@ class CommTmServer : public CommServer
   CommTmServer(int port, RobotProcedure* prr, ActiveMQTMSender *tmsender);
   ~CommTmServer(){};
   void orcGetTmMsg(std::string &tmmsg);
-  int sendImageMessage(int seq, long time, int size, const unsigned char * data, MessageProducer* messproducer, double *);
+  int sendImageMessage(int seq, long time, const char* date, int size, const unsigned char * data, MessageProducer* messproducer, double *);
   int sendFileMessage(const char* filename, int size, const unsigned char * data, MessageProducer* messproducer);
-  int sendDEMMessage(const char* filename, int seq, long time, int size, std::vector<unsigned char> data, MessageProducer* messproducer, double *);
+  int sendDEMMessage(const char* filename, int seq, long time, const char* date, int size, std::vector<unsigned char> data, MessageProducer* messproducer, double *);
   void* thread ();
 }; 
 
