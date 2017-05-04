@@ -28,9 +28,9 @@ int ActiveMQAdmin::sendSimAliveMsg() {
     return ERROR;
   }
   try {
-    std::auto_ptr<TextMessage> message(sessionAdmin->createTextMessage("ROVER.STATUS"));
+    std::auto_ptr<TextMessage> message(sessionAdmin->createTextMessage("ROVER_STATUS"));
     message->setStringProperty("STATUSMSG", "ROVERALIVE (1)");
-    message->setStringProperty("ACTION", "ROVER.STATUS");
+    message->setStringProperty("ACTION", "ROVER_STATUS");
     message->setStringProperty("IPINFO", "localhost-test");
     message->setStringProperty("HOSTNAME", "localhost-test");
     
@@ -77,7 +77,7 @@ void* ActiveMQAdmin::thread() {
 	
 	if (sessionAdmin != NULL) {
 	  // create the 'internal status' topic    
-	  string internal_status_topic("ROVER.STATUS");
+	  string internal_status_topic("ROVER_STATUS");
 	
 	  destinationInternalStatus = sessionAdmin->createTopic(internal_status_topic);
 	  if (destinationInternalStatus != NULL) {
