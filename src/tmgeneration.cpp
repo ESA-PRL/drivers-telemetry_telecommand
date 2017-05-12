@@ -17,12 +17,13 @@ static double lastGNCState[MAX_STATE_SIZE];
 
 static bool first_time=true;
 
-int CommTmServer::sendImageMessage(int seq, long time, const char* date, int size, 
+int CommTmServer::sendImageMessage(const char* filename, int seq, long time, const char* date, int size, 
 				   const unsigned char * data, 
 				   MessageProducer* messproducer, double * transform) {
   std::auto_ptr<BytesMessage> 
     imageMessage(activemqTMSender->
 		 sessionMonitor->createBytesMessage((const unsigned char *)data, size));
+    imageMessage->setStringProperty("filename",filename);
     imageMessage->setStringProperty("Encoding","mono9");
     imageMessage->setIntProperty("Seq",seq);
     imageMessage->setIntProperty("Height",780);
