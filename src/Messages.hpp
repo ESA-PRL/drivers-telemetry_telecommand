@@ -2,7 +2,7 @@
 #define _TMTC_MESSAGES_HPP_
 
 #include <iostream>
-#include <base/time.h>
+#include <base/Time.hpp>
 #include <string>
 
 namespace telemetry_telecommand
@@ -37,21 +37,21 @@ namespace telemetry_telecommand
             PERIODIC=1
         };
 
-        typedef struct
+        struct Telemetry
         {
             std::string productPath;  // path to product file
             Producer productSource;   // (sensor ID/name)
             ProductType type;         // (image, distance image, point cloud, DEM, ..)
             long sequenceCounter;
             base::Time timestamp;
-        } Telemetry;
+        };
 
-        typedef struct
+        struct Telecommand
         {
             ProductType productType;
             Mode productMode;
             uint64_t usecPeriod; // only applicable for mode==PERIODIC
-        } Telecommand;
+        };
 
     }
 }
