@@ -18,5 +18,6 @@
   <depend package="drivers/activeMQ" />
   <rosdep name="sdl" />
   <rosdep name="sdl-dev" />
+  <tags>stable</tags>
 
 </package>
