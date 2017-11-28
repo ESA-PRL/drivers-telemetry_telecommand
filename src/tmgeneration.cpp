@@ -116,128 +116,171 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
          std::cout << "Error getting LOCOMState" << std::endl;
   }
 
-  if (activemqTMSender->isConnected) {
-    
-    try {
-      int seq = 1;
-      struct timeval tp;
-      gettimeofday(&tp, NULL);
-      long long time1 = (long long) tp.tv_sec * 1000L + tp.tv_usec / 1000;   
+  if (activemqTMSender->isConnected)
+  {
+      try
+      {
+          int seq = 1;
+          struct timeval tp;
+          gettimeofday(&tp, NULL);
+          long long time1 = (long long) tp.tv_sec * 1000L + tp.tv_usec / 1000;   
 
-      //
-      // GNC_STATE
-      //
-      GNCStateChanged=false;
-      for (int i=0; i<MAX_STATE_SIZE; i++) {
-	if (GNCState[i]!=lastGNCState[i])
-          GNCStateChanged=true;
+          //
+          // GNC_STATE
+          //
+          GNCStateChanged=false;
+          for (int i=0; i<MAX_STATE_SIZE; i++)
+          {
+              switch (i)
+              {
+                  case GNC_ROVER_POSEX_INDEX:
+                  case GNC_ROVER_POSEY_INDEX:
+                  case GNC_ROVER_POSEZ_INDEX:
+                      if (std::abs(GNCState[i] - lastGNCState[i]) > 0.01)
+                          GNCStateChanged = true;
+                      break;
+                  case GNC_ROVER_POSERX_INDEX:
+                  case GNC_ROVER_POSERY_INDEX:
+                  case GNC_ROVER_POSERZ_INDEX:
+                      if (std::abs(GNCState[i] - lastGNCState[i]) > 0.1)
+                          GNCStateChanged = true;
+                      break;
+                  default:
+                      if (GNCState[i]!=lastGNCState[i])
+                          GNCStateChanged = true;
+                      break;
+              }
+          }
+          if (GNCStateChanged)
+          {
+              tmmsg = "TmPacket GNC_STATE ";
+
+              std::auto_ptr<TextMessage> gncMessage(activemqTMSender->sessionMonitor->createTextMessage
+                      ("I'm a gnc message"));
+              gncMessage->setIntProperty("iter",seq);
+              gncMessage->setLongProperty("time",time1);
+              gncMessage->setFloatProperty("X", GNCState[GNC_ROVER_POSEX_INDEX]);
+              gncMessage->setFloatProperty("Y", GNCState[GNC_ROVER_POSEY_INDEX]);
+              gncMessage->setFloatProperty("Z", GNCState[GNC_ROVER_POSEZ_INDEX]);
+              gncMessage->setFloatProperty("RX", GNCState[GNC_ROVER_POSERX_INDEX]);
+              gncMessage->setFloatProperty("RY", GNCState[GNC_ROVER_POSERY_INDEX]);
+              gncMessage->setFloatProperty("RZ", GNCState[GNC_ROVER_POSERZ_INDEX]);
+              gncMessage->setIntProperty("Trajectory_STATUS", GNCState[GNC_TRAJECTORY_STATUS_INDEX]);
+              activemqTMSender->gncProducerMonitoring->send(gncMessage.get()); 
+              for (int i=0; i<MAX_STATE_SIZE; i++)
+              {
+                  lastGNCState[i]=GNCState[i];
+              }
+          }
+          //
+          // PTU_STATE
+          //
+          MastStateChanged=false;
+          for (int i=0; i<MAX_STATE_SIZE; i++)
+          {
+              if (MastState[i]!=lastMastState[i])
+                  MastStateChanged=true;
+          }
+          if (MastStateChanged)
+          {
+              tmmsg += "TmPacket PTU_STATE ";
+
+              std::auto_ptr<TextMessage> mastMessage(activemqTMSender->sessionMonitor->createTextMessage
+                      ("I'm a mast message"));
+              mastMessage->setIntProperty("iter",seq);
+              mastMessage->setLongProperty("time",time1);
+              mastMessage->setIntProperty("Status", (int)MastState[MAST_STATUS_INDEX]);
+              mastMessage->setFloatProperty("Pan", MastState[MAST_CURRENT_Q2_INDEX]);
+              mastMessage->setFloatProperty("Tilt", MastState[MAST_CURRENT_Q3_INDEX]);
+              //mastMessage->setIntProperty("ActionStatus", (int)MastState[MAST_ACTION_RET_INDEX]);
+              //mastMessage->setIntProperty("ActionId", (int)MastState[MAST_ACTION_ID_INDEX]);
+              activemqTMSender->ptuProducerMonitoring->send(mastMessage.get()); 
+
+          }
+          for (int i=0; i<MAX_STATE_SIZE; i++)
+          {
+              lastMastState[i]=MastState[i];
+          }
+
+          //
+          // LOCOM State
+          //      
+
+          LOCOMStateChanged=false;
+          for (int i=0; i<MAX_STATE_SIZE; i++)
+          {
+              switch (i)
+              {
+                  case GNC_ROVER_WHEEL1_TEMPERATURE_INDEX:
+                  case GNC_ROVER_WHEEL2_TEMPERATURE_INDEX:
+                  case GNC_ROVER_WHEEL3_TEMPERATURE_INDEX:
+                  case GNC_ROVER_WHEEL4_TEMPERATURE_INDEX:
+                  case GNC_ROVER_WHEEL5_TEMPERATURE_INDEX:
+                  case GNC_ROVER_WHEEL6_TEMPERATURE_INDEX:
+                     if (std::abs(LOCOMState[i] - lastLOCOMState[i]) > 0.5)
+                          LOCOMStateChanged = true;
+                      break;
+                  case GNC_ROVER_LEFT_ROCKER_INDEX:
+                  case GNC_ROVER_RIGHT_ROCKER_INDEX:
+                  case GNC_ROVER_LEFT_BOGIE_INDEX:
+                  case GNC_ROVER_RIGHT_BOGIE_INDEX:
+                      if (std::abs(LOCOMState[i] - lastLOCOMState[i]) > 1.0)
+                          LOCOMStateChanged = true;
+                      break;
+                  default:
+                      if (LOCOMState[i]!=lastLOCOMState[i])
+                          LOCOMStateChanged = true;
+                      break;
+              }
+          }
+          if (LOCOMStateChanged){
+              tmmsg += "TmPacket LOCOM_STATE ";
+
+              std::auto_ptr<TextMessage> locomMessage(activemqTMSender->sessionMonitor->createTextMessage
+                      ("I'm a locom message"));
+              locomMessage->setIntProperty("iter",seq);
+              locomMessage->setLongProperty("time",time1);
+              locomMessage->setFloatProperty("SpeedFL", LOCOMState[GNC_ROVER_WHEEL1_SPEED_INDEX]);
+              locomMessage->setFloatProperty("SpeedFR", LOCOMState[GNC_ROVER_WHEEL2_SPEED_INDEX]);
+              locomMessage->setFloatProperty("SpeedCL", LOCOMState[GNC_ROVER_WHEEL3_SPEED_INDEX]);
+              locomMessage->setFloatProperty("SpeedCR", LOCOMState[GNC_ROVER_WHEEL4_SPEED_INDEX]);
+              locomMessage->setFloatProperty("SpeedRL", LOCOMState[GNC_ROVER_WHEEL5_SPEED_INDEX]);
+              locomMessage->setFloatProperty("SpeedRR", LOCOMState[GNC_ROVER_WHEEL6_SPEED_INDEX]);
+              locomMessage->setFloatProperty("AngleFL", LOCOMState[GNC_ROVER_STEER1_POSITION_INDEX]);
+              locomMessage->setFloatProperty("AngleFR", LOCOMState[GNC_ROVER_STEER2_POSITION_INDEX]);
+              locomMessage->setFloatProperty("AngleRL", LOCOMState[GNC_ROVER_STEER5_POSITION_INDEX]);
+              locomMessage->setFloatProperty("AngleRR", LOCOMState[GNC_ROVER_STEER6_POSITION_INDEX]);
+              locomMessage->setFloatProperty("CurrentFL", LOCOMState[GNC_ROVER_WHEEL1_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentFR", LOCOMState[GNC_ROVER_WHEEL2_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentCL", LOCOMState[GNC_ROVER_WHEEL3_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentCR", LOCOMState[GNC_ROVER_WHEEL4_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentRL", LOCOMState[GNC_ROVER_WHEEL5_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentRR", LOCOMState[GNC_ROVER_WHEEL6_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentSFL", LOCOMState[GNC_ROVER_STEER1_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentSFR", LOCOMState[GNC_ROVER_STEER2_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentSRL", LOCOMState[GNC_ROVER_STEER5_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentSRR", LOCOMState[GNC_ROVER_STEER6_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("LeftRocker", LOCOMState[GNC_ROVER_LEFT_ROCKER_INDEX]);
+              locomMessage->setFloatProperty("RightRocker", LOCOMState[GNC_ROVER_RIGHT_ROCKER_INDEX]);
+              locomMessage->setFloatProperty("LeftBogie", LOCOMState[GNC_ROVER_LEFT_BOGIE_INDEX]);
+              locomMessage->setFloatProperty("RightBogie", LOCOMState[GNC_ROVER_RIGHT_BOGIE_INDEX]);
+              locomMessage->setFloatProperty("TemperatureFL", LOCOMState[GNC_ROVER_WHEEL1_TEMPERATURE_INDEX]);
+              locomMessage->setFloatProperty("TemperatureFR", LOCOMState[GNC_ROVER_WHEEL2_TEMPERATURE_INDEX]);
+              locomMessage->setFloatProperty("TemperatureCL", LOCOMState[GNC_ROVER_WHEEL3_TEMPERATURE_INDEX]);
+              locomMessage->setFloatProperty("TemperatureCR", LOCOMState[GNC_ROVER_WHEEL4_TEMPERATURE_INDEX]);
+              locomMessage->setFloatProperty("TemperatureRL", LOCOMState[GNC_ROVER_WHEEL5_TEMPERATURE_INDEX]);
+              locomMessage->setFloatProperty("TemperatureRR", LOCOMState[GNC_ROVER_WHEEL6_TEMPERATURE_INDEX]);
+              activemqTMSender->locomProducerMonitoring->send(locomMessage.get()); 
+              for (int i=0; i<MAX_STATE_SIZE; i++) {
+                  lastLOCOMState[i]=LOCOMState[i];
+              }
+              //      std::cout << "Sent" << std::endl;
+          }
+      } catch (CMSException& e) {
+          e.printStackTrace();
+          std::cout << "tmgeneration (ActiveMQTMSender) - exception detected" << std::endl;
+          activemqTMSender->isConnected = false;
       }
-      if (GNCStateChanged){
-	tmmsg = "TmPacket GNC_STATE ";
-	
-    	std::auto_ptr<TextMessage> gncMessage(activemqTMSender->sessionMonitor->createTextMessage
-						    ("I'm a gnc message"));
-	gncMessage->setIntProperty("iter",seq);
-	gncMessage->setLongProperty("time",time1);
-	gncMessage->setFloatProperty("X", GNCState[GNC_ROVER_POSEX_INDEX]);
-	gncMessage->setFloatProperty("Y", GNCState[GNC_ROVER_POSEY_INDEX]);
-	gncMessage->setFloatProperty("Z", GNCState[GNC_ROVER_POSEZ_INDEX]);
-	gncMessage->setFloatProperty("RX", GNCState[GNC_ROVER_POSERX_INDEX]);
-	gncMessage->setFloatProperty("RY", GNCState[GNC_ROVER_POSERY_INDEX]);
-	gncMessage->setFloatProperty("RZ", GNCState[GNC_ROVER_POSERZ_INDEX]);
-	gncMessage->setIntProperty("Trajectory_STATUS", GNCState[GNC_TRAJECTORY_STATUS_INDEX]);
-	activemqTMSender->gncProducerMonitoring->send(gncMessage.get()); 
-	
-      }
-      for (int i=0; i<MAX_STATE_SIZE; i++) {
-	lastGNCState[i]=GNCState[i];
-      }
-      
-      //
-      // PTU_STATE
-      //
-      MastStateChanged=false;
-      for (int i=0; i<MAX_STATE_SIZE; i++) {
-	if (MastState[i]!=lastMastState[i])
-          MastStateChanged=true;
-      }
-      if (MastStateChanged){
-	tmmsg += "TmPacket PTU_STATE ";
-		
-	std::auto_ptr<TextMessage> mastMessage(activemqTMSender->sessionMonitor->createTextMessage
-					       ("I'm a mast message"));
-	mastMessage->setIntProperty("iter",seq);
-	mastMessage->setLongProperty("time",time1);
-	mastMessage->setIntProperty("Status", (int)MastState[MAST_STATUS_INDEX]);
-	mastMessage->setFloatProperty("Pan", MastState[MAST_CURRENT_Q2_INDEX]);
-	mastMessage->setFloatProperty("Tilt", MastState[MAST_CURRENT_Q3_INDEX]);
-	//mastMessage->setIntProperty("ActionStatus", (int)MastState[MAST_ACTION_RET_INDEX]);
-	//mastMessage->setIntProperty("ActionId", (int)MastState[MAST_ACTION_ID_INDEX]);
-	activemqTMSender->ptuProducerMonitoring->send(mastMessage.get()); 
-	
-      }
-      for (int i=0; i<MAX_STATE_SIZE; i++) {
-	lastMastState[i]=MastState[i];
-      }
-        
-      //
-      // LOCOM State
-      //      
-   
-      LOCOMStateChanged=false;
-      for (int i=0; i<MAX_STATE_SIZE; i++) {
-	if (LOCOMState[i]!=lastLOCOMState[i])
-	  LOCOMStateChanged=true;
-      }
-      if (LOCOMStateChanged){
-	tmmsg += "TmPacket LOCOM_STATE ";
-	
-	std::auto_ptr<TextMessage> locomMessage(activemqTMSender->sessionMonitor->createTextMessage
-						 ("I'm a locom message"));
-	locomMessage->setIntProperty("iter",seq);
-	locomMessage->setLongProperty("time",time1);
-	locomMessage->setFloatProperty("SpeedFL", LOCOMState[GNC_ROVER_WHEEL1_SPEED_INDEX]);
-	locomMessage->setFloatProperty("SpeedFR", LOCOMState[GNC_ROVER_WHEEL2_SPEED_INDEX]);
-	locomMessage->setFloatProperty("SpeedCL", LOCOMState[GNC_ROVER_WHEEL3_SPEED_INDEX]);
-	locomMessage->setFloatProperty("SpeedCR", LOCOMState[GNC_ROVER_WHEEL4_SPEED_INDEX]);
-	locomMessage->setFloatProperty("SpeedRL", LOCOMState[GNC_ROVER_WHEEL5_SPEED_INDEX]);
-	locomMessage->setFloatProperty("SpeedRR", LOCOMState[GNC_ROVER_WHEEL6_SPEED_INDEX]);
-	locomMessage->setFloatProperty("AngleFL", LOCOMState[GNC_ROVER_STEER1_POSITION_INDEX]);
-	locomMessage->setFloatProperty("AngleFR", LOCOMState[GNC_ROVER_STEER2_POSITION_INDEX]);
-	locomMessage->setFloatProperty("AngleRL", LOCOMState[GNC_ROVER_STEER5_POSITION_INDEX]);
-	locomMessage->setFloatProperty("AngleRR", LOCOMState[GNC_ROVER_STEER6_POSITION_INDEX]);
-	locomMessage->setFloatProperty("CurrentFL", LOCOMState[GNC_ROVER_WHEEL1_CURRENT_INDEX]);
-	locomMessage->setFloatProperty("CurrentFR", LOCOMState[GNC_ROVER_WHEEL2_CURRENT_INDEX]);
-	locomMessage->setFloatProperty("CurrentCL", LOCOMState[GNC_ROVER_WHEEL3_CURRENT_INDEX]);
-	locomMessage->setFloatProperty("CurrentCR", LOCOMState[GNC_ROVER_WHEEL4_CURRENT_INDEX]);
-	locomMessage->setFloatProperty("CurrentRL", LOCOMState[GNC_ROVER_WHEEL5_CURRENT_INDEX]);
-	locomMessage->setFloatProperty("CurrentRR", LOCOMState[GNC_ROVER_WHEEL6_CURRENT_INDEX]);
-	locomMessage->setFloatProperty("CurrentSFL", LOCOMState[GNC_ROVER_STEER1_CURRENT_INDEX]);
-	locomMessage->setFloatProperty("CurrentSFR", LOCOMState[GNC_ROVER_STEER2_CURRENT_INDEX]);
-	locomMessage->setFloatProperty("CurrentSRL", LOCOMState[GNC_ROVER_STEER5_CURRENT_INDEX]);
-	locomMessage->setFloatProperty("CurrentSRR", LOCOMState[GNC_ROVER_STEER6_CURRENT_INDEX]);
-	locomMessage->setFloatProperty("LeftRocker", LOCOMState[GNC_ROVER_LEFT_ROCKER_INDEX]);
-	locomMessage->setFloatProperty("RightRocker", LOCOMState[GNC_ROVER_RIGHT_ROCKER_INDEX]);
-	locomMessage->setFloatProperty("LeftBogie", LOCOMState[GNC_ROVER_LEFT_BOGIE_INDEX]);
-	locomMessage->setFloatProperty("RightBogie", LOCOMState[GNC_ROVER_RIGHT_BOGIE_INDEX]);
-	locomMessage->setFloatProperty("TemperatureFL", LOCOMState[GNC_ROVER_WHEEL1_TEMPERATURE_INDEX]);
-	locomMessage->setFloatProperty("TemperatureFR", LOCOMState[GNC_ROVER_WHEEL2_TEMPERATURE_INDEX]);
-	locomMessage->setFloatProperty("TemperatureCL", LOCOMState[GNC_ROVER_WHEEL3_TEMPERATURE_INDEX]);
-	locomMessage->setFloatProperty("TemperatureCR", LOCOMState[GNC_ROVER_WHEEL4_TEMPERATURE_INDEX]);
-	locomMessage->setFloatProperty("TemperatureRL", LOCOMState[GNC_ROVER_WHEEL5_TEMPERATURE_INDEX]);
-	locomMessage->setFloatProperty("TemperatureRR", LOCOMState[GNC_ROVER_WHEEL6_TEMPERATURE_INDEX]);
-	activemqTMSender->locomProducerMonitoring->send(locomMessage.get()); 
-	
-      }
-      for (int i=0; i<MAX_STATE_SIZE; i++) {
-	    lastLOCOMState[i]=LOCOMState[i];
-      }
-      //      std::cout << "Sent" << std::endl;
-    } catch (CMSException& e) {
-      e.printStackTrace();
-      std::cout << "tmgeneration (ActiveMQTMSender) - exception detected" << std::endl;
-      activemqTMSender->isConnected = false;
-    }
   }
 }
 
