@@ -12,7 +12,6 @@
 
 class RobotTask : public SimpleThread
 {
-  
  protected:
   double State[MAX_STATE_SIZE];
   double ADEState[MAX_STATE_SIZE];
@@ -53,7 +52,6 @@ class RobotTask : public SimpleThread
   double current_time;
   
   int index;
-  int post_cond;
   int param_completed;
   int init_completed;
   int compute_completed;
@@ -106,6 +104,8 @@ class RobotTask : public SimpleThread
   RobotTask (std::string name);
   virtual ~RobotTask ();
   
+  int post_cond;
+
   /** Launch the threads that correspond to the Module Tasks */
   int Control ();  
   

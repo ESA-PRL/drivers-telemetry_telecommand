@@ -1,15 +1,17 @@
-
-
 #include "rt.h"
 #include "param.h"
 #include "prr.h"
 #include "RobotProcedure.h"
+#include "comm.h"
+#include "ActiveMQTCReceiver.h"
 
 #define COMMS_SwitchOn_ID 150
 #define COMMS_Conf_ID 140
 #define DHS_Go2Nominal_ID 110
 #define DHS_Go2Reduced_ID 100
 #define DHS_Go2HighPwr_ID 120
+
+extern ActiveMQTCReceiver* activemqTCReceiver;
 
 RobotTask::RobotTask (std::string name)
 {
@@ -183,7 +185,16 @@ void* RobotTask::thread ()
 	computeMAST_PTU_Initialise();
       }
       else if (rtName == "MAST_PTU_MoveTo") { 
-	computeMAST_PTU_MoveTo();
+    	//computeMAST_PTU_MoveTo();
+        if (param_completed==0){
+        CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+        activemqTCReceiver->addCommandInfo(cmd_info);
+        param_completed=1;
+        }
+        else
+        {
+            // notify activity running    
+        }
       }
       else if (rtName == "MAST_SwitchOff") { 
 	computeMAST_SwitchOff();

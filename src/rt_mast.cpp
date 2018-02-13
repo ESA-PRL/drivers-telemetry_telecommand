@@ -220,8 +220,10 @@ void RobotTask::computeMAST_PTU_MoveTo(){
     if (3 != sscanf(rtParams, "%d %lf %lf", &tcRequestId, &finalMASTPose[1], &finalMASTPose[2])) {
       post_cond = 1;
       param_completed = 1;
+      std::cerr << "Params Error: " << rtParams << std::endl; 
       return;
     }
+    param_completed=1;
   }
   
   // Initialise

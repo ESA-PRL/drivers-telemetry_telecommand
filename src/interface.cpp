@@ -79,6 +79,7 @@ extern "C" {
     RobotTask* RT;
     RT = ( RobotTask* ) theRobotProcedure->GetRTFromName((char*)rtmnemonic);
     if (RT != NULL) {
+      RT->SetParam(rtparams);
       RT->Control();
       RT->waitEndActionExec ();
     }
