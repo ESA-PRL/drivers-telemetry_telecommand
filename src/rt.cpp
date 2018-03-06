@@ -184,18 +184,9 @@ void* RobotTask::thread ()
       else if (rtName == "MAST_PTU_Initialise") { 
 	computeMAST_PTU_Initialise();
       }
-      else if (rtName == "MAST_PTU_MoveTo") { 
-    	//computeMAST_PTU_MoveTo();
-        if (param_completed==0){
-        CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
-        activemqTCReceiver->addCommandInfo(cmd_info);
-        param_completed=1;
-        }
-        else
-        {
-            // notify activity running    
-        }
-      }
+//      else if (rtName == "MAST_PTU_MoveTo") { 
+//    computeMAST_PTU_MoveTo();
+//      }
       else if (rtName == "MAST_SwitchOff") { 
 	computeMAST_SwitchOff();
       }
@@ -234,7 +225,309 @@ void* RobotTask::thread ()
       else if (rtName == "RV_Prepare4Dozing") { 
 	computeRV_Prepare4Dozing();
       }
-      
+    
+    else if (rtName == "GNC_ACKERMANN_GOTO") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
+    else if (rtName == "GNC_TURNSPOT_GOTO") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
+    else if (rtName == "GNC_TRAJECTORY") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
+    else if (rtName == "MAST_PTU_MoveTo") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
+    else if (rtName == "PANCAM_PANORAMA") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
+    else if (rtName == "TOF_ACQ") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
+    else if (rtName == "LIDAR_ACQ") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
+    else if (rtName == "FRONT_ACQ") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
+    else if (rtName == "MAST_ACQ") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
+    else if (rtName == "REAR_ACQ") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
+    else if (rtName == "HAZCAM_ACQ") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
+    else if (rtName == "Deployment_All") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
+    else if (rtName == "Deployment_Front") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
+    else if (rtName == "Deployment_Rear") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
+    else if (rtName == "GNC_Update") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
+    else if (rtName == "GNC_ACKERMANN_DIRECT") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
+    else if (rtName == "GNC_TURNSPOT_DIRECT") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
+    else if (rtName == "ALL_ACQ") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
+    else if (rtName == "GNCG") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
+    else if (rtName == "ABORT") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
+
+
       sleep(1);
       
       if (post_cond == 1) {

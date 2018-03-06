@@ -17,6 +17,8 @@ static double lastGNCState[MAX_STATE_SIZE];
 
 static bool first_time=true;
 
+RoverName rover = HDPR;
+
 int CommTmServer::sendImageMessage(const char* filename, int seq, long time, const char* date, int size, 
 				   const unsigned char * data, 
 				   MessageProducer* messproducer, double * transform) {
@@ -195,12 +197,12 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
               //mastMessage->setIntProperty("ActionStatus", (int)MastState[MAST_ACTION_RET_INDEX]);
               //mastMessage->setIntProperty("ActionId", (int)MastState[MAST_ACTION_ID_INDEX]);
               activemqTMSender->ptuProducerMonitoring->send(mastMessage.get()); 
-
+              for (int i=0; i<MAX_STATE_SIZE; i++)
+              {
+                  lastMastState[i]=MastState[i];
+              }
           }
-          for (int i=0; i<MAX_STATE_SIZE; i++)
-          {
-              lastMastState[i]=MastState[i];
-          }
+          
 
           //
           // LOCOM State
@@ -224,6 +226,7 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
                   case GNC_ROVER_RIGHT_ROCKER_INDEX:
                   case GNC_ROVER_LEFT_BOGIE_INDEX:
                   case GNC_ROVER_RIGHT_BOGIE_INDEX:
+                  case GNC_ROVER_REAR_BOGIE_INDEX:
                       if (std::abs(LOCOMState[i] - lastLOCOMState[i]) > 1.0)
                           LOCOMStateChanged = true;
                       break;
@@ -238,6 +241,8 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
 
               std::auto_ptr<TextMessage> locomMessage(activemqTMSender->sessionMonitor->createTextMessage
                       ("I'm a locom message"));
+              if (rover == HDPR)
+              {
               locomMessage->setIntProperty("iter",seq);
               locomMessage->setLongProperty("time",time1);
               locomMessage->setFloatProperty("SpeedFL", LOCOMState[GNC_ROVER_WHEEL1_SPEED_INDEX]);
@@ -271,6 +276,96 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
               locomMessage->setFloatProperty("TemperatureRL", LOCOMState[GNC_ROVER_WHEEL5_TEMPERATURE_INDEX]);
               locomMessage->setFloatProperty("TemperatureRR", LOCOMState[GNC_ROVER_WHEEL6_TEMPERATURE_INDEX]);
               activemqTMSender->locomProducerMonitoring->send(locomMessage.get()); 
+              }
+              else if (rover == ExoTeR)
+              {
+              locomMessage->setIntProperty("iter",seq);
+              locomMessage->setLongProperty("time",time1);
+              locomMessage->setFloatProperty("SpeedFL", LOCOMState[GNC_ROVER_WHEEL1_SPEED_INDEX]);
+              locomMessage->setFloatProperty("SpeedFR", LOCOMState[GNC_ROVER_WHEEL2_SPEED_INDEX]);
+              locomMessage->setFloatProperty("SpeedCL", LOCOMState[GNC_ROVER_WHEEL3_SPEED_INDEX]);
+              locomMessage->setFloatProperty("SpeedCR", LOCOMState[GNC_ROVER_WHEEL4_SPEED_INDEX]);
+              locomMessage->setFloatProperty("SpeedRL", LOCOMState[GNC_ROVER_WHEEL5_SPEED_INDEX]);
+              locomMessage->setFloatProperty("SpeedRR", LOCOMState[GNC_ROVER_WHEEL6_SPEED_INDEX]);
+              locomMessage->setFloatProperty("AngleFL", LOCOMState[GNC_ROVER_STEER1_POSITION_INDEX]);
+              locomMessage->setFloatProperty("AngleFR", LOCOMState[GNC_ROVER_STEER2_POSITION_INDEX]);
+              locomMessage->setFloatProperty("AngleRL", LOCOMState[GNC_ROVER_STEER5_POSITION_INDEX]);
+              locomMessage->setFloatProperty("AngleRR", LOCOMState[GNC_ROVER_STEER6_POSITION_INDEX]);
+              locomMessage->setFloatProperty("DeploymentFL", LOCOMState[GNC_ROVER_DEPLOYMENT_Q1_INDEX]);
+              locomMessage->setFloatProperty("DeploymentFR", LOCOMState[GNC_ROVER_DEPLOYMENT_Q2_INDEX]);
+              locomMessage->setFloatProperty("DeploymentCL", LOCOMState[GNC_ROVER_DEPLOYMENT_Q3_INDEX]);
+              locomMessage->setFloatProperty("DeploymentCR", LOCOMState[GNC_ROVER_DEPLOYMENT_Q4_INDEX]);
+              locomMessage->setFloatProperty("DeploymentRL", LOCOMState[GNC_ROVER_DEPLOYMENT_Q5_INDEX]);
+              locomMessage->setFloatProperty("DeploymetnRR", LOCOMState[GNC_ROVER_DEPLOYMENT_Q6_INDEX]);
+              locomMessage->setFloatProperty("CurrentFL", LOCOMState[GNC_ROVER_WHEEL1_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentFR", LOCOMState[GNC_ROVER_WHEEL2_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentCL", LOCOMState[GNC_ROVER_WHEEL3_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentCR", LOCOMState[GNC_ROVER_WHEEL4_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentRL", LOCOMState[GNC_ROVER_WHEEL5_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentRR", LOCOMState[GNC_ROVER_WHEEL6_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentSFL", LOCOMState[GNC_ROVER_STEER1_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentSFR", LOCOMState[GNC_ROVER_STEER2_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentSRL", LOCOMState[GNC_ROVER_STEER5_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentSRR", LOCOMState[GNC_ROVER_STEER6_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentDFL", LOCOMState[GNC_ROVER_DEPLOYMENT1_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentDFR", LOCOMState[GNC_ROVER_DEPLOYMENT2_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentDCL", LOCOMState[GNC_ROVER_DEPLOYMENT3_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentDCR", LOCOMState[GNC_ROVER_DEPLOYMENT4_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentDRL", LOCOMState[GNC_ROVER_DEPLOYMENT5_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentDRR", LOCOMState[GNC_ROVER_DEPLOYMENT6_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("LeftBogie", LOCOMState[GNC_ROVER_LEFT_BOGIE_INDEX]);
+              locomMessage->setFloatProperty("RightBogie", LOCOMState[GNC_ROVER_RIGHT_BOGIE_INDEX]);
+              locomMessage->setFloatProperty("RearBogie", LOCOMState[GNC_ROVER_REAR_BOGIE_INDEX]);
+              locomMessage->setFloatProperty("TemperatureFL", LOCOMState[GNC_ROVER_WHEEL1_TEMPERATURE_INDEX]);
+              locomMessage->setFloatProperty("TemperatureFR", LOCOMState[GNC_ROVER_WHEEL2_TEMPERATURE_INDEX]);
+              locomMessage->setFloatProperty("TemperatureCL", LOCOMState[GNC_ROVER_WHEEL3_TEMPERATURE_INDEX]);
+              locomMessage->setFloatProperty("TemperatureCR", LOCOMState[GNC_ROVER_WHEEL4_TEMPERATURE_INDEX]);
+              locomMessage->setFloatProperty("TemperatureRL", LOCOMState[GNC_ROVER_WHEEL5_TEMPERATURE_INDEX]);
+              locomMessage->setFloatProperty("TemperatureRR", LOCOMState[GNC_ROVER_WHEEL6_TEMPERATURE_INDEX]);
+              activemqTMSender->locomProducerMonitoring->send(locomMessage.get()); 
+              }
+              else if (rover == MaRTA)
+              {
+              locomMessage->setIntProperty("iter",seq);
+              locomMessage->setLongProperty("time",time1);
+              locomMessage->setFloatProperty("SpeedFL", LOCOMState[GNC_ROVER_WHEEL1_SPEED_INDEX]);
+              locomMessage->setFloatProperty("SpeedFR", LOCOMState[GNC_ROVER_WHEEL2_SPEED_INDEX]);
+              locomMessage->setFloatProperty("SpeedCL", LOCOMState[GNC_ROVER_WHEEL3_SPEED_INDEX]);
+              locomMessage->setFloatProperty("SpeedCR", LOCOMState[GNC_ROVER_WHEEL4_SPEED_INDEX]);
+              locomMessage->setFloatProperty("SpeedRL", LOCOMState[GNC_ROVER_WHEEL5_SPEED_INDEX]);
+              locomMessage->setFloatProperty("SpeedRR", LOCOMState[GNC_ROVER_WHEEL6_SPEED_INDEX]);
+              locomMessage->setFloatProperty("AngleFL", LOCOMState[GNC_ROVER_STEER1_POSITION_INDEX]);
+              locomMessage->setFloatProperty("AngleFR", LOCOMState[GNC_ROVER_STEER2_POSITION_INDEX]);
+              locomMessage->setFloatProperty("AngleRL", LOCOMState[GNC_ROVER_STEER5_POSITION_INDEX]);
+              locomMessage->setFloatProperty("AngleRR", LOCOMState[GNC_ROVER_STEER6_POSITION_INDEX]);
+              locomMessage->setFloatProperty("DeploymentFL", LOCOMState[GNC_ROVER_DEPLOYMENT_Q1_INDEX]);
+              locomMessage->setFloatProperty("DeploymentFR", LOCOMState[GNC_ROVER_DEPLOYMENT_Q2_INDEX]);
+              locomMessage->setFloatProperty("DeploymentCL", LOCOMState[GNC_ROVER_DEPLOYMENT_Q3_INDEX]);
+              locomMessage->setFloatProperty("DeploymentCR", LOCOMState[GNC_ROVER_DEPLOYMENT_Q4_INDEX]);
+              locomMessage->setFloatProperty("DeploymentRL", LOCOMState[GNC_ROVER_DEPLOYMENT_Q5_INDEX]);
+              locomMessage->setFloatProperty("DeploymetnRR", LOCOMState[GNC_ROVER_DEPLOYMENT_Q6_INDEX]);
+              locomMessage->setFloatProperty("CurrentFL", LOCOMState[GNC_ROVER_WHEEL1_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentFR", LOCOMState[GNC_ROVER_WHEEL2_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentCL", LOCOMState[GNC_ROVER_WHEEL3_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentCR", LOCOMState[GNC_ROVER_WHEEL4_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentRL", LOCOMState[GNC_ROVER_WHEEL5_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentRR", LOCOMState[GNC_ROVER_WHEEL6_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentSFL", LOCOMState[GNC_ROVER_STEER1_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentSFR", LOCOMState[GNC_ROVER_STEER2_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentSRL", LOCOMState[GNC_ROVER_STEER5_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentSRR", LOCOMState[GNC_ROVER_STEER6_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentDFL", LOCOMState[GNC_ROVER_DEPLOYMENT1_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentDFR", LOCOMState[GNC_ROVER_DEPLOYMENT2_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentDCL", LOCOMState[GNC_ROVER_DEPLOYMENT3_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentDCR", LOCOMState[GNC_ROVER_DEPLOYMENT4_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentDRL", LOCOMState[GNC_ROVER_DEPLOYMENT5_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("CurrentDRR", LOCOMState[GNC_ROVER_DEPLOYMENT6_CURRENT_INDEX]);
+              locomMessage->setFloatProperty("LeftBogie", LOCOMState[GNC_ROVER_LEFT_BOGIE_INDEX]);
+              locomMessage->setFloatProperty("RightBogie", LOCOMState[GNC_ROVER_RIGHT_BOGIE_INDEX]);
+              locomMessage->setFloatProperty("RearBogie", LOCOMState[GNC_ROVER_REAR_BOGIE_INDEX]);
+              activemqTMSender->locomProducerMonitoring->send(locomMessage.get()); 
+
+              }
               for (int i=0; i<MAX_STATE_SIZE; i++) {
                   lastLOCOMState[i]=LOCOMState[i];
               }

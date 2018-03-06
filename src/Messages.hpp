@@ -12,6 +12,9 @@ namespace telemetry_telecommand
 
         enum Producer
         {
+            PANCAM,
+            NAVCAM,
+            LOCCAM,
             MAST,
             LIDAR,
             FRONT,
@@ -20,7 +23,7 @@ namespace telemetry_telecommand
             REAR
         };
 
-        enum ProductType
+        enum ProductType // Be careful when changing this enum. 3DROCS uses corresponding integer numbers to select the type. Changing the enum will need to modify 3DROCS TC command. 
         {
             IMAGE,
             DISTANCE,
@@ -29,7 +32,7 @@ namespace telemetry_telecommand
             ALL
         };
 
-        enum Mode
+        enum Mode  // Be careful when changing this enum. 3DROCS uses corresponding integer numbers to select the type. Changing the enum will need to modify 3DROCS TC command. 
         {
             CONTINUOUS=-2,
             STOP=-1,

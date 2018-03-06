@@ -161,10 +161,17 @@ static const short GNC_ROVER_STEER1_CURRENT_INDEX = 67;
 static const short GNC_ROVER_STEER2_CURRENT_INDEX = 68;
 static const short GNC_ROVER_STEER5_CURRENT_INDEX = 69;
 static const short GNC_ROVER_STEER6_CURRENT_INDEX = 70;
+static const short GNC_ROVER_DEPLOYMENT1_CURRENT_INDEX = 81;
+static const short GNC_ROVER_DEPLOYMENT2_CURRENT_INDEX = 82;
+static const short GNC_ROVER_DEPLOYMENT3_CURRENT_INDEX = 83;
+static const short GNC_ROVER_DEPLOYMENT4_CURRENT_INDEX = 84;
+static const short GNC_ROVER_DEPLOYMENT5_CURRENT_INDEX = 85;
+static const short GNC_ROVER_DEPLOYMENT6_CURRENT_INDEX = 86;
 static const short GNC_ROVER_LEFT_ROCKER_INDEX = 71;
 static const short GNC_ROVER_RIGHT_ROCKER_INDEX = 72;
 static const short GNC_ROVER_LEFT_BOGIE_INDEX = 73;
 static const short GNC_ROVER_RIGHT_BOGIE_INDEX = 74;
+static const short GNC_ROVER_REAR_BOGIE_INDEX = 75;
 
 
 // constants for the status
@@ -383,6 +390,9 @@ static const short LOCCAM_RLOC_STEREO_INDEX     = 23; // Index of stored images
 static const short HAZCAM_FHAZ_STEREO_INDEX     = 24; // Index of stored images
 static const short TOF_INDEX                    = 25; // Index of stored images
 static const short LIDAR_INDEX                  = 26; // Index of stored images
+static const short PANCAM_INDEX                 = 27; // Index of stored images
+static const short NAVCAM_INDEX                 = 28; // Index of stored images
+static const short LOCCAM_INDEX                 = 29; // Index of stored images
 
 // PanCam Operational Modes
 #define PANCAM_OPER_MODE_OFF                    0
@@ -425,5 +435,13 @@ static const short LIDAR_INDEX                  = 26; // Index of stored images
 #define PANCAM_WARMUP_TIMEOUT 10
 #define PANCAM_WAC_GETTING_IMAGE_TIME 10
 #define PANCAM_HRC_GETTING_IMAGE_TIME 10
+
+enum RoverName 
+{
+    HDPR,
+    ExoTeR,
+    MaRTA
+};
+
 
 #endif
