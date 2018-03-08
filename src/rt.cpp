@@ -94,7 +94,16 @@ int RobotTask::SetParam (char* params)
 void* RobotTask::thread ()
 {
   std::cerr << "++ Thread RobotTask::thread spawned" << std::endl;
-  
+        if (post_cond == 1) {
+	post_cond = 0;
+	//current_time = 0.0;
+	//index = 0;
+	//param_completed = 0;
+	//init_completed = 0;
+	//compute_completed = 0;
+	//end_completed = 0;
+      }
+
   int run = TRUE;
   do
     {
