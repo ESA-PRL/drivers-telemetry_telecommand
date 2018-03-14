@@ -814,6 +814,13 @@ void RobotTask::computeRV_WakeUp(){
 
 void RobotTask::computeMMS_WaitAbsTime(){ 
   std::cerr << rtName << std::endl; 
+
+  double warmUpTimeout = 10;
+  if (index >= (warmUpTimeout/theRobotProcedure->Clock->GetBasePeriod())) {
+    post_cond = 1;
+  }
+
+  index++;
 }
 
 void RobotTask::computeMMS_WaitRelTime(){ 
