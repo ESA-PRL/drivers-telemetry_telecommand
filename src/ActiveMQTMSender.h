@@ -57,8 +57,14 @@ class ActiveMQTMSender: public SimpleThread {
   MessageProducer* fileProducerMonitoring;
 
   /********* img **********/ 
+  Destination* imgPancamDestinationMonitoring;
+  MessageProducer* imgPancamProducerMonitoring;
+
   Destination* imgMastDestinationMonitoring;
   MessageProducer* imgMastProducerMonitoring;
+
+  Destination* imgNavcamDestinationMonitoring;
+  MessageProducer* imgNavcamProducerMonitoring;
 
   Destination* imgFrontDestinationMonitoring;
   MessageProducer* imgFrontProducerMonitoring;
@@ -68,6 +74,9 @@ class ActiveMQTMSender: public SimpleThread {
 
   Destination* imgTofDestinationMonitoring;
   MessageProducer* imgTofProducerMonitoring;
+
+  Destination* imgLoccamDestinationMonitoring;
+  MessageProducer* imgLoccamProducerMonitoring;
 
   Destination* imgHazcamDestinationMonitoring;
   MessageProducer* imgHazcamProducerMonitoring;
@@ -79,6 +88,12 @@ class ActiveMQTMSender: public SimpleThread {
   Destination* distMastDestinationMonitoring;
   MessageProducer* distMastProducerMonitoring;
 
+  Destination* distPancamDestinationMonitoring;
+  MessageProducer* distPancamProducerMonitoring;
+
+  Destination* distNavcamDestinationMonitoring;
+  MessageProducer* distNavcamProducerMonitoring;
+ 
   Destination* distFrontDestinationMonitoring;
   MessageProducer* distFrontProducerMonitoring;
 
@@ -88,6 +103,9 @@ class ActiveMQTMSender: public SimpleThread {
   Destination* distTofDestinationMonitoring;
   MessageProducer* distTofProducerMonitoring;
 
+  Destination* distLoccamDestinationMonitoring;
+  MessageProducer* distLoccamProducerMonitoring;
+ 
   Destination* distHazcamDestinationMonitoring;
   MessageProducer* distHazcamProducerMonitoring;
 
@@ -95,8 +113,14 @@ class ActiveMQTMSender: public SimpleThread {
   MessageProducer* distRearProducerMonitoring;
   
   /********* pc **********/ 
+  Destination* pcPancamDestinationMonitoring;
+  MessageProducer* pcPancamProducerMonitoring;
+
   Destination* pcMastDestinationMonitoring;
   MessageProducer* pcMastProducerMonitoring;
+
+  Destination* pcNavcamDestinationMonitoring;
+  MessageProducer* pcNavcamProducerMonitoring;
 
   Destination* pcFrontDestinationMonitoring;
   MessageProducer* pcFrontProducerMonitoring;
@@ -107,6 +131,9 @@ class ActiveMQTMSender: public SimpleThread {
   Destination* pcTofDestinationMonitoring;
   MessageProducer* pcTofProducerMonitoring;
 
+  Destination* pcLoccamDestinationMonitoring;
+  MessageProducer* pcLoccamProducerMonitoring;
+
   Destination* pcHazcamDestinationMonitoring;
   MessageProducer* pcHazcamProducerMonitoring;
 
@@ -114,8 +141,14 @@ class ActiveMQTMSender: public SimpleThread {
   MessageProducer* pcRearProducerMonitoring;
 
   /********* dem **********/ 
+  Destination* demPancamDestinationMonitoring;
+  MessageProducer* demPancamProducerMonitoring;
+
   Destination* demMastDestinationMonitoring;
   MessageProducer* demMastProducerMonitoring;
+
+  Destination* demNavcamDestinationMonitoring;
+  MessageProducer* demNavcamProducerMonitoring;
 
   Destination* demFrontDestinationMonitoring;
   MessageProducer* demFrontProducerMonitoring;
@@ -125,6 +158,9 @@ class ActiveMQTMSender: public SimpleThread {
 
   Destination* demTofDestinationMonitoring;
   MessageProducer* demTofProducerMonitoring;
+
+  Destination* demLoccamDestinationMonitoring;
+  MessageProducer* demLoccamProducerMonitoring;
 
   Destination* demHazcamDestinationMonitoring;
   MessageProducer* demHazcamProducerMonitoring;

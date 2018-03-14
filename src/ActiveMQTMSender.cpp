@@ -50,10 +50,18 @@ void* ActiveMQTMSender::thread() {
 	string gnc_str("GNC_STATE");
 	string ptu_str("PTU_STATE");
 	string locom_str("LOCOM_STATE");
-	string img_mast_str("IMAGE_MAST");
+    string img_pancam_str("IMAGE_PANCAM");
+	string dist_pancam_str("DIST_PANCAM");
+	string pc_pancam_str("PC_PANCAM");
+	string dem_pancam_str("DEM_PANCAM");
+    string img_mast_str("IMAGE_MAST");
 	string dist_mast_str("DIST_MAST");
 	string pc_mast_str("PC_MAST");
 	string dem_mast_str("DEM_MAST");
+	string img_navcam_str("IMAGE_NAVCAM");
+	string dist_navcam_str("DIST_NAVCAM");
+	string pc_navcam_str("PC_NAVCAM");
+	string dem_navcam_str("DEM_NAVCAM");
 	string img_front_str("IMAGE_FRONT");
 	string dist_front_str("DIST_FRONT");
 	string pc_front_str("PC_FRONT");
@@ -66,7 +74,11 @@ void* ActiveMQTMSender::thread() {
 	string dist_tof_str("DIST_TOF");
 	string pc_tof_str("PC_TOF");
 	string dem_tof_str("DEM_TOF");
-	string img_hazcam_str("IMAGE_HAZCAM");
+	string img_loccam_str("IMAGE_LOCCAM");
+	string dist_loccam_str("DIST_LOCCAM");
+	string pc_loccam_str("PC_LOCCAM");
+	string dem_loccam_str("DEM_LOCCAM");
+    string img_hazcam_str("IMAGE_HAZCAM");
 	string dist_hazcam_str("DIST_HAZCAM");
 	string pc_hazcam_str("PC_HAZCAM");
 	string dem_hazcam_str("DEM_HAZCAM");
@@ -133,6 +145,21 @@ void* ActiveMQTMSender::thread() {
 	fileProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
 	isConnected = true;
 
+    /******** IMG_PANCAM *********/
+    imgPancamDestinationMonitoring = sessionMonitor->createTopic(img_pancam_str);
+	if (imgPancamDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	imgPancamProducerMonitoring = sessionMonitor->createProducer(imgPancamDestinationMonitoring);
+	if (imgPancamProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	imgPancamProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+
+
     /******** IMG_MAST *********/
     imgMastDestinationMonitoring = sessionMonitor->createTopic(img_mast_str);
 	if (imgMastDestinationMonitoring == NULL) {
@@ -161,6 +188,20 @@ void* ActiveMQTMSender::thread() {
 	imgLidarProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
 	isConnected = true;
 
+    /******** IMG_NAVCAM *********/
+    imgNavcamDestinationMonitoring = sessionMonitor->createTopic(img_navcam_str);
+	if (imgNavcamDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	imgNavcamProducerMonitoring = sessionMonitor->createProducer(imgNavcamDestinationMonitoring);
+	if (imgNavcamProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	imgNavcamProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+	
     /******** IMG_FRONT *********/
     imgFrontDestinationMonitoring = sessionMonitor->createTopic(img_front_str);
 	if (imgFrontDestinationMonitoring == NULL) {
@@ -187,6 +228,20 @@ void* ActiveMQTMSender::thread() {
 	  return NULL;
 	}
 	imgTofProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+
+    /******** IMG_LOCCAM *********/
+    imgLoccamDestinationMonitoring = sessionMonitor->createTopic(img_loccam_str);
+	if (imgLoccamDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	imgLoccamProducerMonitoring = sessionMonitor->createProducer(imgLoccamDestinationMonitoring);
+	if (imgLoccamProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	imgLoccamProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
 	isConnected = true;
 
     /******** IMG_HAZCAM *********/
@@ -217,6 +272,20 @@ void* ActiveMQTMSender::thread() {
 	imgRearProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
 	isConnected = true;
 
+    /******** DIST_PANCAM *********/
+    distPancamDestinationMonitoring = sessionMonitor->createTopic(dist_pancam_str);
+	if (distPancamDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	distPancamProducerMonitoring = sessionMonitor->createProducer(distPancamDestinationMonitoring);
+	if (distPancamProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	distPancamProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+
     /******** DIST_MAST *********/
     distMastDestinationMonitoring = sessionMonitor->createTopic(dist_mast_str);
 	if (distMastDestinationMonitoring == NULL) {
@@ -243,6 +312,20 @@ void* ActiveMQTMSender::thread() {
 	  return NULL;
 	}
 	distLidarProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+
+    /******** DIST_NAVCAM *********/
+    distNavcamDestinationMonitoring = sessionMonitor->createTopic(dist_navcam_str);
+	if (distNavcamDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	distNavcamProducerMonitoring = sessionMonitor->createProducer(distNavcamDestinationMonitoring);
+	if (distNavcamProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	distNavcamProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
 	isConnected = true;
 
     /******** DIST_FRONT *********/
@@ -273,6 +356,20 @@ void* ActiveMQTMSender::thread() {
 	distTofProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
 	isConnected = true;
 
+    /******** DIST_LOCCAM *********/
+    distLoccamDestinationMonitoring = sessionMonitor->createTopic(dist_loccam_str);
+	if (distLoccamDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	distLoccamProducerMonitoring = sessionMonitor->createProducer(distLoccamDestinationMonitoring);
+	if (distLoccamProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	distLoccamProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+
     /******** DIST_HAZCAM *********/
     distHazcamDestinationMonitoring = sessionMonitor->createTopic(dist_hazcam_str);
 	if (distHazcamDestinationMonitoring == NULL) {
@@ -299,6 +396,20 @@ void* ActiveMQTMSender::thread() {
 	  return NULL;
 	}
 	distRearProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+
+    /******** PC_PANCAM *********/
+    pcPancamDestinationMonitoring = sessionMonitor->createTopic(pc_pancam_str);
+	if (pcPancamDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	pcPancamProducerMonitoring = sessionMonitor->createProducer(pcPancamDestinationMonitoring);
+	if (pcPancamProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	pcPancamProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
 	isConnected = true;
 
     /******** PC_MAST *********/
@@ -329,6 +440,20 @@ void* ActiveMQTMSender::thread() {
 	pcLidarProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
 	isConnected = true;
 
+    /******** PC_NAVCAM *********/
+    pcNavcamDestinationMonitoring = sessionMonitor->createTopic(pc_navcam_str);
+	if (pcNavcamDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	pcNavcamProducerMonitoring = sessionMonitor->createProducer(pcNavcamDestinationMonitoring);
+	if (pcNavcamProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	pcNavcamProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+	
     /******** PC_FRONT *********/
     pcFrontDestinationMonitoring = sessionMonitor->createTopic(pc_front_str);
 	if (pcFrontDestinationMonitoring == NULL) {
@@ -355,6 +480,20 @@ void* ActiveMQTMSender::thread() {
 	  return NULL;
 	}
 	pcTofProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+
+    /******** PC_LOCCAM *********/
+    pcLoccamDestinationMonitoring = sessionMonitor->createTopic(pc_loccam_str);
+	if (pcLoccamDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	pcLoccamProducerMonitoring = sessionMonitor->createProducer(pcLoccamDestinationMonitoring);
+	if (pcLoccamProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	pcLoccamProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
 	isConnected = true;
 
     /******** PC_HAZCAM *********/
@@ -385,6 +524,20 @@ void* ActiveMQTMSender::thread() {
 	pcRearProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
 	isConnected = true;
 
+    /******** DEM_PANCAM *********/
+    demPancamDestinationMonitoring = sessionMonitor->createTopic(dem_pancam_str);
+	if (demPancamDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	demPancamProducerMonitoring = sessionMonitor->createProducer(demPancamDestinationMonitoring);
+	if (demPancamProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	demPancamProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+
     /******** DEM_MAST *********/
     demMastDestinationMonitoring = sessionMonitor->createTopic(dem_mast_str);
 	if (demMastDestinationMonitoring == NULL) {
@@ -413,6 +566,20 @@ void* ActiveMQTMSender::thread() {
 	demLidarProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
 	isConnected = true;
 
+    /******** DEM_NAVCAM *********/
+    demNavcamDestinationMonitoring = sessionMonitor->createTopic(dem_navcam_str);
+	if (demNavcamDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	demNavcamProducerMonitoring = sessionMonitor->createProducer(demNavcamDestinationMonitoring);
+	if (demNavcamProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	demNavcamProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+
     /******** DEM_FRONT *********/
     demFrontDestinationMonitoring = sessionMonitor->createTopic(dem_front_str);
 	if (demFrontDestinationMonitoring == NULL) {
@@ -439,6 +606,20 @@ void* ActiveMQTMSender::thread() {
 	  return NULL;
 	}
 	demTofProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+
+    /******** DEM_LOCCAM *********/
+    demLoccamDestinationMonitoring = sessionMonitor->createTopic(dem_loccam_str);
+	if (demLoccamDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	demLoccamProducerMonitoring = sessionMonitor->createProducer(demLoccamDestinationMonitoring);
+	if (demLoccamProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	demLoccamProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
 	isConnected = true;
 
     /******** DEM_HAZCAM *********/
