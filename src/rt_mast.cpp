@@ -51,7 +51,7 @@ void RobotTask::computeMAST_DEP_Initialise(){
  *
  *
  */
-void RobotTask::computeMAST_DEP_Deploy(){ 
+void RobotTask::computeDeploy_Mast(){ 
   
   std::cerr << rtName << std::endl; 
   
@@ -86,7 +86,7 @@ void RobotTask::computeMAST_DEP_Deploy(){
       finalMASTPose[i] = mastCurrentPose[i];
     }
     finalMASTPose[0] = 90.0;
-    mastTrajDuration = 0.0;
+    mastTrajDuration = 10.0;
     for (int i=0; i<MAST_DOF; i++) {
       jointMASTMaxSpeed[i] = MAST_MAX_ROTATION_SPEED;
     }

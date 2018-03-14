@@ -187,8 +187,8 @@ void* RobotTask::thread ()
       else if (rtName == "MAST_DEP_Initialise") { 
 	computeMAST_DEP_Initialise();
       }
-      else if (rtName == "MAST_DEP_Deploy") { 
-	computeMAST_DEP_Deploy();
+      else if (rtName == "Deploy_Mast") { 
+	computeDeploy_Mast();
       }
       else if (rtName == "MAST_PTU_Initialise") { 
 	computeMAST_PTU_Initialise();

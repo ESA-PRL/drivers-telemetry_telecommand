@@ -150,7 +150,7 @@ void computePanCam_PIUSwitchOff();
 void computePANCAM_WAC_RRGB(); 
 void computePanCam_FilterSel(); 
 void computeMAST_DEP_Initialise(); 
-void computeMAST_DEP_Deploy(); 
+void computeDeploy_Mast(); 
 void computeMAST_PTU_Initialise(); 
 void computeMAST_PTU_MoveTo(); 
 void computeMAST_SwitchOff(); 
