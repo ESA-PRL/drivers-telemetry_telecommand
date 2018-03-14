@@ -162,7 +162,6 @@ void computeMAST_PAN_SwitchOff();
 void computeBEMA_Deploy_1(); 
 void computeBEMA_Deploy_2(); 
 void computeGNC_Initialise(); 
-void computeGNC_LLO(); 
 void computeRelease_Umbilical();
 void computeGNC_SwitchOff(); 
 void computeGNC_MonitoringOnly();

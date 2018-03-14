@@ -219,9 +219,6 @@ void* RobotTask::thread ()
       else if (rtName == "GNC_Initialise") { 
 	computeGNC_Initialise();
       }
-      else if (rtName == "GNC_LLO") { 
-          computeGNC_LLO();
-      }
       else if (rtName == "Release_Umbilical") { 
           computeRelease_Umbilical();
       }
@@ -261,7 +258,22 @@ void* RobotTask::thread ()
       else if (rtName == "RV_Prepare4Dozing") { 
 	computeRV_Prepare4Dozing();
       }
-    
+
+    else if (rtName == "GNC_LLO") {
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
     else if (rtName == "GNC_ACKERMANN_GOTO") { 
         if (param_completed == 0){
             CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
@@ -629,16 +641,6 @@ void RobotTask::computeGNC_Initialise(){
   }
 
   index++;
-  if ( theRobotProcedure->GetParameters()->set( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) GNCState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
-}
-void RobotTask::computeGNC_LLO(){ 
-  std::cerr << rtName << std::endl; 
-  std::cerr << rtName << std::endl; 
-  if ( theRobotProcedure->GetParameters()->get( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) GNCState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
-  }
   if ( theRobotProcedure->GetParameters()->set( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) GNCState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
