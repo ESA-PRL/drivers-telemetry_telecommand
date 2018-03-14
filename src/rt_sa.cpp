@@ -5,6 +5,26 @@
 
 extern RobotProcedure*  theRobotProcedure;
 
+void RobotTask::computeDeploy_LEFT_SA()
+{
+  std::cerr << rtName << std::endl; 
+  double duration = 5.0; // sec
+  if (index >= (duration/theRobotProcedure->Clock->GetBasePeriod())) {
+    post_cond = 1;
+  }
+  index++;
+}
+
+void RobotTask::computeDeploy_RIGHT_SA()
+{
+  std::cerr << rtName << std::endl; 
+  double duration = 5.0; // sec
+  if (index >= (duration/theRobotProcedure->Clock->GetBasePeriod())) {
+    post_cond = 1;
+  }
+  index++;
+}
+
 /**
  *
  */

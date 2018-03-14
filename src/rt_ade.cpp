@@ -14,6 +14,11 @@
 
 extern RobotProcedure*  theRobotProcedure;
 
+void RobotTask::computeADEs_Activate(){
+}
+
+void RobotTask::computeADEs_DeActivate(){
+}
 
 void RobotTask::computeADE_LEFT_Initialise(){ 
 

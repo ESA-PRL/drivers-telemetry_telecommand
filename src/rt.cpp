@@ -107,7 +107,13 @@ void* RobotTask::thread ()
   int run = TRUE;
   do
     {
-      if (rtName == "ADE_LEFT_Initialise") { 
+      if (rtName == "ADEs_Activate") { 
+          computeADEs_Activate();
+      }
+      else if (rtName == "ADEs_DeActivate") { 
+          computeADEs_DeActivate();
+      }
+      else if (rtName == "ADE_LEFT_Initialise") { 
 	computeADE_LEFT_Initialise();
       }
       else if (rtName == "ADE_LEFT_conf") { 
@@ -155,6 +161,12 @@ void* RobotTask::thread ()
       else if (rtName == "SA_RIGHT_SwitchOff") { 
 	computeSA_RIGHT_SwitchOff();
       }
+      else if (rtName == "Deploy_LEFT_SA") { 
+          computeDeploy_LEFT_SA();
+      }
+      else if (rtName == "Deploy_RIGHT_SA") { 
+          computeDeploy_RIGHT_SA();
+      }
       
       else if (rtName == "PanCam_Initialise") { 
 	computePanCam_Initialise();
@@ -184,43 +196,58 @@ void* RobotTask::thread ()
 	computePanCam_FilterSel();
       }
       
-      else if (rtName == "MAST_DEP_Initialise") { 
-	computeMAST_DEP_Initialise();
+      else if (rtName == "MAST_TILT_Initialise") { 
+	computeMAST_TILT_Initialise();
       }
       else if (rtName == "Deploy_Mast") { 
 	computeDeploy_Mast();
       }
-      else if (rtName == "MAST_PTU_Initialise") { 
-	computeMAST_PTU_Initialise();
+      else if (rtName == "MAST_PAN_Initialise") { 
+	computeMAST_PAN_Initialise();
       }
 //      else if (rtName == "MAST_PTU_MoveTo") { 
 //    computeMAST_PTU_MoveTo();
 //      }
-      else if (rtName == "MAST_SwitchOff") { 
-	computeMAST_SwitchOff();
+      else if (rtName == "MAST_PAN_SwitchOff") { 
+	computeMAST_PAN_SwitchOff();
+      }
+
+      else if (rtName == "MAST_TILT_SwitchOff") { 
+	computeMAST_TILT_SwitchOff();
       }
       
       else if (rtName == "GNC_Initialise") { 
 	computeGNC_Initialise();
       }
       else if (rtName == "GNC_LLO") { 
-	computeGNC_LLO();
+          computeGNC_LLO();
+      }
+      else if (rtName == "Release_Umbilical") { 
+          computeRelease_Umbilical();
       }
       else if (rtName == "GNC_SwitchOff") { 
 	computeGNC_SwitchOff();
       }
-      
+      else if (rtName == "GNC_MonitoringOnly") { 
+	computeGNC_MonitoringOnly();
+      }
       else if (rtName == "RV_WakeUp") { 
 	computeRV_WakeUp();
       }
       else if (rtName == "MMS_WaitAbsTime") { 
 	computeMMS_WaitAbsTime();
       }
+      else if (rtName == "MMS_WaitRelTime") { 
+	computeMMS_WaitRelTime();
+      }
       else if (rtName == "RV_Prepare4Comms") { 
 	computeRV_Prepare4Comms();
       }
       else if (rtName == "RV_PostComms") { 
 	computeRV_PostComms();
+      }
+      else if (rtName == "RV_SwitchOffMobility") { 
+	computeRV_SwitchOffMobility();
       }
       else if (rtName == "DHS_Go2Nominal") { 
 	computeDHS_Go2Nominal();
@@ -616,7 +643,29 @@ void RobotTask::computeGNC_LLO(){
     std::cout << rtName << " failed" << std::endl;
   }
 }
+
 void RobotTask::computeGNC_SwitchOff(){ 
+  std::cerr << rtName << std::endl; 
+  if ( theRobotProcedure->GetParameters()->get( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) GNCState ) == ERROR ) {
+    std::cout << rtName << " failed" << std::endl;
+  }
+  GNCState[GNC_OPER_MODE_INDEX] = GNC_OPER_MODE_STNDBY; 
+  GNCState[GNC_ACTION_ID_INDEX]  = 753.0;
+  GNCState[GNC_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
+  if (index == 10) {
+    GNCState[GNC_OPER_MODE_INDEX] = GNC_OPER_MODE_OFF;
+    GNCState[GNC_ACTION_RET_INDEX] = ACTION_RET_OK;
+    GNCState[GNC_ACTION_ID_INDEX]  = 0.0;
+    post_cond = 1;
+    index = 0;
+  }
+  index++;
+  if ( theRobotProcedure->GetParameters()->set( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) GNCState ) == ERROR ) {
+    std::cout << rtName << " failed" << std::endl;
+  }
+}
+
+void RobotTask::computeGNC_MonitoringOnly(){
   std::cerr << rtName << std::endl; 
   if ( theRobotProcedure->GetParameters()->get( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) GNCState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
@@ -766,6 +815,18 @@ void RobotTask::computeRV_WakeUp(){
 void RobotTask::computeMMS_WaitAbsTime(){ 
   std::cerr << rtName << std::endl; 
 }
+
+void RobotTask::computeMMS_WaitRelTime(){ 
+  std::cerr << rtName << std::endl; 
+
+  double warmUpTimeout = 10;
+  if (index >= (warmUpTimeout/theRobotProcedure->Clock->GetBasePeriod())) {
+    post_cond = 1;
+  }
+
+  index++;
+}
+
 void RobotTask::computeRV_Prepare4Comms(){ 
   std::cerr << rtName << std::endl; 
   if ( theRobotProcedure->GetParameters()->get( "TTCState", DOUBLE,
@@ -993,6 +1054,24 @@ void RobotTask::computeDHS_Go2Nominal(){
 						( char * ) State ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
+}
+
+void RobotTask::computeRV_SwitchOffMobility(){
+  std::cerr << rtName << std::endl; 
+  double duration = 5.0; // sec
+  if (index >= (duration/theRobotProcedure->Clock->GetBasePeriod())) {
+    post_cond = 1;
+  }
+  index++;
+}
+
+void RobotTask::computeRelease_Umbilical(){
+  std::cerr << rtName << std::endl; 
+  double duration = 5.0; // sec
+  if (index >= (duration/theRobotProcedure->Clock->GetBasePeriod())) {
+    post_cond = 1;
+  }
+  index++;
 }
 
 void RobotTask::computeRV_Prepare4Travel(){ 
