@@ -5,30 +5,96 @@
 
 extern RobotProcedure*  theRobotProcedure;
 
-void RobotTask::computeDeploy_LEFT_SA()
+int RobotTask::computeDeploy_LEFT_SA()
 {
-  std::cerr << rtName << std::endl; 
-  double duration = 5.0; // sec
-  if (index >= (duration/theRobotProcedure->Clock->GetBasePeriod())) {
-    post_cond = 1;
-  }
-  index++;
+    std::cerr << rtName << std::endl; 
+
+    switch (deploy_left_sa_seq)
+    {
+        case 0:
+            if(computeGNC_MonitoringOnly() == 1)
+                deploy_left_sa_seq++;
+            break;
+        case 1:
+            if(computeADE_LEFT_ReleaseHDRM() == 1)
+                deploy_left_sa_seq++;
+            break;
+        case 2:
+            if(computeSA_LEFT_Initialise() == 1)
+                deploy_left_sa_seq++;
+            break;
+        case 3:
+            if(computeSA_LEFT_PrimaryMoveTo() == 1)
+                deploy_left_sa_seq++;
+            break;
+        case 4:
+            if(computeSA_LEFT_SecondaryMoveTo() == 1)
+                deploy_left_sa_seq++;
+            break;
+        case 5:
+            if(computeSA_LEFT_SwitchOff() == 1)
+                deploy_left_sa_seq++;
+            break;
+        case 6:
+            if(computeGNC_SwitchOff() == 1)
+            {
+                deploy_left_sa_seq++;
+                post_cond = 1;
+                deploy_left_sa_seq = 0;
+            }
+            break;
+        default:
+            break;
+    }
 }
 
-void RobotTask::computeDeploy_RIGHT_SA()
+int RobotTask::computeDeploy_RIGHT_SA()
 {
-  std::cerr << rtName << std::endl; 
-  double duration = 5.0; // sec
-  if (index >= (duration/theRobotProcedure->Clock->GetBasePeriod())) {
-    post_cond = 1;
-  }
-  index++;
+    std::cerr << rtName << std::endl; 
+
+    switch (deploy_right_sa_seq)
+    {
+        case 0:
+            if(computeGNC_MonitoringOnly() == 1)
+                deploy_right_sa_seq++;
+            break;
+        case 1:
+            if(computeADE_RIGHT_ReleaseHDRM() == 1)
+                deploy_right_sa_seq++;
+            break;
+        case 2:
+            if(computeSA_RIGHT_Initialise() == 1)
+                deploy_right_sa_seq++;
+            break;
+        case 3:
+            if(computeSA_RIGHT_PrimaryMoveTo() == 1)
+                deploy_right_sa_seq++;
+            break;
+        case 4:
+            if(computeSA_RIGHT_SecondaryMoveTo() == 1)
+                deploy_right_sa_seq++;
+            break;
+        case 5:
+            if(computeSA_RIGHT_SwitchOff() == 1)
+                deploy_right_sa_seq++;
+            break;
+        case 6:
+            if(computeGNC_SwitchOff() == 1)
+            {
+                deploy_right_sa_seq++;
+                post_cond = 1;
+                deploy_right_sa_seq = 0;
+            }
+            break;
+        default:
+            break;
+    }
 }
 
 /**
  *
  */
-void RobotTask::computeSA_LEFT_Initialise(){ 
+int RobotTask::computeSA_LEFT_Initialise(){
   std::cerr << rtName << std::endl; 
   
   rtId = 800;
@@ -65,13 +131,14 @@ void RobotTask::computeSA_LEFT_Initialise(){
   if ( theRobotProcedure->GetParameters()->set( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
+  return post_cond;
 }
 
 
 /**
  *
  */
-void RobotTask::computeSA_LEFT_PrimaryMoveTo(){ 
+int RobotTask::computeSA_LEFT_PrimaryMoveTo(){
   std::cerr << rtName << std::endl; 
 
   rtId = 812;
@@ -85,7 +152,7 @@ void RobotTask::computeSA_LEFT_PrimaryMoveTo(){
   if (param_completed == 0){
     if (2 != sscanf(rtParams, "%d %lf", &tcRequestId, &tilt)) {
       post_cond = 1;
-      return;
+      return post_cond;
     }
     param_completed = 1;
   }
@@ -187,10 +254,11 @@ void RobotTask::computeSA_LEFT_PrimaryMoveTo(){
   if ( theRobotProcedure->GetParameters()->set( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
+  return post_cond;
 }
 
 
-void RobotTask::computeSA_LEFT_SecondaryMoveTo(){ 
+int RobotTask::computeSA_LEFT_SecondaryMoveTo(){
   std::cerr << rtName << std::endl; 
 
   rtId = 813;
@@ -204,7 +272,7 @@ void RobotTask::computeSA_LEFT_SecondaryMoveTo(){
   if (param_completed == 0){
     if (2 != sscanf(rtParams, "%d %lf", &tcRequestId, &tilt)) {
       post_cond = 1;
-      return;
+      return post_cond;
     }
     param_completed = 1;
   }
@@ -305,12 +373,13 @@ void RobotTask::computeSA_LEFT_SecondaryMoveTo(){
   if ( theRobotProcedure->GetParameters()->set( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
+  return post_cond;
 }
 
 /**
  *
  */
-void RobotTask::computeSA_LEFT_SwitchOff(){ 
+int RobotTask::computeSA_LEFT_SwitchOff(){
   std::cerr << rtName << std::endl; 
   if ( theRobotProcedure->GetParameters()->get( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
@@ -339,12 +408,13 @@ void RobotTask::computeSA_LEFT_SwitchOff(){
   if ( theRobotProcedure->GetParameters()->set( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
+  return post_cond;
 }
 
 /**
  *
  */
-void RobotTask::computeSA_RIGHT_Initialise(){ 
+int RobotTask::computeSA_RIGHT_Initialise(){ 
   std::cerr << rtName << std::endl; 
 
   rtId = 800;
@@ -381,7 +451,7 @@ void RobotTask::computeSA_RIGHT_Initialise(){
 /**
  *
  */
-void RobotTask::computeSA_RIGHT_PrimaryMoveTo(){ 
+int RobotTask::computeSA_RIGHT_PrimaryMoveTo(){ 
   std::cerr << rtName << std::endl; 
   
   rtId = 815;
@@ -396,7 +466,7 @@ void RobotTask::computeSA_RIGHT_PrimaryMoveTo(){
   if (param_completed == 0){
     if (2 != sscanf(rtParams, "%d %lf", &tcRequestId, &tilt)) {
       post_cond = 1;
-      return;
+      return post_cond;
     }
     param_completed = 1;
   }
@@ -504,7 +574,7 @@ void RobotTask::computeSA_RIGHT_PrimaryMoveTo(){
 /**
  *
  */
-void RobotTask::computeSA_RIGHT_SecondaryMoveTo(){ 
+int RobotTask::computeSA_RIGHT_SecondaryMoveTo(){ 
   std::cerr << rtName << std::endl; 
 
   rtId = 817;
@@ -520,7 +590,7 @@ void RobotTask::computeSA_RIGHT_SecondaryMoveTo(){
   if (param_completed == 0){
     if (2 != sscanf(rtParams, "%d %lf", &tcRequestId, &tilt)) {
       post_cond = 1;
-      return;
+      return post_cond;
     }
     param_completed = 1;
   }
@@ -624,7 +694,7 @@ void RobotTask::computeSA_RIGHT_SecondaryMoveTo(){
 
 
 }
-void RobotTask::computeSA_RIGHT_SwitchOff(){ 
+int RobotTask::computeSA_RIGHT_SwitchOff(){ 
 std::cerr << rtName << std::endl; 
   if ( theRobotProcedure->GetParameters()->get( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;

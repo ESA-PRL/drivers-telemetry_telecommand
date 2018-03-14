@@ -10,7 +10,7 @@ extern RobotProcedure*  theRobotProcedure;
  *
  *
  */
-void RobotTask::computeMAST_TILT_Initialise(){ 
+int RobotTask::computeMAST_TILT_Initialise(){ 
   std::cerr << rtName << std::endl; 
   rtId = 2;
   double warmUpTimeout = MAST_WARMUP_TIMEOUT;
@@ -51,7 +51,7 @@ void RobotTask::computeMAST_TILT_Initialise(){
  *
  *
  */
-void RobotTask::computeDeploy_Mast(){ 
+int RobotTask::computeDeploy_Mast(){ 
   
   std::cerr << rtName << std::endl; 
   
@@ -166,7 +166,7 @@ void RobotTask::computeDeploy_Mast(){
 /**
  *
  */
-void RobotTask::computeMAST_PAN_Initialise(){
+int RobotTask::computeMAST_PAN_Initialise(){
   std::cerr << rtName << std::endl; 
   rtId = 813;
 
@@ -197,7 +197,7 @@ void RobotTask::computeMAST_PAN_Initialise(){
 /**
  *
  */
-void RobotTask::computeMAST_PTU_MoveTo(){ 
+int RobotTask::computeMAST_PTU_MoveTo(){ 
   
   std::cerr << rtName << std::endl; 
   
@@ -220,7 +220,7 @@ void RobotTask::computeMAST_PTU_MoveTo(){
       post_cond = 1;
       param_completed = 1;
       std::cerr << "Params Error: " << rtParams << std::endl; 
-      return;
+      return post_cond;
     }
     param_completed=1;
   }
@@ -324,7 +324,7 @@ void RobotTask::computeMAST_PTU_MoveTo(){
   }
 }
 
-void RobotTask::computeMAST_TILT_SwitchOff(){ 
+int RobotTask::computeMAST_TILT_SwitchOff(){ 
 
   std::cerr << rtName << std::endl; 
 
@@ -353,7 +353,7 @@ void RobotTask::computeMAST_TILT_SwitchOff(){
   }
 }
 
-void RobotTask::computeMAST_PAN_SwitchOff(){ 
+int RobotTask::computeMAST_PAN_SwitchOff(){ 
 
   std::cerr << rtName << std::endl; 
 

@@ -70,7 +70,7 @@ int RobotTask::Control ()
 }
 
 
-void RobotTask::waitEndActionExec () {
+int RobotTask::waitEndActionExec () {
   if ( orcSemTake( waitEndActionSem, ORCFOREVER ) == ERROR ) {
     
   }
@@ -600,7 +600,7 @@ void* RobotTask::thread ()
 
 
 
-void RobotTask::computeBEMA_Deploy_1(){ 
+int RobotTask::computeBEMA_Deploy_1(){ 
   std::cerr << rtName << std::endl; 
   if ( theRobotProcedure->GetParameters()->get( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) GNCState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
@@ -610,7 +610,7 @@ void RobotTask::computeBEMA_Deploy_1(){
     std::cout << rtName << " failed" << std::endl;
   }
 }
-void RobotTask::computeBEMA_Deploy_2(){ 
+int RobotTask::computeBEMA_Deploy_2(){ 
   std::cerr << rtName << std::endl; 
   if ( theRobotProcedure->GetParameters()->get( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) GNCState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
@@ -620,7 +620,7 @@ void RobotTask::computeBEMA_Deploy_2(){
   }
 }
 
-void RobotTask::computeGNC_Initialise(){ 
+int RobotTask::computeGNC_Initialise(){ 
   std::cerr << rtName << std::endl; 
   if ( theRobotProcedure->GetParameters()->get( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) GNCState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
@@ -629,7 +629,7 @@ void RobotTask::computeGNC_Initialise(){
   GNCState[GNC_ACTION_ID_INDEX]  = 754.0;
   GNCState[GNC_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
   GNCState[GNC_OPER_MODE_INDEX] = GNC_OPER_MODE_OFF; 
-  if (index == 10) {
+  if (index == 2) {
     GNCState[GNC_OPER_MODE_INDEX] = GNC_OPER_MODE_STNDBY;
     GNCState[GNC_ACTION_RET_INDEX] = ACTION_RET_OK;
     GNCState[GNC_ACTION_ID_INDEX]  = 0.0;
@@ -643,14 +643,14 @@ void RobotTask::computeGNC_Initialise(){
   }
 }
 
-void RobotTask::computeGNC_SwitchOff(){ 
+int RobotTask::computeGNC_SwitchOff(){
   std::cerr << rtName << std::endl; 
   if ( theRobotProcedure->GetParameters()->get( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) GNCState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
   GNCState[GNC_ACTION_ID_INDEX]  = 753.0;
   GNCState[GNC_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
-  if (index == 10) {
+  if (index == 2) {
     GNCState[GNC_OPER_MODE_INDEX] = GNC_OPER_MODE_OFF;
     GNCState[GNC_ACTION_RET_INDEX] = ACTION_RET_OK;
     GNCState[GNC_ACTION_ID_INDEX]  = 0.0;
@@ -661,16 +661,17 @@ void RobotTask::computeGNC_SwitchOff(){
   if ( theRobotProcedure->GetParameters()->set( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) GNCState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
+  return post_cond;
 }
 
-void RobotTask::computeGNC_MonitoringOnly(){
+int RobotTask::computeGNC_MonitoringOnly(){
   std::cerr << rtName << std::endl; 
   if ( theRobotProcedure->GetParameters()->get( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) GNCState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
   GNCState[GNC_ACTION_ID_INDEX]  = 753.0;
   GNCState[GNC_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
-  if (index == 10) {
+  if (index == 2) {
     GNCState[GNC_OPER_MODE_INDEX] = GNC_OPER_MODE_MONO;
     GNCState[GNC_ACTION_RET_INDEX] = ACTION_RET_OK;
     GNCState[GNC_ACTION_ID_INDEX]  = 0.0;
@@ -681,9 +682,10 @@ void RobotTask::computeGNC_MonitoringOnly(){
   if ( theRobotProcedure->GetParameters()->set( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) GNCState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
+  return post_cond;
 }
 
-void RobotTask::computeRV_WakeUp(){ 
+int RobotTask::computeRV_WakeUp(){ 
   std::cerr << rtName << std::endl; 
   if ( theRobotProcedure->GetParameters()->get( "TTCState", DOUBLE,
 						MAX_STATE_SIZE, 0,
@@ -691,7 +693,7 @@ void RobotTask::computeRV_WakeUp(){
     std::cout << rtName << " failed" << std::endl;
   }
 
-  if (index == 10) {
+  if (index == 2) {
     post_cond = 1;
   }
 
@@ -809,7 +811,7 @@ void RobotTask::computeRV_WakeUp(){
   }
 }
 
-void RobotTask::computeMMS_WaitAbsTime(){ 
+int RobotTask::computeMMS_WaitAbsTime(){ 
   std::cerr << rtName << std::endl; 
 
   double warmUpTimeout = 10;
@@ -820,7 +822,7 @@ void RobotTask::computeMMS_WaitAbsTime(){
   index++;
 }
 
-void RobotTask::computeMMS_WaitRelTime(){ 
+int RobotTask::computeMMS_WaitRelTime(){ 
   std::cerr << rtName << std::endl; 
 
   double warmUpTimeout = 10;
@@ -831,7 +833,7 @@ void RobotTask::computeMMS_WaitRelTime(){
   index++;
 }
 
-void RobotTask::computeRV_Prepare4Comms(){ 
+int RobotTask::computeRV_Prepare4Comms(){ 
   std::cerr << rtName << std::endl; 
   if ( theRobotProcedure->GetParameters()->get( "TTCState", DOUBLE,
 						MAX_STATE_SIZE, 0,
@@ -839,7 +841,7 @@ void RobotTask::computeRV_Prepare4Comms(){
     std::cout << rtName << " failed" << std::endl;
   }
 
-  if (index == 10) {
+  if (index == 2) {
     post_cond = 1;
   }
 
@@ -926,7 +928,7 @@ void RobotTask::computeRV_Prepare4Comms(){
   }
 }
 
-void RobotTask::computeRV_PostComms(){ 
+int RobotTask::computeRV_PostComms(){ 
   std::cerr << rtName << std::endl; 
 
   if ( theRobotProcedure->GetParameters()->get( "TTCState", DOUBLE,
@@ -1019,7 +1021,7 @@ void RobotTask::computeRV_PostComms(){
 //
 //
 //
-void RobotTask::computeDHS_Go2Nominal(){ 
+int RobotTask::computeDHS_Go2Nominal(){ 
   std::cerr << rtName << std::endl; 
   if ( theRobotProcedure->GetParameters()->get( "DHSState", 
 						DOUBLE, MAX_STATE_SIZE, 0, 
@@ -1060,7 +1062,41 @@ void RobotTask::computeDHS_Go2Nominal(){
   }
 }
 
-void RobotTask::computeRV_SwitchOffMobility(){
+int RobotTask::computeRV_SwitchOffMobility(){
+  std::cerr << rtName << std::endl; 
+
+  if ( theRobotProcedure->GetParameters()->get( "DHSState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) DHSState ) == ERROR ) {
+    std::cout << rtName << " failed" << std::endl;
+  }
+  if ( theRobotProcedure->GetParameters()->get( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) GNCState ) == ERROR ) {
+    std::cout << rtName << " failed" << std::endl;
+  }
+  if ( theRobotProcedure->GetParameters()->get( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
+    std::cout << rtName << " failed" << std::endl;
+  }
+
+  if (index == 2) {
+      GNCState[GNC_STATUS_INDEX] = GNC_OPER_MODE_OFF;
+      DHSState[DHS_STATUS_INDEX] = DHS_OPER_MODE_REDUCED;
+      ADEState[ADE_STATUS_LEFT_INDEX] = ADE_OPER_MODE_OFF;
+      ADEState[ADE_STATUS_RIGHT_INDEX] = ADE_OPER_MODE_OFF;
+      post_cond = 1;
+  }
+
+  index++;
+
+  if ( theRobotProcedure->GetParameters()->set( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) GNCState ) == ERROR ) {
+    std::cout << rtName << " failed" << std::endl;
+  }
+  if ( theRobotProcedure->GetParameters()->set( "DHSState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) DHSState ) == ERROR ) {
+    std::cout << rtName << " failed" << std::endl;
+  }
+  if ( theRobotProcedure->GetParameters()->set( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
+    std::cout << rtName << " failed" << std::endl;
+  }
+}
+
+int RobotTask::computeRelease_Umbilical(){
   std::cerr << rtName << std::endl; 
   double duration = 5.0; // sec
   if (index >= (duration/theRobotProcedure->Clock->GetBasePeriod())) {
@@ -1069,16 +1105,7 @@ void RobotTask::computeRV_SwitchOffMobility(){
   index++;
 }
 
-void RobotTask::computeRelease_Umbilical(){
-  std::cerr << rtName << std::endl; 
-  double duration = 5.0; // sec
-  if (index >= (duration/theRobotProcedure->Clock->GetBasePeriod())) {
-    post_cond = 1;
-  }
-  index++;
-}
-
-void RobotTask::computeRV_Prepare4Travel(){ 
+int RobotTask::computeRV_Prepare4Travel(){ 
 
   std::cerr << rtName << std::endl; 
 
@@ -1092,7 +1119,7 @@ void RobotTask::computeRV_Prepare4Travel(){
     std::cout << rtName << " failed" << std::endl;
   }
 
-  if (index == 10) {
+  if (index == 2) {
       GNCState[GNC_STATUS_INDEX] = GNC_OPER_MODE_ABS_LOC;
       DHSState[DHS_STATUS_INDEX] = DHS_OPER_MODE_HIGHPOWER;
       ADEState[ADE_STATUS_LEFT_INDEX] = ADE_OPER_MODE_STNDBY;
@@ -1113,7 +1140,7 @@ void RobotTask::computeRV_Prepare4Travel(){
   }
 }
 
-void RobotTask::computeRV_Prepare4Night(){ 
+int RobotTask::computeRV_Prepare4Night(){ 
   std::cerr << rtName << std::endl; 
   if ( theRobotProcedure->GetParameters()->get( "DHSState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) DHSState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
@@ -1122,7 +1149,7 @@ void RobotTask::computeRV_Prepare4Night(){
     std::cout << rtName << " failed" << std::endl;
   }
 
-  if (index == 10) {
+  if (index == 2) {
       DHSState[DHS_STATUS_INDEX] = DHS_OPER_MODE_REDUCED;
       TTCState[COMMS_MAIN_STATUS_INDEX] = ORC_COMMS_STATE_OFF;
       TTCState[COMMS_REDUNDANT_STATUS_INDEX] = ORC_COMMS_STATE_OFF;
@@ -1139,12 +1166,12 @@ void RobotTask::computeRV_Prepare4Night(){
   }
 }
 
-void RobotTask::computeRV_Prepare4Dozing(){ 
+int RobotTask::computeRV_Prepare4Dozing(){ 
   std::cerr << rtName << std::endl; 
   if ( theRobotProcedure->GetParameters()->get( "GNCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) State ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
-  if (index == 10) {
+  if (index == 2) {
     post_cond = 1;
   }
 

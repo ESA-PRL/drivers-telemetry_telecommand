@@ -14,7 +14,7 @@
 
 extern RobotProcedure*  theRobotProcedure;
 
-void RobotTask::computeADEs_Activate(){
+int RobotTask::computeADEs_Activate(){
   std::cerr << rtName << std::endl; 
   if ( theRobotProcedure->GetParameters()->get( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
@@ -37,7 +37,7 @@ void RobotTask::computeADEs_Activate(){
   }
 }
 
-void RobotTask::computeADEs_DeActivate(){
+int RobotTask::computeADEs_DeActivate(){
   std::cerr << rtName << std::endl; 
   if ( theRobotProcedure->GetParameters()->get( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
@@ -58,7 +58,7 @@ void RobotTask::computeADEs_DeActivate(){
   }
 }
 
-void RobotTask::computeADE_LEFT_Initialise(){ 
+int RobotTask::computeADE_LEFT_Initialise(){ 
   std::cerr << rtName << std::endl; 
 
   if ( theRobotProcedure->GetParameters()->get( "ADEState", 
@@ -133,7 +133,7 @@ void RobotTask::computeADE_LEFT_Initialise(){
     std::cout << rtName << " failed" << std::endl;
   }
 }
-void RobotTask::computeADE_LEFT_conf(){ 
+int RobotTask::computeADE_LEFT_conf(){ 
 
   std::cerr << rtName << std::endl; 
   rtId= ADE_LEFT_conf_ID;
@@ -148,7 +148,7 @@ void RobotTask::computeADE_LEFT_conf(){
     
     if (2 != sscanf(rtParams, "%d %s", &tcRequestId, target_mode)) {
       post_cond = 1;
-      return;
+      return post_cond;
     }
     if (!strcmp(target_mode, "STANDBY") || 
 	!strcmp(target_mode, "OPERATIONAL") || 
@@ -156,7 +156,7 @@ void RobotTask::computeADE_LEFT_conf(){
     } 
     else {
       post_cond = 1;
-      return;
+      return post_cond;
     }
     strcpy(ade_id, "left");
 	
@@ -175,7 +175,7 @@ void RobotTask::computeADE_LEFT_conf(){
       target_mode_id = ADE_OPER_MODE_STNDBY_HDRM;
     } else {
       post_cond = 1;
-      return;
+      return post_cond;
     }
     init_completed = 1;
   }
@@ -213,7 +213,7 @@ void RobotTask::computeADE_LEFT_conf(){
 /**
  *
  */
-void RobotTask::computeADE_LEFT_ReleaseHDRM(){ 
+int RobotTask::computeADE_LEFT_ReleaseHDRM(){
   
   std::cerr << rtName << std::endl;
   rtId = ADE_LEFT_ReleaseHDRM_ID;
@@ -230,7 +230,7 @@ void RobotTask::computeADE_LEFT_ReleaseHDRM(){
 
     if (2 != sscanf(rtParams, "%d %s", &tcRequestId, hdrm_id)) {
       post_cond = 1;
-      return;
+      return post_cond;
     }
     ade_duration = 10.0;
     
@@ -331,12 +331,13 @@ void RobotTask::computeADE_LEFT_ReleaseHDRM(){
 						( char * ) ADEState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   } 
+  return post_cond;
 }
 
 /**
  *
  */
-void RobotTask::computeADE_LEFT_SwitchOff(){ 
+int RobotTask::computeADE_LEFT_SwitchOff(){ 
 
   std::cerr << rtName << std::endl; 
   rtId=ADE_LEFT_SwitchOff_ID;
@@ -383,7 +384,7 @@ void RobotTask::computeADE_LEFT_SwitchOff(){
 /**
  *
  */
-void RobotTask::computeADE_RIGHT_Initialise(){ 
+int RobotTask::computeADE_RIGHT_Initialise(){ 
  
   std::cerr << rtName << std::endl; 
   rtId = ADE_RIGHT_Initialise_ID;
@@ -460,7 +461,7 @@ void RobotTask::computeADE_RIGHT_Initialise(){
 /**
  *
  */
-void RobotTask::computeADE_RIGHT_conf(){ 
+int RobotTask::computeADE_RIGHT_conf(){ 
 
   std::cerr << rtName << std::endl; 
   rtId = ADE_RIGHT_conf_ID;
@@ -475,14 +476,14 @@ void RobotTask::computeADE_RIGHT_conf(){
     
     if (2 != sscanf(rtParams, "%d %s", &tcRequestId, target_mode)) {
       post_cond = 1;
-      return;
+      return post_cond;
     }
     if (!strcmp(target_mode, "STANDBY") || !strcmp(target_mode, "OPERATIONAL")
 	|| !strcmp(target_mode, "HDRM")) {
     } 
     else {
       post_cond = 1;
-      return;
+      return post_cond;
     }
     strcpy(ade_id, "right");
 	
@@ -501,7 +502,7 @@ void RobotTask::computeADE_RIGHT_conf(){
       target_mode_id = ADE_OPER_MODE_STNDBY_HDRM;
     } else {
       post_cond = 1;
-      return;
+      return post_cond;
     }
     init_completed = 1;
   }
@@ -541,7 +542,7 @@ void RobotTask::computeADE_RIGHT_conf(){
 /**
  *
  */
-void RobotTask::computeADE_RIGHT_ReleaseHDRM(){ 
+int RobotTask::computeADE_RIGHT_ReleaseHDRM(){ 
 
   std::cerr << rtName << std::endl; 
   rtId = ADE_RIGHT_ReleaseHDRM_ID;
@@ -558,7 +559,7 @@ void RobotTask::computeADE_RIGHT_ReleaseHDRM(){
 
     if (2 != sscanf(rtParams, "%d %s", &tcRequestId, hdrm_id)) {
       post_cond = 1;
-      return;
+      return post_cond;
     }
 
     ade_duration = 10.0;
@@ -624,7 +625,7 @@ void RobotTask::computeADE_RIGHT_ReleaseHDRM(){
 /**
  *
  */
-void RobotTask::computeADE_RIGHT_SwitchOff(){ 
+int RobotTask::computeADE_RIGHT_SwitchOff(){ 
 
   std::cerr << rtName << std::endl; 
   rtId= ADE_RIGHT_SwitchOff_ID;

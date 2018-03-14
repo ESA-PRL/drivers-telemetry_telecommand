@@ -110,7 +110,7 @@ class RobotTask : public SimpleThread
   int Control ();  
   
   /** Blocks until the waitEndActionSem is deblocked */
-  void waitEndActionExec ();
+  int waitEndActionExec ();
 
   /** Get the name of the Robot Task */
   std::string GetName ();
@@ -124,62 +124,64 @@ class RobotTask : public SimpleThread
  
   int SetParam (char*);
   
-void computeADEs_Activate(); 
-void computeADEs_DeActivate(); 
-void computeADE_LEFT_Initialise(); 
-void computeADE_LEFT_conf(); 
-void computeADE_LEFT_ReleaseHDRM(); 
-void computeADE_LEFT_SwitchOff(); 
-void computeADE_RIGHT_Initialise(); 
-void computeADE_RIGHT_conf(); 
-void computeADE_RIGHT_ReleaseHDRM(); 
-void computeADE_RIGHT_SwitchOff(); 
-void computeSA_LEFT_Initialise(); 
-void computeSA_LEFT_PrimaryMoveTo(); 
-void computeSA_LEFT_SecondaryMoveTo(); 
-void computeSA_LEFT_SwitchOff(); 
-void computeSA_RIGHT_Initialise(); 
-void computeSA_RIGHT_PrimaryMoveTo(); 
-void computeSA_RIGHT_SecondaryMoveTo(); 
-void computeSA_RIGHT_SwitchOff(); 
-void computeDeploy_LEFT_SA();
-void computeDeploy_RIGHT_SA();
-void computePanCam_Initialise(); 
-void computePanCam_InitWACs(); 
-void computePanCam_SwitchOn(); 
-void computePanCam_WACAcqImage(); 
-void computePanCam_WACGetImage(); 
-void computePanCam_SwitchOff(); 
-void computePanCam_PIUSwitchOff(); 
-void computePANCAM_WAC_RRGB(); 
-void computePanCam_FilterSel(); 
-void computeMAST_TILT_Initialise(); 
-void computeDeploy_Mast(); 
-void computeMAST_PAN_Initialise(); 
-void computeMAST_PTU_MoveTo(); 
-void computeMAST_TILT_SwitchOff(); 
-void computeMAST_PAN_SwitchOff(); 
-void computeBEMA_Deploy_1(); 
-void computeBEMA_Deploy_2(); 
-void computeGNC_Initialise(); 
-void computeRelease_Umbilical();
-void computeGNC_SwitchOff(); 
-void computeGNC_MonitoringOnly();
-void computeRV_WakeUp(); 
-void computeMMS_WaitAbsTime(); 
-void computeMMS_WaitRelTime(); 
-void computeRV_Prepare4Comms(); 
-void computeRV_SwitchOffMobility(); 
-void computeRV_PostComms(); 
-void computeDHS_Go2Nominal(); 
-void computeRV_Prepare4Travel(); 
-void computeRV_Prepare4Night(); 
-void computeRV_Prepare4Dozing(); 
+int computeADEs_Activate(); 
+int computeADEs_DeActivate(); 
+int computeADE_LEFT_Initialise(); 
+int computeADE_LEFT_conf(); 
+int computeADE_LEFT_ReleaseHDRM(); 
+int computeADE_LEFT_SwitchOff(); 
+int computeADE_RIGHT_Initialise(); 
+int computeADE_RIGHT_conf(); 
+int computeADE_RIGHT_ReleaseHDRM(); 
+int computeADE_RIGHT_SwitchOff(); 
+int computeSA_LEFT_Initialise(); 
+int computeSA_LEFT_PrimaryMoveTo(); 
+int computeSA_LEFT_SecondaryMoveTo(); 
+int computeSA_LEFT_SwitchOff(); 
+int computeSA_RIGHT_Initialise(); 
+int computeSA_RIGHT_PrimaryMoveTo(); 
+int computeSA_RIGHT_SecondaryMoveTo(); 
+int computeSA_RIGHT_SwitchOff(); 
+int computeDeploy_LEFT_SA();
+int computeDeploy_RIGHT_SA();
+int computePanCam_Initialise(); 
+int computePanCam_InitWACs(); 
+int computePanCam_SwitchOn(); 
+int computePanCam_WACAcqImage(); 
+int computePanCam_WACGetImage(); 
+int computePanCam_SwitchOff(); 
+int computePanCam_PIUSwitchOff(); 
+int computePANCAM_WAC_RRGB(); 
+int computePanCam_FilterSel(); 
+int computeMAST_TILT_Initialise(); 
+int computeDeploy_Mast(); 
+int computeMAST_PAN_Initialise(); 
+int computeMAST_PTU_MoveTo(); 
+int computeMAST_TILT_SwitchOff(); 
+int computeMAST_PAN_SwitchOff(); 
+int computeBEMA_Deploy_1(); 
+int computeBEMA_Deploy_2(); 
+int computeGNC_Initialise(); 
+int computeRelease_Umbilical();
+int computeGNC_SwitchOff(); 
+int computeGNC_MonitoringOnly();
+int computeRV_WakeUp(); 
+int computeMMS_WaitAbsTime(); 
+int computeMMS_WaitRelTime(); 
+int computeRV_Prepare4Comms(); 
+int computeRV_SwitchOffMobility(); 
+int computeRV_PostComms(); 
+int computeDHS_Go2Nominal(); 
+int computeRV_Prepare4Travel(); 
+int computeRV_Prepare4Night(); 
+int computeRV_Prepare4Dozing(); 
 
   // method used only for the continuous execution; in this
   // case it does not do anything
  private:
   virtual void* thread ();
+  uint8_t deploy_left_sa_seq = 0;
+  uint8_t deploy_right_sa_seq = 0;
 
 };
 

@@ -10,7 +10,7 @@ extern RobotProcedure*  theRobotProcedure;
 /**
  *
  */
-void RobotTask::computePanCam_Initialise(){
+int RobotTask::computePanCam_Initialise(){
   std::cerr << rtName << std::endl; 
 
   rtId = 900;
@@ -65,7 +65,7 @@ void RobotTask::computePanCam_Initialise(){
 /**
  *
  */
-void RobotTask::computePanCam_InitWACs(){ 
+int RobotTask::computePanCam_InitWACs(){ 
 
   std::cerr << rtName << std::endl; 
 
@@ -82,7 +82,7 @@ void RobotTask::computePanCam_InitWACs(){
     if (2 != sscanf(rtParams, "%d %s", &tcRequestId, cameraid)) {
       fprintf(stderr, "In  PanCam_InitWACs param failed\n");
       post_cond = 1;
-      return;
+      return post_cond;
     }
 	
     if (!strcmp(cameraid,"WAC_R")) {
@@ -130,7 +130,7 @@ void RobotTask::computePanCam_InitWACs(){
 /**
  *
  */
-void RobotTask::computePanCam_SwitchOn(){ 
+int RobotTask::computePanCam_SwitchOn(){ 
 
   std::cerr << rtName << std::endl; 
 
@@ -148,7 +148,7 @@ void RobotTask::computePanCam_SwitchOn(){
     if (2 != sscanf(rtParams, "%d %s", &tcRequestId, cameraid)) {
       fprintf(stderr, "In  PanCam_SwitchOn param failed\n");
       post_cond = 1;
-      return;
+      return post_cond;
     }
 	
     if (!strcmp(cameraid,"WAC_R")) {
@@ -202,7 +202,7 @@ void RobotTask::computePanCam_SwitchOn(){
 /**
  *
  */
-void RobotTask::computePanCam_WACAcqImage(){ 
+int RobotTask::computePanCam_WACAcqImage(){ 
 
   std::cerr << rtName << std::endl; 
 
@@ -220,7 +220,7 @@ void RobotTask::computePanCam_WACAcqImage(){
 
       fprintf(stderr, "In PanCam_AcquireImage::param() parameterisation error\n");
       post_cond = 1;
-      return;
+      return post_cond;
     }
 
     if (!strcmp(cameraid,"WAC_R")) {
@@ -315,7 +315,7 @@ void RobotTask::computePanCam_WACAcqImage(){
 /**
  *
  */
-void RobotTask::computePanCam_WACGetImage(){ 
+int RobotTask::computePanCam_WACGetImage(){ 
   
   std::cerr << rtName << std::endl; 
 
@@ -332,7 +332,7 @@ void RobotTask::computePanCam_WACGetImage(){
 
     if (3 != sscanf(rtParams, "%d %s %s", &tcRequestId, cameraid, compression_level)) {
       post_cond = 1;
-      return;
+      return post_cond;
     }
     param_completed = 1;
   }
@@ -410,7 +410,7 @@ void RobotTask::computePanCam_WACGetImage(){
 /**
  *
  */
-void RobotTask::computePanCam_SwitchOff(){ 
+int RobotTask::computePanCam_SwitchOff(){ 
 
   std::cerr << rtName << std::endl; 
 
@@ -428,7 +428,7 @@ void RobotTask::computePanCam_SwitchOff(){
     if (2 != sscanf(rtParams, "%d %s", &tcRequestId, cameraid)) {
       
       post_cond = 1;
-      return;
+      return post_cond;
     }
 
     param_completed = 1;
@@ -497,7 +497,7 @@ void RobotTask::computePanCam_SwitchOff(){
 /**
  *
  */
-void RobotTask::computePanCam_PIUSwitchOff(){ 
+int RobotTask::computePanCam_PIUSwitchOff(){ 
 
   std::cerr << rtName << std::endl; 
 
@@ -552,7 +552,7 @@ void RobotTask::computePanCam_PIUSwitchOff(){
 /**
  *
  */
-void RobotTask::computePANCAM_WAC_RRGB(){ 
+int RobotTask::computePANCAM_WAC_RRGB(){ 
 
   std::cerr << rtName << std::endl; 
 
@@ -591,7 +591,7 @@ void RobotTask::computePANCAM_WAC_RRGB(){
 /**
  *
  */
-void RobotTask::computePanCam_FilterSel(){ 
+int RobotTask::computePanCam_FilterSel(){ 
 
   std::cerr << rtName << std::endl; 
 
@@ -607,7 +607,7 @@ void RobotTask::computePanCam_FilterSel(){
   if (param_completed == 0){
     if (3 != sscanf(rtParams, "%d %s %d", &tcRequestId, cameraid, &filterid)) {
       post_cond = 1;
-      return;
+      return post_cond;
     }
     param_completed = 1;
   }
