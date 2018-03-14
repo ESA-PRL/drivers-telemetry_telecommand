@@ -180,22 +180,17 @@ static const short GNC_ROVER_REAR_BOGIE_INDEX = 75;
 #define GNC_STATUS_FLAG_OPER   2
 
 #define GNC_OPER_MODE_OFF                0
-#define GNC_OPER_MODE_MONO               1
-#define GNC_OPER_MODE_INITIALISING       2
-#define GNC_OPER_MODE_STNDBY             3
-#define GNC_OPER_MODE_ABS_LOC            4
-#define GNC_OPER_MODE_NAVCAM_IMAGING     5
-#define GNC_OPER_MODE_LOCCAM_IMAGING     6
-#define GNC_OPER_MODE_NAV_PREP_PERC_EVAL 7
-#define GNC_OPER_MODE_PP_TRAV            8
-#define GNC_OPER_MODE_FPATH_TRAV_MOVE    9
-#define GNC_OPER_MODE_FPATH_TRAV_STNDBY  10
-#define GNC_OPER_MODE_PP_DRILL           11
-#define GNC_OPER_MODE_FPATH_DRILL_MOVE   12
-#define GNC_OPER_MODE_FPATH_DRILL_STNDBY 13
-#define GNC_OPER_MODE_LLO                14
-#define GNC_OPER_MODE_BEMA_DEPLOYMENT_1  15
-#define GNC_OPER_MODE_BEMA_DEPLOYMENT_2  16
+#define GNC_OPER_MODE_ABS_LOC            1
+#define GNC_OPER_MODE_MONO               2
+#define GNC_OPER_MODE_INITIALISING       3
+#define GNC_OPER_MODE_STNDBY             4
+#define GNC_OPER_MODE_LLO                5
+#define GNC_OPER_MODE_FPATH_FOLL_MOVE    6
+#define GNC_OPER_MODE_FPATH_FOLL_STNDBY  7
+#define GNC_OPER_MODE_NAVCAM_IMAGING     8
+#define GNC_OPER_MODE_LOCCAM_IMAGING     9
+#define GNC_OPER_MODE_BEMA_DEPLOYMENT_1  10
+#define GNC_OPER_MODE_BEMA_DEPLOYMENT_2  11
 
 
 #define GNC_MIN_OPER_TEMPERATURE 210
@@ -397,11 +392,11 @@ static const short LOCCAM_INDEX                 = 29; // Index of stored images
 // PanCam Operational Modes
 #define PANCAM_OPER_MODE_OFF                    0
 #define PANCAM_OPER_MODE_INITIALISING 		    1
+#define PANCAM_OPER_MODE_STNDBY                 3
 #define PANCAM_OPER_MODE_WACS_INITIALISE        2    
-#define PANCAM_OPER_MODE_HRC_INITIALISE         3    
-#define PANCAM_OPER_MODE_STNDBY                 4
+#define PANCAM_OPER_MODE_HRC_INITIALISE         4    
 #define PANCAM_OPER_MODE_OPERATING              5
-#define PANCAM_OPER_MODE_SWITCHING_OFF          6
+#define PANCAM_OPER_MODE_SWITCHING_OFF          29
 #define PANCAM_OPER_MODE_FAIL                   7
 
 

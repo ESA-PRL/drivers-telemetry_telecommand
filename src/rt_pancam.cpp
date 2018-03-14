@@ -11,7 +11,6 @@ extern RobotProcedure*  theRobotProcedure;
  *
  */
 void RobotTask::computePanCam_Initialise(){
- 
   std::cerr << rtName << std::endl; 
 
   rtId = 900;
@@ -34,18 +33,11 @@ void RobotTask::computePanCam_Initialise(){
   if (compute_completed == 0){
 
     PanCamState[PANCAM_OPER_MODE_INDEX]  = PANCAM_OPER_MODE_INITIALISING;
-    PanCamState[PANCAM_WAC_L_MODE_INDEX] = PANCAM_OPER_MODE_WAC_OFF;
-    PanCamState[PANCAM_WAC_R_MODE_INDEX] = PANCAM_OPER_MODE_WAC_OFF;
-    PanCamState[PANCAM_HRC_MODE_INDEX]   = PANCAM_OPER_MODE_HRC_OFF;
-    
     PanCamState[PANCAM_ACTION_ID_INDEX]  = rtId;
     PanCamState[PANCAM_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
     
     if (index >= (warmUpTimeout/theRobotProcedure->Clock->GetBasePeriod())) {
       PanCamState[PANCAM_OPER_MODE_INDEX]  = PANCAM_OPER_MODE_STNDBY;
-      PanCamState[PANCAM_WAC_L_MODE_INDEX] = PANCAM_OPER_MODE_WAC_OFF;
-      PanCamState[PANCAM_WAC_R_MODE_INDEX] = PANCAM_OPER_MODE_WAC_OFF;
-      PanCamState[PANCAM_HRC_MODE_INDEX]   = PANCAM_OPER_MODE_HRC_OFF;
       // Set Action ID and Ret val
       PanCamState[PANCAM_ACTION_ID_INDEX]  = 0;
       PanCamState[PANCAM_ACTION_RET_INDEX] = ACTION_RET_OK;

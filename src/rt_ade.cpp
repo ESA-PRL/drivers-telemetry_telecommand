@@ -15,13 +15,50 @@
 extern RobotProcedure*  theRobotProcedure;
 
 void RobotTask::computeADEs_Activate(){
+  std::cerr << rtName << std::endl; 
+  if ( theRobotProcedure->GetParameters()->get( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
+    std::cout << rtName << " failed" << std::endl;
+  }
+  ADEState[ADE_STATUS_LEFT_INDEX] = ADE_OPER_MODE_WARMUP;
+  ADEState[ADE_STATUS_RIGHT_INDEX] = ADE_OPER_MODE_WARMUP;
+  ADEState[ADE_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
+  ADEState[ADE_ACTION_ID_INDEX]  = 1.0;
+  if (index == 10) {
+    ADEState[ADE_STATUS_LEFT_INDEX] = ADE_OPER_MODE_STNDBY;
+    ADEState[ADE_STATUS_RIGHT_INDEX] = ADE_OPER_MODE_STNDBY;
+    ADEState[ADE_ACTION_RET_INDEX] = ACTION_RET_OK;
+    ADEState[ADE_ACTION_ID_INDEX]  = 0.0;
+    post_cond = 1;
+    index = 0;
+  }
+  index++;
+  if ( theRobotProcedure->GetParameters()->set( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
+    std::cout << rtName << " failed" << std::endl;
+  }
 }
 
 void RobotTask::computeADEs_DeActivate(){
+  std::cerr << rtName << std::endl; 
+  if ( theRobotProcedure->GetParameters()->get( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
+    std::cout << rtName << " failed" << std::endl;
+  }
+  ADEState[ADE_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
+  ADEState[ADE_ACTION_ID_INDEX]  = 1.0;
+  if (index == 10) {
+    ADEState[ADE_STATUS_LEFT_INDEX] = ADE_OPER_MODE_OFF;
+    ADEState[ADE_STATUS_RIGHT_INDEX] = ADE_OPER_MODE_STNDBY;
+    ADEState[ADE_ACTION_RET_INDEX] = ACTION_RET_OK;
+    ADEState[ADE_ACTION_ID_INDEX]  = 0.0;
+    post_cond = 1;
+    index = 0;
+  }
+  index++;
+  if ( theRobotProcedure->GetParameters()->set( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
+    std::cout << rtName << " failed" << std::endl;
+  }
 }
 
 void RobotTask::computeADE_LEFT_Initialise(){ 
-
   std::cerr << rtName << std::endl; 
 
   if ( theRobotProcedure->GetParameters()->get( "ADEState", 
