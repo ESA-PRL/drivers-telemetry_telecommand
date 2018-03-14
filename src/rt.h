@@ -180,8 +180,8 @@ int computeRV_Prepare4Dozing();
   // case it does not do anything
  private:
   virtual void* thread ();
-  uint8_t deploy_left_sa_seq = 0;
-  uint8_t deploy_right_sa_seq = 0;
+  int deploy_left_sa_seq;
+  int deploy_right_sa_seq;
 
 };
 

@@ -45,6 +45,10 @@ RobotTask::RobotTask (std::string name)
 
   // set the name
   rtName = name;
+
+  // sequence counters for SA deployment
+  deploy_left_sa_seq = 0;
+  deploy_right_sa_seq = 0;
 }
 
 RobotTask::~RobotTask ()

@@ -7,38 +7,62 @@ extern RobotProcedure*  theRobotProcedure;
 
 int RobotTask::computeDeploy_LEFT_SA()
 {
-    std::cerr << rtName << std::endl; 
+    std::cerr << rtName << std::endl;
 
     switch (deploy_left_sa_seq)
     {
         case 0:
+            std::cerr << "SA LEFT: gnc monitoring" << std::endl;
             if(computeGNC_MonitoringOnly() == 1)
+            {
+                post_cond = 0;
                 deploy_left_sa_seq++;
+            }
             break;
         case 1:
+            std::cerr << "SA LEFT: release hdrm" << std::endl;
             if(computeADE_LEFT_ReleaseHDRM() == 1)
+            {
+                post_cond = 0;
                 deploy_left_sa_seq++;
+            }
             break;
         case 2:
+            std::cerr << "SA LEFT: initialise" << std::endl;
             if(computeSA_LEFT_Initialise() == 1)
+            {
+                post_cond = 0;
                 deploy_left_sa_seq++;
+            }
             break;
         case 3:
+            std::cerr << "SA LEFT: primary move to" << std::endl;
             if(computeSA_LEFT_PrimaryMoveTo() == 1)
+            {
+                post_cond = 0;
                 deploy_left_sa_seq++;
+            }
             break;
         case 4:
+            std::cerr << "SA LEFT: secondary move to" << std::endl;
             if(computeSA_LEFT_SecondaryMoveTo() == 1)
+            {
+                post_cond = 0;
                 deploy_left_sa_seq++;
+            }
             break;
         case 5:
+            std::cerr << "SA LEFT: switch off" << std::endl;
             if(computeSA_LEFT_SwitchOff() == 1)
+            {
+                post_cond = 0;
                 deploy_left_sa_seq++;
+            }
             break;
         case 6:
+            std::cerr << "SA LEFT: gnc switch off" << std::endl;
             if(computeGNC_SwitchOff() == 1)
             {
-                deploy_left_sa_seq++;
                 post_cond = 1;
                 deploy_left_sa_seq = 0;
             }
@@ -46,42 +70,67 @@ int RobotTask::computeDeploy_LEFT_SA()
         default:
             break;
     }
+    return post_cond;
 }
 
 int RobotTask::computeDeploy_RIGHT_SA()
 {
-    std::cerr << rtName << std::endl; 
+    std::cerr << rtName << std::endl;
 
     switch (deploy_right_sa_seq)
     {
         case 0:
+            std::cerr << "SA RIGHT: gnc monitoring" << std::endl;
             if(computeGNC_MonitoringOnly() == 1)
+            {
+                post_cond = 0;
                 deploy_right_sa_seq++;
+            }
             break;
         case 1:
+            std::cerr << "SA RIGHT: release hdrm" << std::endl;
             if(computeADE_RIGHT_ReleaseHDRM() == 1)
+            {
+                post_cond = 0;
                 deploy_right_sa_seq++;
+            }
             break;
         case 2:
+            std::cerr << "SA RIGHT: initialise" << std::endl;
             if(computeSA_RIGHT_Initialise() == 1)
+            {
+                post_cond = 0;
                 deploy_right_sa_seq++;
+            }
             break;
         case 3:
+            std::cerr << "SA RIGHT: primary move to" << std::endl;
             if(computeSA_RIGHT_PrimaryMoveTo() == 1)
+            {
+                post_cond = 0;
                 deploy_right_sa_seq++;
+            }
             break;
         case 4:
+            std::cerr << "SA RIGHT: secondary move to" << std::endl;
             if(computeSA_RIGHT_SecondaryMoveTo() == 1)
+            {
+                post_cond = 0;
                 deploy_right_sa_seq++;
+            }
             break;
         case 5:
+            std::cerr << "SA RIGHT: switch off" << std::endl;
             if(computeSA_RIGHT_SwitchOff() == 1)
+            {
+                post_cond = 0;
                 deploy_right_sa_seq++;
+            }
             break;
         case 6:
+            std::cerr << "SA RIGHT: gnc switch off" << std::endl;
             if(computeGNC_SwitchOff() == 1)
             {
-                deploy_right_sa_seq++;
                 post_cond = 1;
                 deploy_right_sa_seq = 0;
             }
@@ -89,6 +138,7 @@ int RobotTask::computeDeploy_RIGHT_SA()
         default:
             break;
     }
+    return post_cond;
 }
 
 /**
@@ -257,7 +307,6 @@ int RobotTask::computeSA_LEFT_PrimaryMoveTo(){
   return post_cond;
 }
 
-
 int RobotTask::computeSA_LEFT_SecondaryMoveTo(){
   std::cerr << rtName << std::endl; 
 
@@ -385,24 +434,24 @@ int RobotTask::computeSA_LEFT_SwitchOff(){
     std::cout << rtName << " failed" << std::endl;
   }
   rtId = 820;
-  
+
   // Set Action ID and Ret val
   SAState[SA_ACTION_ID_INDEX]  = rtId;
   SAState[SA_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
-  
+
   if (index >= 10) {
     // Set Action ID and Ret val
     SAState[SA_ACTION_ID_INDEX]  = 0;
     SAState[SA_ACTION_RET_INDEX] = ACTION_RET_OK;
-    
+
     SAState[SA_STATUS_INDEX] = SA_OPER_MODE_OFF;
     SAState[SA_LEFT_PRIMARY_STATUS_INDEX] = SA_OPER_MODE_OFF;
     SAState[SA_LEFT_SECONDARY_STATUS_INDEX] = SA_OPER_MODE_OFF;
 
     post_cond = 1;
-
+    index = 0;
   }
-  
+
   index++;
 
   if ( theRobotProcedure->GetParameters()->set( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
@@ -414,8 +463,8 @@ int RobotTask::computeSA_LEFT_SwitchOff(){
 /**
  *
  */
-int RobotTask::computeSA_RIGHT_Initialise(){ 
-  std::cerr << rtName << std::endl; 
+int RobotTask::computeSA_RIGHT_Initialise(){
+  std::cerr << rtName << std::endl;
 
   rtId = 800;
   double switchOnTime = 10.0; // sec
@@ -426,13 +475,13 @@ int RobotTask::computeSA_RIGHT_Initialise(){
   // Set Action ID and Ret val
   SAState[SA_ACTION_ID_INDEX]  = 801;
   SAState[SA_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
-  
+
   SAState[SA_STATUS_INDEX]               = SA_OPER_MODE_INITIALISING;
   SAState[SA_RIGHT_PRIMARY_STATUS_INDEX] = SA_OPER_MODE_INITIALISING;
   SAState[SA_RIGHT_SECONDARY_STATUS_INDEX] = SA_OPER_MODE_INITIALISING;
   SAState[SA_ACTION_ID_INDEX]            = rtId;
   SAState[SA_ACTION_RET_INDEX]           = ACTION_RET_RUNNING;
-  
+
   if (index >= (switchOnTime/(theRobotProcedure->Clock->GetBasePeriod()))) {
     SAState[SA_STATUS_INDEX]     = SA_OPER_MODE_STNDBY;
     SAState[SA_RIGHT_PRIMARY_STATUS_INDEX] = SA_OPER_MODE_STNDBY;
@@ -440,12 +489,14 @@ int RobotTask::computeSA_RIGHT_Initialise(){
     SAState[SA_ACTION_ID_INDEX]  = 0;
     SAState[SA_ACTION_RET_INDEX] = ACTION_RET_OK;
     post_cond = 1;
+    index = 0;
   }
-  
+
   index++;
   if ( theRobotProcedure->GetParameters()->set( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
+  return post_cond;
 }
 
 /**
@@ -563,12 +614,10 @@ int RobotTask::computeSA_RIGHT_PrimaryMoveTo(){
 
   }
 
-
-
-
   if ( theRobotProcedure->GetParameters()->set( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
+  return post_cond;
 }
 
 /**
@@ -687,13 +736,13 @@ int RobotTask::computeSA_RIGHT_SecondaryMoveTo(){
 
   }
 
-
   if ( theRobotProcedure->GetParameters()->set( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
 
-
+  return post_cond;
 }
+
 int RobotTask::computeSA_RIGHT_SwitchOff(){ 
 std::cerr << rtName << std::endl; 
   if ( theRobotProcedure->GetParameters()->get( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
@@ -715,13 +764,14 @@ std::cerr << rtName << std::endl;
     SAState[SA_RIGHT_SECONDARY_STATUS_INDEX] = SA_OPER_MODE_OFF;
 
     post_cond = 1;
-
+    index = 0;
   }
-  
+
   index++;
 
   if ( theRobotProcedure->GetParameters()->set( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
   }
+  return post_cond;
 }
 
