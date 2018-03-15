@@ -4,7 +4,6 @@
 #include <sstream>
 #include <math.h>
 
-#include "ctrl_state.h"
 #include "comm.h"
 
 #include <stdio.h>
@@ -16,8 +15,6 @@ static double lastMastState[MAX_STATE_SIZE];
 static double lastGNCState[MAX_STATE_SIZE];
 
 static bool first_time=true;
-
-RoverName rover = HDPR;
 
 int CommTmServer::sendImageMessage(const char* filename, int seq, long time, const char* date, int size, 
 				   const unsigned char * data, 
@@ -241,7 +238,8 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
 
               std::auto_ptr<TextMessage> locomMessage(activemqTMSender->sessionMonitor->createTextMessage
                       ("I'm a locom message"));
-              if (rover == HDPR)
+//              if (rover == HDPR)
+              if (true)
               {
               locomMessage->setIntProperty("iter",seq);
               locomMessage->setLongProperty("time",time1);

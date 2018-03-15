@@ -203,10 +203,7 @@ void* RobotTask::thread ()
       else if (rtName == "MAST_TILT_Initialise") { 
 	computeMAST_TILT_Initialise();
       }
-      else if (rtName == "Deploy_Mast") { 
-	computeDeploy_Mast();
-      }
-      else if (rtName == "MAST_PAN_Initialise") { 
+     else if (rtName == "MAST_PAN_Initialise") { 
 	computeMAST_PAN_Initialise();
       }
       else if (rtName == "MAST_PAN_SwitchOff") { 
@@ -216,7 +213,14 @@ void* RobotTask::thread ()
       else if (rtName == "MAST_TILT_SwitchOff") { 
 	computeMAST_TILT_SwitchOff();
       }
-      
+      else if (rtName == "Deploy_Mast") {
+	computeDeploy_Mast();
+        if (post_cond == 1)
+        {
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+        }
+     }
       else if (rtName == "GNC_Initialise") { 
 	computeGNC_Initialise();
       }
@@ -335,7 +339,7 @@ void* RobotTask::thread ()
             // notify activity running
         }
     }
-    else if (rtName == "PANCAM_PANORAMA") { 
+    else if (rtName == "PANCAM_PANORAMA") {
         if (param_completed == 0){
             CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
             activemqTCReceiver->addCommandInfo(cmd_info);

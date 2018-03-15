@@ -31,6 +31,7 @@
 #include "ActiveMQTMSender.h"
 #include "simplethread.h"
 #include "prr.h"
+#include "ctrl_state.h"
 
 #define COMM_ERROR0 1
 #define COMM_ERROR1 2
@@ -82,8 +83,9 @@ class CommTmServer : public CommServer
  private:
  RobotProcedure* prr;
  ActiveMQTMSender *activemqTMSender;
+ RoverName rover;
  public:
-  CommTmServer(int port, RobotProcedure* prr, ActiveMQTMSender *tmsender);
+  CommTmServer(int port, RobotProcedure* prr, ActiveMQTMSender *tmsender, RoverName rn);
   ~CommTmServer(){};
   void orcGetTmMsg(std::string &tmmsg);
   int sendImageMessage(const char* filename, int seq, long time, const char* date, int size, const unsigned char * data, MessageProducer* messproducer, double *);
