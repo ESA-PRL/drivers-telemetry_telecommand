@@ -26,7 +26,10 @@ namespace telemetry_telecommand
             DISTANCE,
             POINT_CLOUD,
             DEM,
-            ALL
+            ALL,
+            STEREO, // used to ask for stereo images
+            STEREO_LEFT, // used to mark provided images
+            STEREO_RIGHT
         };
 
         enum Mode
