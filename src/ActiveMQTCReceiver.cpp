@@ -3,7 +3,7 @@
 #include "ActiveMQTCReceiver.h"
 
 
-int handleActiveMQTcMsg(ActiveMQTCReceiver *, char *msg);
+int handleTcMsg(ActiveMQTCReceiver *, char *msg);
 
 ActiveMQTCReceiver::~ActiveMQTCReceiver() {
   cleanup();
@@ -80,32 +80,64 @@ return NULL;
 
 // Called from the consumer since this class is a registered MessageListener.
 void ActiveMQTCReceiver::onMessage(const cms::Message* message) {
-  
+
   static int count = 0;
-  
+  std::string simEnvVar = "/home/marta";  // TODO make this a config param
+
   try {
-    count++;
-    const TextMessage* textMessage = dynamic_cast<const TextMessage*> (message);
-    string text = "";
-    
-    if (textMessage != NULL) {
-      //text = textMessage->getText();
-      text = textMessage->getStringProperty("TCLINE");
-      handleActiveMQTcMsg(this, (char *) text.c_str());
-    } else {
-      text = "NOT A TEXTMESSAGE!";
-    }
-    printf("Message #%d Received: %s\n", count, text.c_str());
-    
+	count++;
+	const TextMessage* textMessage = dynamic_cast<const TextMessage*> (message);
+
+	if (textMessage != NULL) {
+	  if (textMessage->propertyExists("TCLINE")) {
+		string tc = textMessage->getStringProperty("TCLINE");
+		if (tc.size() > 0) {
+		  string text = "1 d d d ";
+		  text.append(textMessage->getStringProperty("TCLINE"));
+		  printf("ACTEXEC Message #%d Received: %s\n", count, text.c_str());
+		  handleTcMsg(this, (char *) text.c_str());
+		}
+	  }
+	  else if (textMessage->propertyExists("LOADACTPLAN")) {
+		string actplan = textMessage->getStringProperty("LOADACTPLAN");
+		if (actplan.size() > 0) {
+		  if (textMessage->propertyExists("NAME")) {
+			string filename = textMessage->getStringProperty("NAME");
+			if (filename.size() > 0) {
+			  std::ofstream file;
+			  file.open(simEnvVar + std::string("/Operations/inputs/") + filename);
+			  file << actplan;
+			  file << std::endl;
+			  file.close();
+			}
+		  }
+		}
+	  }
+	  else if (textMessage->propertyExists("EXECACTPLAN")) {
+		string execplan = textMessage->getStringProperty("EXECACTPLAN");
+		if (execplan.size() > 0) {
+		  // the handleTcMsg requires three items
+		  string execplantext = "1 " + simEnvVar + "/Operations/inputs/" + execplan + " dummy";
+		  printf("EXECACTPLAN Message #%d Received: %s\n", count, execplan.c_str());
+		  handleTcMsg(this, (char *) execplantext.c_str());
+		}
+	  }
+	}
+	else {
+	  const BytesMessage* bytesMessage = dynamic_cast<const BytesMessage*> (message);
+
+	  if (bytesMessage != NULL) {
+
+	  }
+	  else {
+		// text = "NOT A TEXTMESSAGE OR BYTEMESSAGE!";
+	  }
+	}
+
   } catch (CMSException& e) {
     e.printStackTrace();
     isConnected = false;
-    return; 
-  }
-  
-  // Commit all messages.
-  if (this->sessionTransacted) {
-    session->commit();
+    return;
   }
 }
 
@@ -141,7 +173,7 @@ void ActiveMQTCReceiver::cleanup() {
   }
 }
 
-int handleActiveMQTcMsg(ActiveMQTCReceiver *tc_receiver, char *msg) {
+int handleTcMsg(ActiveMQTCReceiver *tc_receiver, char *msg) {
   
   char ackid[80], 
     actionname[80], 
