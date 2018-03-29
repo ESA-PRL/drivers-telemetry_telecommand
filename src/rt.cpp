@@ -399,6 +399,21 @@ void* RobotTask::thread ()
             // notify activity running
         }
     }
+    else if (rtName == "NAVCAM_ACQ") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
     else if (rtName == "FRONT_ACQ") { 
         if (param_completed == 0){
             CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
@@ -429,7 +444,37 @@ void* RobotTask::thread ()
             // notify activity running
         }
     }
+    else if (rtName == "PANCAM_ACQ") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
     else if (rtName == "REAR_ACQ") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
+    else if (rtName == "LOCCAM_ACQ") { 
         if (param_completed == 0){
             CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
             activemqTCReceiver->addCommandInfo(cmd_info);

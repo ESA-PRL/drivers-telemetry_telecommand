@@ -92,7 +92,7 @@ void ActiveMQTCReceiver::onMessage(const cms::Message* message) {
 	  if (textMessage->propertyExists("TCLINE")) {
 		string tc = textMessage->getStringProperty("TCLINE");
 		if (tc.size() > 0) {
-		  string text = "1 d d d ";
+		  string text = "";
 		  text.append(textMessage->getStringProperty("TCLINE"));
 		  printf("ACTEXEC Message #%d Received: %s\n", count, text.c_str());
 		  handleTcMsg(this, (char *) text.c_str());
