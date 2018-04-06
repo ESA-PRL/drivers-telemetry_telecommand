@@ -279,7 +279,7 @@ static const short MAST_ACTION_RET_INDEX   = 18; // 12-nov-2010 (OK/ERROR/RUNNIN
 #define MAST_INITIALISE_TIME       1800
 #define MAST_PTU_MIN_LINE_VOLTAGE 10
 #define MAST_SWITCH_OFF_TIME      2 
-#define MAST_WARMUP_TIMEOUT       10
+#define MAST_WARMUP_TIMEOUT       2
 
 #define MAST_DOF                       3
 #define MAST_OPER_MODE_OFF             0

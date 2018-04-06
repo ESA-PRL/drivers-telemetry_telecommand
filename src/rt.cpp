@@ -31,9 +31,9 @@ RobotTask::RobotTask (std::string name)
     TTCState[i] = 0.0;
     DHSState[i] = 0.0;
   }
-  dhs_go2_duration = 5.0;
-  comms_switchon_duration = 3.5; 
-  comms_conf_duration = 4.0;
+  dhs_go2_duration = 2.0;
+  comms_switchon_duration = 2.5;
+  comms_conf_duration = 2.0;
 
   param_completed   = 0;
   init_completed    = 0;

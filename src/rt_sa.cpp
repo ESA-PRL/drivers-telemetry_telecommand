@@ -148,7 +148,7 @@ int RobotTask::computeSA_LEFT_Initialise(){
   std::cerr << rtName << std::endl; 
   
   rtId = 800;
-  double switchOnTime = 10.0; // sec
+  double switchOnTime = 2.0; // sec
 
   if ( theRobotProcedure->GetParameters()->get( "SAState", 
 						DOUBLE, 
@@ -467,7 +467,7 @@ int RobotTask::computeSA_RIGHT_Initialise(){
   std::cerr << rtName << std::endl;
 
   rtId = 800;
-  double switchOnTime = 10.0; // sec
+  double switchOnTime = 2.0; // sec
 
   if ( theRobotProcedure->GetParameters()->get( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
     std::cout << rtName << " failed" << std::endl;
