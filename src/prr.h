@@ -29,7 +29,9 @@
 
 #include "utils.h"
 #include "param.h"
-#include "rt.h"
+//#include "rt.h"
+
+//#include "module_Deploy_Mast.h"
 
   class MyClock {
 	  public:
@@ -38,6 +40,8 @@
 	  double GetBasePeriod() {return period;}
   };
   
+class RobotTask;
+
 class RobotProcedure
 {
  public:
@@ -61,8 +65,6 @@ class RobotProcedure
   double TTCState[MAX_STATE_SIZE];
   double DHSState[MAX_STATE_SIZE];
   double LOCOMState[MAX_STATE_SIZE];
-  
-
 
   char OrccadPath[ MAXFILENAME ];		// Orccad user Path
 
@@ -105,6 +107,9 @@ public:
 
   char* GetPath ();
   void SetPath (char*);
+
+private:
+  //ControllerModelNamespace::orc_Mod_Deploy_Mast Deploy_Mast;
 };
 
 

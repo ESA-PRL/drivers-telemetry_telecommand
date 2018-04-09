@@ -1249,3 +1249,14 @@ int RobotTask::computeRV_Prepare4Dozing(){
     std::cout << rtName << " failed" << std::endl;
   }
 }
+
+
+//TODO
+//int RobotTask::compute()
+//{
+//module(thisTask).computeParams();
+//module(...).compute();
+//...computeEnd();
+//}
+//instead of all the code above,
+//the code will be in separate module files.

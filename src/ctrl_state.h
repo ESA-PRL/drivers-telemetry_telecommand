@@ -247,6 +247,9 @@ static const short SA_ACTION_RET_INDEX  = 22;
 //
 
 static const short MAST_STATUS_INDEX		= 0;
+static const short MAST_DEP_STATUS_INDEX    = 0; //TODO change me
+static const short MAST_PAN_STATUS_INDEX	= 0; //TODO change me
+static const short MAST_TILT_STATUS_INDEX	= 0; //TODO change me
 static const short MAST_TEMPERATURE_INDEX	= 1;
 
 static const short MAST_CURRENT_Q1_INDEX	= 2;
@@ -281,6 +284,7 @@ static const short MAST_ACTION_RET_INDEX   = 18; // 12-nov-2010 (OK/ERROR/RUNNIN
 #define MAST_SWITCH_OFF_TIME      2 
 #define MAST_WARMUP_TIMEOUT       2
 
+// TODO delete me? from before 9.4.2018
 #define MAST_DOF                       3
 #define MAST_OPER_MODE_OFF             0
 #define MAST_OPER_MODE_PTU_INITIALISE  1
@@ -289,6 +293,24 @@ static const short MAST_ACTION_RET_INDEX   = 18; // 12-nov-2010 (OK/ERROR/RUNNIN
 #define MAST_OPER_MODE_DEP_INITIALISE  4
 #define MAST_OPER_MODE_DEP_STNDBY      5
 #define MAST_OPER_MODE_DEP_MOVING      6
+
+// TODO verify. from 9.4.2018
+#define MAST_OPER_MODE_DEP_OFF          0
+#define MAST_OPER_MODE_DEP_INITIALISE   1
+#define MAST_OPER_MODE_DEP_STNDBY       2
+#define MAST_OPER_MODE_DEP_MOVING       3
+#define MAST_OPER_MODE_PAN_OFF          0
+#define MAST_OPER_MODE_PAN_INITIALISE   1
+#define MAST_OPER_MODE_PAN_STNDBY       2
+#define MAST_OPER_MODE_PAN_MOVING       3
+#define MAST_OPER_MODE_TILT_OFF         0
+#define MAST_OPER_MODE_TILT_INITIALISE  1
+#define MAST_OPER_MODE_TILT_STNDBY      2
+#define MAST_OPER_MODE_TILT_MOVING      3
+#define  MAST_OPER_MODE_OFF 1015
+#define  MAST_OPER_MODE_PTU_INITIALISE  1016
+#define  MAST_OPER_MODE_PTU_STNDBY   1017
+#define  MAST_OPER_MODE_PTU_MOVING 1018
 
 //
 // ADE

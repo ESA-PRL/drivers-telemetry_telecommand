@@ -10,39 +10,26 @@ extern RobotProcedure*  theRobotProcedure;
  *
  *
  */
-int RobotTask::computeMAST_TILT_Initialise(){ 
-  std::cerr << rtName << std::endl; 
-  rtId = 2;
-  double warmUpTimeout = MAST_WARMUP_TIMEOUT;
-  if ( theRobotProcedure->GetParameters()->get( "MastState", 
-						DOUBLE, 
-						MAX_STATE_SIZE, 0, 
-						( char * ) MastState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
+int RobotTask::computeMAST_TILT_Initialise(){
+  if (param_completed == 0){
+    MAST_TILT_Initialise.param(rtParams);
+    param_completed = 1;
   }
-  //  theRobotProcedure->Clock()->GetTime();
-  
-  MastState[MAST_ACTION_ID_INDEX]  = rtId;
-  MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_INITIALISING;
-  MastState[MAST_STATUS_INDEX]     = MAST_OPER_MODE_DEP_INITIALISE;
-  
-  if (index >= (warmUpTimeout/theRobotProcedure->Clock->GetBasePeriod())) {
-    
-    // set the state
-    MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_DEP_STNDBY;
-    MastState[MAST_ACTION_ID_INDEX]  = 0.0;
-    MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_OK;
-
-    post_cond = 1;
+  if (param_completed == 1 && init_completed == 0){
+    MAST_TILT_Initialise.init();
+    init_completed = 1;
   }
-
-  index++;
-  
-  if ( theRobotProcedure->GetParameters()->set( "MastState", 
-						DOUBLE, 
-						MAX_STATE_SIZE, 0, 
-						( char * ) MastState ) == ERROR ) {
-    std::cout << rtName << " failed" << std::endl;
+  if (init_completed == 1 && compute_completed == 0){
+    MAST_TILT_Initialise.compute();
+    if (MAST_TILT_Initialise.MAST_TILT_Initialise_post == 1)
+    {
+      post_cond = 1;
+      compute_completed = 1;
+    }
+  }
+  if (compute_completed == 1 && end_completed == 0){
+    MAST_TILT_Initialise.end();
+    end_completed = 1;
   }
 }
 

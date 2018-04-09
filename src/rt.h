@@ -8,7 +8,21 @@
 #include "linuxOrcc.h"
 #include "utils.h"
 #include "ctrl_state.h"
+//#include "prr.h"
 
+//#include "module_Deploy_Mast.h"
+//#include "module_MAST_DEP_Initialise.h"
+//#include "module_MAST_PAN_Initialise.h"
+#include "module_MAST_TILT_Initialise.h"
+//#include "module_MAST_DEP_SwitchOff.h"
+//#include "module_MAST_PAN_SwitchOff.h"
+//#include "module_MAST_TILT_SwitchOff.h"
+//#include "module_MAST_DEP_MoveTo.h"
+//#include "module_MAST_PAN_MoveTo.h"
+//#include "module_MAST_TILT_MoveTo.h"
+//#include "module_MAST_PTU_MoveTo.h"
+
+//using namespace ControllerModelNamespace;
 
 class RobotTask : public SimpleThread
 {
@@ -182,6 +196,18 @@ int computeRV_Prepare4Dozing();
   virtual void* thread ();
   int deploy_left_sa_seq;
   int deploy_right_sa_seq;
+
+  //ControllerModelNamespace::orc_Mod_Deploy_Mast Deploy_Mast;
+  //orc_Mod_MAST_DEP_Initialise MAST_DEP_Initialise;
+  //orc_Mod_MAST_PAN_Initialise MAST_PAN_Initialise;
+  ControllerModelNamespace::orc_Mod_MAST_TILT_Initialise MAST_TILT_Initialise;
+  //orc_Mod_MAST_DEP_SwitchOff MAST_DEP_SwitchOff;
+  //orc_Mod_MAST_PAN_SwitchOff MAST_PAN_SwitchOff;
+  //orc_Mod_MAST_TILT_SwitchOff MAST_TILT_SwitchOff;
+  //orc_Mod_MAST_DEP_MoveTo MAST_DEP_MoveTo;
+  //orc_Mod_MAST_PAN_MoveTo MAST_PAN_MoveTo;
+  //orc_Mod_MAST_TILT_MoveTo MAST_TILT_MoveTo;
+  //orc_Mod_MAST_PTU_MoveTo MAST_PTU_MoveTo;
 
 };
 
