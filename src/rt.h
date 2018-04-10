@@ -8,19 +8,8 @@
 #include "linuxOrcc.h"
 #include "utils.h"
 #include "ctrl_state.h"
-//#include "prr.h"
 
-//#include "module_Deploy_Mast.h"
-//#include "module_MAST_DEP_Initialise.h"
-//#include "module_MAST_PAN_Initialise.h"
-#include "module_MAST_TILT_Initialise.h"
-//#include "module_MAST_DEP_SwitchOff.h"
-//#include "module_MAST_PAN_SwitchOff.h"
-//#include "module_MAST_TILT_SwitchOff.h"
-//#include "module_MAST_DEP_MoveTo.h"
-//#include "module_MAST_PAN_MoveTo.h"
-//#include "module_MAST_TILT_MoveTo.h"
-//#include "module_MAST_PTU_MoveTo.h"
+#include "module_includes.h"
 
 //using namespace ControllerModelNamespace;
 
@@ -82,7 +71,6 @@ class RobotTask : public SimpleThread
   double saTrajDuration;
   double saCurrentPose[SA_DOF];
 
-
   double initMASTPose[MAST_DOF];
   double finalMASTPose[MAST_DOF];
   double jointMASTTrajDuration[MAST_DOF];
@@ -135,60 +123,86 @@ class RobotTask : public SimpleThread
   int SetTcRequestId (int ); 
 
   int GetTcRequestId ();
- 
+
   int SetParam (char*);
-  
-int computeADEs_Activate(); 
-int computeADEs_DeActivate(); 
-int computeADE_LEFT_Initialise(); 
-int computeADE_LEFT_conf(); 
-int computeADE_LEFT_ReleaseHDRM(); 
-int computeADE_LEFT_SwitchOff(); 
-int computeADE_RIGHT_Initialise(); 
-int computeADE_RIGHT_conf(); 
-int computeADE_RIGHT_ReleaseHDRM(); 
-int computeADE_RIGHT_SwitchOff(); 
-int computeSA_LEFT_Initialise(); 
-int computeSA_LEFT_PrimaryMoveTo(); 
-int computeSA_LEFT_SecondaryMoveTo(); 
-int computeSA_LEFT_SwitchOff(); 
-int computeSA_RIGHT_Initialise(); 
-int computeSA_RIGHT_PrimaryMoveTo(); 
-int computeSA_RIGHT_SecondaryMoveTo(); 
-int computeSA_RIGHT_SwitchOff(); 
-int computeDeploy_LEFT_SA();
-int computeDeploy_RIGHT_SA();
-int computePanCam_Initialise(); 
-int computePanCam_InitWACs(); 
-int computePanCam_SwitchOn(); 
-int computePanCam_WACAcqImage(); 
-int computePanCam_WACGetImage(); 
-int computePanCam_SwitchOff(); 
-int computePanCam_PIUSwitchOff(); 
-int computePANCAM_WAC_RRGB(); 
-int computePanCam_FilterSel(); 
-int computeMAST_TILT_Initialise(); 
-int computeDeploy_Mast(); 
-int computeMAST_PAN_Initialise(); 
-int computeMAST_PTU_MoveTo(); 
-int computeMAST_TILT_SwitchOff(); 
-int computeMAST_PAN_SwitchOff(); 
-int computeBEMA_Deploy_1(); 
-int computeBEMA_Deploy_2(); 
-int computeGNC_Initialise(); 
-int computeRelease_Umbilical();
-int computeGNC_SwitchOff(); 
-int computeGNC_MonitoringOnly();
-int computeRV_WakeUp(); 
-int computeMMS_WaitAbsTime(); 
-int computeMMS_WaitRelTime(); 
-int computeRV_Prepare4Comms(); 
-int computeRV_SwitchOffMobility(); 
-int computeRV_PostComms(); 
-int computeDHS_Go2Nominal(); 
-int computeRV_Prepare4Travel(); 
-int computeRV_Prepare4Night(); 
-int computeRV_Prepare4Dozing(); 
+
+  int computeADEs_Activate(); 
+  int computeADEs_DeActivate(); 
+  int computeADE_LEFT_Initialise(); 
+  int computeADE_LEFT_conf(); 
+  int computeADE_LEFT_ReleaseHDRM(); 
+  int computeADE_LEFT_SwitchOff(); 
+  int computeADE_RIGHT_Initialise(); 
+  int computeADE_RIGHT_conf(); 
+  int computeADE_RIGHT_ReleaseHDRM(); 
+  int computeADE_RIGHT_SwitchOff(); 
+  int computeSA_LEFT_Initialise(); 
+  int computeSA_LEFT_PrimaryMoveTo(); 
+  int computeSA_LEFT_SecondaryMoveTo(); 
+  int computeSA_LEFT_SwitchOff(); 
+  int computeSA_RIGHT_Initialise(); 
+  int computeSA_RIGHT_PrimaryMoveTo(); 
+  int computeSA_RIGHT_SecondaryMoveTo(); 
+  int computeSA_RIGHT_SwitchOff(); 
+  int computePanCam_Initialise(); 
+  int computePanCam_InitWACs(); 
+  int computePanCam_SwitchOn(); 
+  int computePanCam_WACAcqImage(); 
+  int computePanCam_WACGetImage(); 
+  int computePanCam_SwitchOff(); 
+  int computePanCam_PIUSwitchOff(); 
+  int computePANCAM_WAC_RRGB(); 
+  int computePanCam_FilterSel(); 
+  int computeMAST_TILT_Initialise(); 
+  int computeDeploy_Mast(); 
+  int computeMAST_PAN_Initialise(); 
+  int computeMAST_PTU_MoveTo(); 
+  int computeMAST_TILT_SwitchOff(); 
+  int computeMAST_PAN_SwitchOff(); 
+  int computeBEMA_Deploy_1(); 
+  int computeBEMA_Deploy_2(); 
+  int computeGNC_Initialise(); 
+  int computeRelease_Umbilical();
+  int computeRV_WakeUp(); 
+  int computeMMS_WaitAbsTime(); 
+  int computeMMS_WaitRelTime(); 
+  int computeRV_Prepare4Comms(); 
+  int computeRV_SwitchOffMobility(); 
+  int computeRV_PostComms(); 
+  int computeDHS_Go2Nominal(); 
+  int computeRV_Prepare4Travel(); 
+  int computeRV_Prepare4Night(); 
+  int computeRV_Prepare4Dozing(); 
+  int computeADE_Operational2Standby();
+  int computeADE_Standby2Operational();
+  int computeADE_SwitchOn();
+  int computeADE_SwitchOff();
+  int computeCOMMS_LST2WH();
+  int computeCOMMS_SwitchOff();
+  int computeCOMMS_SwitchOn();
+  int computeCOMMS_WH2LST();
+  int computeGNC_MonitoringOnly();
+  int computeGNC_SwitchOff();
+  int computeDHS_HighPwr2Reduced();
+  int computeDHS_LowPwr2Reduced();
+  int computeDHS_Nominal2Reduced();
+  int computeDHS_Reduced2HighPwr();
+  int computeDHS_Reduced2LowPwr();
+  int computeDHS_Reduced2Nominal();
+  int computeDeploy_LEFT_SA();
+  int computeDeploy_RIGHT_SA();
+  int computeSA_LEFT_Primary_Initialise();
+  int computeSA_LEFT_Primary_MoveTo();
+  int computeSA_LEFT_Primary_SwitchOff();
+  int computeSA_LEFT_Secondary_Initialise();
+  int computeSA_LEFT_Secondary_MoveTo();
+  int computeSA_LEFT_Secondary_SwitchOff();
+  int computeSA_RIGHT_Primary_Initialise();
+  int computeSA_RIGHT_Primary_MoveTo();
+  int computeSA_RIGHT_Primary_SwitchOff();
+  int computeSA_RIGHT_Secondary_Initialise();
+  int computeSA_RIGHT_Secondary_MoveTo();
+  int computeSA_RIGHT_Secondary_SwitchOff();
 
   // method used only for the continuous execution; in this
   // case it does not do anything
@@ -197,17 +211,50 @@ int computeRV_Prepare4Dozing();
   int deploy_left_sa_seq;
   int deploy_right_sa_seq;
 
-  //ControllerModelNamespace::orc_Mod_Deploy_Mast Deploy_Mast;
-  //orc_Mod_MAST_DEP_Initialise MAST_DEP_Initialise;
-  //orc_Mod_MAST_PAN_Initialise MAST_PAN_Initialise;
+  ControllerModelNamespace::orc_Mod_Deploy_Mast Deploy_Mast;
+  ControllerModelNamespace::orc_Mod_MAST_DEP_Initialise MAST_DEP_Initialise;
+  ControllerModelNamespace::orc_Mod_MAST_PAN_Initialise MAST_PAN_Initialise;
   ControllerModelNamespace::orc_Mod_MAST_TILT_Initialise MAST_TILT_Initialise;
-  //orc_Mod_MAST_DEP_SwitchOff MAST_DEP_SwitchOff;
-  //orc_Mod_MAST_PAN_SwitchOff MAST_PAN_SwitchOff;
-  //orc_Mod_MAST_TILT_SwitchOff MAST_TILT_SwitchOff;
-  //orc_Mod_MAST_DEP_MoveTo MAST_DEP_MoveTo;
-  //orc_Mod_MAST_PAN_MoveTo MAST_PAN_MoveTo;
-  //orc_Mod_MAST_TILT_MoveTo MAST_TILT_MoveTo;
-  //orc_Mod_MAST_PTU_MoveTo MAST_PTU_MoveTo;
+  ControllerModelNamespace::orc_Mod_MAST_DEP_SwitchOff MAST_DEP_SwitchOff;
+  ControllerModelNamespace::orc_Mod_MAST_PAN_SwitchOff MAST_PAN_SwitchOff;
+  ControllerModelNamespace::orc_Mod_MAST_TILT_SwitchOff MAST_TILT_SwitchOff;
+  ControllerModelNamespace::orc_Mod_MAST_DEP_MoveTo MAST_DEP_MoveTo;
+  ControllerModelNamespace::orc_Mod_MAST_PAN_MoveTo MAST_PAN_MoveTo;
+  ControllerModelNamespace::orc_Mod_MAST_TILT_MoveTo MAST_TILT_MoveTo;
+  ControllerModelNamespace::orc_Mod_MAST_PTU_MoveTo MAST_PTU_MoveTo;
+  ControllerModelNamespace::orc_Mod_GNC_Initialise GNC_Initialise; 
+  ControllerModelNamespace::orc_Mod_GNC_MonitoringOnly GNC_MonitoringOnly; 
+  ControllerModelNamespace::orc_Mod_GNC_SwitchOff GNC_SwitchOff; 
+  ControllerModelNamespace::orc_Mod_ADE_Operational2Standby ADE_Operational2Standby; 
+  ControllerModelNamespace::orc_Mod_ADE_Standby2Operational ADE_Standby2Operational; 
+  ControllerModelNamespace::orc_Mod_ADE_SwitchOn ADE_SwitchOn; 
+  ControllerModelNamespace::orc_Mod_ADE_SwitchOff ADE_SwitchOff; 
+  ControllerModelNamespace::orc_Mod_ADEs_Activate ADEs_Activate; 
+  ControllerModelNamespace::orc_Mod_ADEs_DeActivate ADEs_DeActivate; 
+  ControllerModelNamespace::orc_Mod_COMMS_LST2WH COMMS_LST2WH; 
+  ControllerModelNamespace::orc_Mod_COMMS_SwitchOff COMMS_SwitchOff; 
+  ControllerModelNamespace::orc_Mod_COMMS_SwitchOn COMMS_SwitchOn; 
+  ControllerModelNamespace::orc_Mod_COMMS_WH2LST COMMS_WH2LST; 
+  ControllerModelNamespace::orc_Mod_DHS_HighPwr2Reduced DHS_HighPwr2Reduced; 
+  ControllerModelNamespace::orc_Mod_DHS_LowPwr2Reduced DHS_LowPwr2Reduced; 
+  ControllerModelNamespace::orc_Mod_DHS_Nominal2Reduced DHS_Nominal2Reduced; 
+  ControllerModelNamespace::orc_Mod_DHS_Reduced2HighPwr DHS_Reduced2HighPwr; 
+  ControllerModelNamespace::orc_Mod_DHS_Reduced2LowPwr DHS_Reduced2LowPwr; 
+  ControllerModelNamespace::orc_Mod_DHS_Reduced2Nominal DHS_Reduced2Nominal; 
+  ControllerModelNamespace::orc_Mod_Deploy_LEFT_SA Deploy_LEFT_SA; 
+  ControllerModelNamespace::orc_Mod_Deploy_RIGHT_SA Deploy_RIGHT_SA; 
+  ControllerModelNamespace::orc_Mod_SA_LEFT_Primary_Initialise SA_LEFT_Primary_Initialise; 
+  ControllerModelNamespace::orc_Mod_SA_LEFT_Primary_MoveTo SA_LEFT_Primary_MoveTo; 
+  ControllerModelNamespace::orc_Mod_SA_LEFT_Primary_SwitchOff SA_LEFT_Primary_SwitchOff; 
+  ControllerModelNamespace::orc_Mod_SA_LEFT_Secondary_Initialise SA_LEFT_Secondary_Initialise; 
+  ControllerModelNamespace::orc_Mod_SA_LEFT_Secondary_MoveTo SA_LEFT_Secondary_MoveTo; 
+  ControllerModelNamespace::orc_Mod_SA_LEFT_Secondary_SwitchOff SA_LEFT_Secondary_SwitchOff; 
+  ControllerModelNamespace::orc_Mod_SA_RIGHT_Primary_Initialise SA_RIGHT_Primary_Initialise; 
+  ControllerModelNamespace::orc_Mod_SA_RIGHT_Primary_MoveTo SA_RIGHT_Primary_MoveTo; 
+  ControllerModelNamespace::orc_Mod_SA_RIGHT_Primary_SwitchOff SA_RIGHT_Primary_SwitchOff; 
+  ControllerModelNamespace::orc_Mod_SA_RIGHT_Secondary_Initialise SA_RIGHT_Secondary_Initialise; 
+  ControllerModelNamespace::orc_Mod_SA_RIGHT_Secondary_MoveTo SA_RIGHT_Secondary_MoveTo; 
+  ControllerModelNamespace::orc_Mod_SA_RIGHT_Secondary_SwitchOff SA_RIGHT_Secondary_SwitchOff; 
 
 };
 

@@ -10,6 +10,9 @@ rock_library(telemetry_telecommand
     rt_ade.cpp
     rt_mast.cpp
     rt_pancam.cpp
+    rt_comms.cpp
+    rt_dhs.cpp
+    rt_gnc.cpp
     rt_sa.cpp
     ActiveMQAdmin.cpp
     ActiveMQTCReceiver.cpp
@@ -20,17 +23,52 @@ rock_library(telemetry_telecommand
     lex.yy.c
     interface.cpp
     aa.c
+    module_ADE_Operational2Standby.cpp
+    module_ADEs_Activate.cpp
+    module_ADEs_DeActivate.cpp
+    module_ADE_Standby2Operational.cpp
+    module_ADE_SwitchOn.cpp
+    module_ADE_SwitchOff.cpp
+    module_COMMS_LST2WH.cpp
+    module_COMMS_SwitchOff.cpp
+    module_COMMS_SwitchOn.cpp
+    module_COMMS_WH2LST.cpp
+    module_Deploy_LEFT_SA.cpp
+    module_Deploy_Mast.cpp
+    module_Deploy_RIGHT_SA.cpp
+    module_DHS_HighPwr2Reduced.cpp
+    module_DHS_LowPwr2Reduced.cpp
+    module_DHS_Nominal2Reduced.cpp
+    module_DHS_Reduced2HighPwr.cpp
+    module_DHS_Reduced2LowPwr.cpp
+    module_DHS_Reduced2Nominal.cpp
+    module_GNC_Initialise.cpp
+    module_GNC_MonitoringOnly.cpp
+    module_GNC_SwitchOff.cpp
     module_MAST_DEP_Deploy.cpp
     module_MAST_DEP_Initialise.cpp
-    module_MAST_PAN_Initialise.cpp
-    module_MAST_TILT_Initialise.cpp
     module_MAST_DEP_MoveTo.cpp
-    module_MAST_PAN_MoveTo.cpp
-    module_MAST_TILT_MoveTo.cpp
     module_MAST_DEP_SwitchOff.cpp
+    module_MAST_PAN_Initialise.cpp
+    module_MAST_PAN_MoveTo.cpp
     module_MAST_PAN_SwitchOff.cpp
-    module_MAST_TILT_SwitchOff.cpp
     module_MAST_PTU_MoveTo.cpp
+    module_MAST_SwitchOff.cpp
+    module_MAST_TILT_Initialise.cpp
+    module_MAST_TILT_MoveTo.cpp
+    module_MAST_TILT_SwitchOff.cpp
+    module_SA_LEFT_Primary_Initialise.cpp
+    module_SA_LEFT_Primary_MoveTo.cpp
+    module_SA_LEFT_Primary_SwitchOff.cpp
+    module_SA_LEFT_Secondary_Initialise.cpp
+    module_SA_LEFT_Secondary_MoveTo.cpp
+    module_SA_LEFT_Secondary_SwitchOff.cpp
+    module_SA_RIGHT_Primary_Initialise.cpp
+    module_SA_RIGHT_Primary_MoveTo.cpp
+    module_SA_RIGHT_Primary_SwitchOff.cpp
+    module_SA_RIGHT_Secondary_Initialise.cpp
+    module_SA_RIGHT_Secondary_MoveTo.cpp
+    module_SA_RIGHT_Secondary_SwitchOff.cpp
 
     HEADERS
     comm.h
@@ -50,28 +88,99 @@ rock_library(telemetry_telecommand
     rapdGrammar_tab.h
     tasklib.h
     aa.h
+    module_includes.h
+    module_ADE_Operational2Standby.h
+    module_ADE_Operational2Standby_Inc.h
+    module_ADEs_Activate.h
+    module_ADEs_Activate_Inc.h
+    module_ADEs_DeActivate.h
+    module_ADEs_DeActivate_Inc.h
+    module_ADE_Standby2Operational.h
+    module_ADE_Standby2Operational_Inc.h
+    module_ADE_SwitchOn.h
+    module_ADE_SwitchOn_Inc.h
+    module_ADE_SwitchOff.h
+    module_ADE_SwitchOff_Inc.h
+    module_COMMS_LST2WH.h
+    module_COMMS_LST2WH_Inc.h
+    module_COMMS_SwitchOff.h
+    module_COMMS_SwitchOff_Inc.h
+    module_COMMS_SwitchOn.h
+    module_COMMS_SwitchOn_Inc.h
+    module_COMMS_WH2LST.h
+    module_COMMS_WH2LST_Inc.h
+    module_Deploy_LEFT_SA.h
+    module_Deploy_LEFT_SA_Inc.h
+    module_Deploy_Mast.h
+    module_Deploy_Mast_Inc.h
+    module_Deploy_RIGHT_SA.h
+    module_Deploy_RIGHT_SA_Inc.h
+    module_DHS_HighPwr2Reduced.h
+    module_DHS_HighPwr2Reduced_Inc.h
+    module_DHS_LowPwr2Reduced.h
+    module_DHS_LowPwr2Reduced_Inc.h
+    module_DHS_Nominal2Reduced.h
+    module_DHS_Nominal2Reduced_Inc.h
+    module_DHS_Reduced2HighPwr.h
+    module_DHS_Reduced2HighPwr_Inc.h
+    module_DHS_Reduced2LowPwr.h
+    module_DHS_Reduced2LowPwr_Inc.h
+    module_DHS_Reduced2Nominal.h
+    module_DHS_Reduced2Nominal_Inc.h
+    module_GNC_Initialise.h
+    module_GNC_Initialise_Inc.h
+    module_GNC_MonitoringOnly.h
+    module_GNC_MonitoringOnly_Inc.h
+    module_GNC_SwitchOff.h
+    module_GNC_SwitchOff_Inc.h
     module_MAST_DEP_Deploy.h
     module_MAST_DEP_Deploy_Inc.h
     module_MAST_DEP_Initialise.h
     module_MAST_DEP_Initialise_Inc.h
-    module_MAST_PAN_Initialise.h
-    module_MAST_PAN_Initialise_Inc.h
-    module_MAST_TILT_Initialise.h
-    module_MAST_TILT_Initialise_Inc.h
     module_MAST_DEP_MoveTo.h
     module_MAST_DEP_MoveTo_Inc.h
-    module_MAST_PAN_MoveTo.h
-    module_MAST_PAN_MoveTo_Inc.h
-    module_MAST_TILT_MoveTo.h
-    module_MAST_TILT_MoveTo_Inc.h
     module_MAST_DEP_SwitchOff.h
     module_MAST_DEP_SwitchOff_Inc.h
+    module_MAST_PAN_Initialise.h
+    module_MAST_PAN_Initialise_Inc.h
+    module_MAST_PAN_MoveTo.h
+    module_MAST_PAN_MoveTo_Inc.h
     module_MAST_PAN_SwitchOff.h
     module_MAST_PAN_SwitchOff_Inc.h
-    module_MAST_TILT_SwitchOff.h
-    module_MAST_TILT_SwitchOff_Inc.h
     module_MAST_PTU_MoveTo.h
     module_MAST_PTU_MoveTo_Inc.h
+    module_MAST_SwitchOff.h
+    module_MAST_SwitchOff_Inc.h
+    module_MAST_TILT_Initialise.h
+    module_MAST_TILT_Initialise_Inc.h
+    module_MAST_TILT_MoveTo.h
+    module_MAST_TILT_MoveTo_Inc.h
+    module_MAST_TILT_SwitchOff.h
+    module_MAST_TILT_SwitchOff_Inc.h
+    module_SA_LEFT_Primary_Initialise.h
+    module_SA_LEFT_Primary_Initialise_Inc.h
+    module_SA_LEFT_Primary_MoveTo.h
+    module_SA_LEFT_Primary_MoveTo_Inc.h
+    module_SA_LEFT_Primary_SwitchOff.h
+    module_SA_LEFT_Primary_SwitchOff_Inc.h
+    module_SA_LEFT_Secondary_Initialise.h
+    module_SA_LEFT_Secondary_Initialise_Inc.h
+    module_SA_LEFT_Secondary_MoveTo.h
+    module_SA_LEFT_Secondary_MoveTo_Inc.h
+    module_SA_LEFT_Secondary_SwitchOff.h
+    module_SA_LEFT_Secondary_SwitchOff_Inc.h
+    module_SA_RIGHT_Primary_Initialise.h
+    module_SA_RIGHT_Primary_Initialise_Inc.h
+    module_SA_RIGHT_Primary_MoveTo.h
+    module_SA_RIGHT_Primary_MoveTo_Inc.h
+    module_SA_RIGHT_Primary_SwitchOff.h
+    module_SA_RIGHT_Primary_SwitchOff_Inc.h
+    module_SA_RIGHT_Secondary_Initialise.h
+    module_SA_RIGHT_Secondary_Initialise_Inc.h
+    module_SA_RIGHT_Secondary_MoveTo.h
+    module_SA_RIGHT_Secondary_MoveTo_Inc.h
+    module_SA_RIGHT_Secondary_SwitchOff.h
+    module_SA_RIGHT_Secondary_SwitchOff_Inc.h
 
     DEPS_PKGCONFIG
     SDL_net activemq-cpp)

@@ -196,11 +196,10 @@ static const short GNC_ROVER_REAR_BOGIE_INDEX = 75;
 #define GNC_MIN_OPER_TEMPERATURE 210
 #define GNC_WARMUP_TIMEOUT       1000
 
-
 //
-// SA STATUS
+//  Solar Array
 //
-static const short SA_STATUS_INDEX 	          = 0;
+// indexes of the controller state vector
 static const short SA_LEFT_PRIMARY_STATUS_INDEX   = 1;
 static const short SA_LEFT_SECONDARY_STATUS_INDEX  = 2;
 static const short SA_RIGHT_PRIMARY_STATUS_INDEX   = 3;
@@ -210,7 +209,6 @@ static const short SA_CURRENT_Q2_INDEX	= 6;
 static const short SA_CURRENT_Q3_INDEX	= 7;
 static const short SA_CURRENT_Q4_INDEX	= 8;
 
-static const short SA_DOF               = 4;
 static const short SA_DES_Q1_INDEX	= 9;
 static const short SA_DES_Q2_INDEX	= 10;
 static const short SA_DES_Q3_INDEX	= 11;
@@ -222,20 +220,25 @@ static const short SA_TEMPERATURE_INDEX	= 16;
 static const short SA_LEFT_DATARATE_INDEX	= 17;
 static const short SA_RIGHT_DATARATE_INDEX	= 18;
 
-static const short SA_LEFT_WARMUP_TIME_INDEX	= 19;
-static const short SA_RIGHT_WARMUP_TIME_INDEX	= 20;
+static const short SA_PRIM_LEFT_WARMUP_TIME_INDEX	= 19;
+static const short SA_SEC_LEFT_WARMUP_TIME_INDEX	= 20;
+static const short SA_PRIM_RIGHT_WARMUP_TIME_INDEX	= 21;
+static const short SA_SEC_RIGHT_WARMUP_TIME_INDEX	= 22;
 
-static const short SA_ACTION_ID_INDEX   = 21; // 12-nov-2010 (Action ID)
-static const short SA_ACTION_RET_INDEX  = 22;
+static const short SA_ACTION_ID_INDEX   = 25; 
+static const short SA_ACTION_RET_INDEX  = 26; 
+
+static const short SA_DOF = 4;
 
 
 #define SA_DOF 4
 // Modes definitions
 #define SA_OPER_MODE_OFF          0
-#define SA_OPER_MODE_INITIALISING 1
+#define SA_OPER_MODE_INIT         1
 #define SA_OPER_MODE_STNDBY       2
 #define SA_OPER_MODE_MOVING       3
-#define SA_OPER_MODE_SEC_MOVING   4
+//#define SA_OPER_MODE_SEC_MOVING   4
+
 // (m/sec, deg/sec) 
 #define SA_MAX_ROTATION_SPEED 3
 #define DEFAULT_SA_MIN_LINE_VOLTAGE 15

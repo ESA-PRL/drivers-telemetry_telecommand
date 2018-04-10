@@ -5,9 +5,10 @@
 namespace ControllerModelNamespace {
 
 
-orc_Mod_MAST_SwitchOff::orc_Mod_MAST_SwitchOff (ModuleTask* mt,
-					int indexclk)
-  : ModuleAlgo ("orc_Mod_DMA_SwitchOff", mt, indexclk)
+//orc_Mod_MAST_SwitchOff::orc_Mod_MAST_SwitchOff (ModuleTask* mt,
+//					int indexclk)
+//  : ModuleAlgo ("orc_Mod_DMA_SwitchOff", mt, indexclk)
+orc_Mod_MAST_SwitchOff::orc_Mod_MAST_SwitchOff ()
 {
   //  PRINT1("** orc_Mod_DMA_SwitchOff constructor")
 }
