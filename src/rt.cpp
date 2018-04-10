@@ -117,55 +117,7 @@ void* RobotTask::thread ()
       else if (rtName == "ADEs_DeActivate") { 
           computeADEs_DeActivate();
       }
-      else if (rtName == "ADE_LEFT_Initialise") { 
-	computeADE_LEFT_Initialise();
-      }
-      else if (rtName == "ADE_LEFT_conf") { 
-	computeADE_LEFT_conf();
-      }
-      else if (rtName == "ADE_LEFT_ReleaseHDRM") { 
-	computeADE_LEFT_ReleaseHDRM();
-      }
-      else if (rtName == "ADE_LEFT_SwitchOff") { 
-	computeADE_LEFT_SwitchOff();
-      }
-      else if (rtName == "ADE_RIGHT_Initialise") { 
-	computeADE_RIGHT_Initialise();
-      }
-      else if (rtName == "ADE_RIGHT_conf") {
-	computeADE_RIGHT_conf();
-      }
-      else if (rtName == "ADE_RIGHT_ReleaseHDRM") { 
-	computeADE_RIGHT_ReleaseHDRM();
-      }
-      else if (rtName == "ADE_RIGHT_SwitchOff") { 
-	computeADE_RIGHT_SwitchOff();
-      }
-      else if (rtName == "SA_LEFT_Initialise") { 
-	computeSA_LEFT_Initialise();
-      }
-      else if (rtName == "SA_LEFT_PrimaryMoveTo") { 
-	computeSA_LEFT_PrimaryMoveTo();
-      }
-      else if (rtName == "SA_LEFT_SecondaryMoveTo") { 
-	computeSA_LEFT_SecondaryMoveTo();
-      }
-      else if (rtName == "SA_LEFT_SwitchOff") { 
-	computeSA_LEFT_SwitchOff();
-      }
-      else if (rtName == "SA_RIGHT_Initialise") { 
-	computeSA_RIGHT_Initialise();
-      }
-      else if (rtName == "SA_RIGHT_PrimaryMoveTo") { 
-	computeSA_RIGHT_PrimaryMoveTo();
-      }
-      else if (rtName == "SA_RIGHT_SecondaryMoveTo") { 
-	computeSA_RIGHT_SecondaryMoveTo();
-      }
-      else if (rtName == "SA_RIGHT_SwitchOff") { 
-	computeSA_RIGHT_SwitchOff();
-      }
-      else if (rtName == "Deploy_LEFT_SA") { 
+      else if (rtName == "Deploy_LEFT_SA") {
           computeDeploy_LEFT_SA();
       }
       else if (rtName == "Deploy_RIGHT_SA") { 
