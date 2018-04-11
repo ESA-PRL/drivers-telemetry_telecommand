@@ -45,7 +45,6 @@ rock_library(telemetry_telecommand
     module_GNC_Initialise.cpp
     module_GNC_MonitoringOnly.cpp
     module_GNC_SwitchOff.cpp
-    module_MAST_DEP_Deploy.cpp
     module_MAST_DEP_Initialise.cpp
     module_MAST_DEP_MoveTo.cpp
     module_MAST_DEP_SwitchOff.cpp
@@ -53,7 +52,6 @@ rock_library(telemetry_telecommand
     module_MAST_PAN_MoveTo.cpp
     module_MAST_PAN_SwitchOff.cpp
     module_MAST_PTU_MoveTo.cpp
-    module_MAST_SwitchOff.cpp
     module_MAST_TILT_Initialise.cpp
     module_MAST_TILT_MoveTo.cpp
     module_MAST_TILT_SwitchOff.cpp
@@ -133,8 +131,6 @@ rock_library(telemetry_telecommand
     module_GNC_MonitoringOnly_Inc.h
     module_GNC_SwitchOff.h
     module_GNC_SwitchOff_Inc.h
-    module_MAST_DEP_Deploy.h
-    module_MAST_DEP_Deploy_Inc.h
     module_MAST_DEP_Initialise.h
     module_MAST_DEP_Initialise_Inc.h
     module_MAST_DEP_MoveTo.h
@@ -149,8 +145,6 @@ rock_library(telemetry_telecommand
     module_MAST_PAN_SwitchOff_Inc.h
     module_MAST_PTU_MoveTo.h
     module_MAST_PTU_MoveTo_Inc.h
-    module_MAST_SwitchOff.h
-    module_MAST_SwitchOff_Inc.h
     module_MAST_TILT_Initialise.h
     module_MAST_TILT_Initialise_Inc.h
     module_MAST_TILT_MoveTo.h

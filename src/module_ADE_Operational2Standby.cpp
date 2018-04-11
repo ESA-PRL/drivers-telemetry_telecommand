@@ -19,22 +19,22 @@ namespace ControllerModelNamespace {
   
   void orc_Mod_ADE_Operational2Standby::param(char *params) {  
     // the action status is ok 
-    if (1 != sscanf(params, "%s", target_mode)) {
-      //      theRobotProcedure->
-      //	ExitOnParamValueError(Mt_ptr->GetRobotTaskPtr()->GetMnemonic().c_str(), 
-      //			      params);
-      return;
-    }
-    if (!strcmp(target_mode, "STANDBY") || !strcmp(target_mode, "OPERATIONAL")) {
-    } 
-    else {
-      //      theRobotProcedure->
-      //	ExitOnParamValueError(Mt_ptr->GetRobotTaskPtr()->GetMnemonic().c_str(), 
-      //			      params);
+    
+    int adeid_int = 0;
+    if (1 != sscanf(params, "%d", &adeid_int)) {
+      //    theRobotProcedure->
+      //      ExitOnParamValueError(Mt_ptr->GetRobotTaskPtr()->GetMnemonic().c_str(), 
+      //			    params);
       return;
     }
     
-    strcpy(ade_id, "left");
+    strcpy(target_mode, "STANDBY");
+    if (adeid_int == 0) {
+      strcpy(ade_id, "left");
+    }
+    else {
+      strcpy(ade_id, "right");
+    }
     
   }
   

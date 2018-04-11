@@ -42,6 +42,18 @@ class ActiveMQTMSender: public SimpleThread {
 
   Session* sessionMonitor;
 
+  Destination* adeDestinationMonitoring;
+  MessageProducer* adeProducerMonitoring;
+   
+  Destination* saDestinationMonitoring;
+  MessageProducer* saProducerMonitoring;
+  
+  Destination* dhsDestinationMonitoring;
+  MessageProducer* dhsProducerMonitoring;
+  
+  Destination* ttcDestinationMonitoring;
+  MessageProducer* ttcProducerMonitoring;
+
   Destination* gncDestinationMonitoring;
   MessageProducer* gncProducerMonitoring;
 

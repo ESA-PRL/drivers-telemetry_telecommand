@@ -122,8 +122,6 @@ void orc_Mod_MAST_TILT_SwitchOff::compute ()
 	MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
 
 	if (index >= (duration/0.2)) {
-	  MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_OFF;
-	  
 	  if (targetMechanism == TARGET_MECHANISM_DEP) {
 	    MastState[MAST_DEP_STATUS_INDEX]  = MAST_OPER_MODE_DEP_OFF;
 	  }

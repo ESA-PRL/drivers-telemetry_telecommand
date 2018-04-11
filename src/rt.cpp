@@ -111,20 +111,7 @@ void* RobotTask::thread ()
   int run = TRUE;
   do
     {
-      if (rtName == "ADEs_Activate") { 
-          computeADEs_Activate();
-      }
-      else if (rtName == "ADEs_DeActivate") { 
-          computeADEs_DeActivate();
-      }
-      else if (rtName == "Deploy_LEFT_SA") {
-          computeDeploy_LEFT_SA();
-      }
-      else if (rtName == "Deploy_RIGHT_SA") { 
-          computeDeploy_RIGHT_SA();
-      }
-      
-      else if (rtName == "PanCam_Initialise") { 
+      if (rtName == "PanCam_Initialise") { 
 	computePanCam_Initialise();
       }
       else if (rtName == "PanCam_InitWACs") { 
@@ -152,16 +139,26 @@ void* RobotTask::thread ()
 	computePanCam_FilterSel();
       }
       
-      else if (rtName == "MAST_TILT_Initialise") { 
-	computeMAST_TILT_Initialise();
+      //
+      // MAST s/s 
+      // MAST_DEP_MoveTo, MAST_PAN_MoveTo, MAST_TILT_MoveTo, 
+      // MAST_PTU_MoveTo are missing (TBC that are implemented)
+      // 
+      else if (rtName == "MAST_DEP_Initialise") { 
+    computeMAST_DEP_Initialise();
       }
      else if (rtName == "MAST_PAN_Initialise") { 
 	computeMAST_PAN_Initialise();
       }
+      else if (rtName == "MAST_TILT_Initialise") { 
+	computeMAST_TILT_Initialise();
+      }
+      else if (rtName == "MAST_DEP_SwitchOff") { 
+	computeMAST_DEP_SwitchOff();
+      }
       else if (rtName == "MAST_PAN_SwitchOff") { 
 	computeMAST_PAN_SwitchOff();
       }
-
       else if (rtName == "MAST_TILT_SwitchOff") { 
 	computeMAST_TILT_SwitchOff();
       }
@@ -172,18 +169,130 @@ void* RobotTask::thread ()
             CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
             activemqTCReceiver->addCommandInfo(cmd_info);
         }
-     }
+      }
+
+      //
+      // DHS s/s
+      //
+      else if (rtName == "DHS_HighPwr2Reduced") { 
+	computeDHS_HighPwr2Reduced();
+      }
+      else if (rtName == "DHS_LowPwr2Reduced") { 
+	computeDHS_LowPwr2Reduced();
+      }
+      else if (rtName == "DHS_Nominal2Reduced") { 
+	computeDHS_Nominal2Reduced();
+      }
+      else if (rtName == "DHS_Reduced2HighPwr") { 
+	computeDHS_Reduced2HighPwr();
+      }
+      else if (rtName == "DHS_Reduced2LowPwr") { 
+	computeDHS_Reduced2LowPwr();
+      }
+      else if (rtName == "DHS_Reduced2Nominal") { 
+	computeDHS_Reduced2Nominal();
+      }
+
+      //
+      // COMMS s/s
+      //
+      else if (rtName == "COMMS_SwitchOn") { 
+	computeCOMMS_SwitchOn();
+      }
+      else if (rtName == "COMMS_LST2WH") { 
+	computeCOMMS_LST2WH();
+      }
+      else if (rtName == "COMMS_WH2LST") { 
+	computeCOMMS_WH2LST();
+      }
+      else if (rtName == "COMMS_SwitchOff") { 
+	computeCOMMS_SwitchOff();
+      }
+
+      //
+      // SA s/s
+      //
+      else if (rtName == "Deploy_LEFT_SA") { 
+	computeDeploy_LEFT_SA();
+      }
+      else if (rtName == "Deploy_RIGHT_SA") { 
+	computeDeploy_RIGHT_SA();
+      }
+      else if (rtName == "SA_LEFT_Primary_Initialise") { 
+	computeSA_LEFT_Primary_Initialise();
+      }
+      else if (rtName == "SA_LEFT_Primary_MoveTo") { 
+	computeSA_LEFT_Primary_MoveTo();
+      }
+      else if (rtName == "SA_LEFT_Primary_SwitchOff") { 
+	computeSA_LEFT_Primary_SwitchOff();
+      }
+      else if (rtName == "SA_LEFT_Secondary_Initialise") { 
+	computeSA_LEFT_Secondary_Initialise();
+      }
+      else if (rtName == "SA_LEFT_Secondary_MoveTo") { 
+	computeSA_LEFT_Secondary_MoveTo();
+      }
+      else if (rtName == "SA_LEFT_Secondary_SwitchOff") { 
+	computeSA_LEFT_Secondary_SwitchOff();
+      }
+      else if (rtName == "SA_RIGHT_Primary_Initialise") { 
+	computeSA_RIGHT_Primary_Initialise();
+      }
+      else if (rtName == "SA_RIGHT_Primary_MoveTo") { 
+	computeSA_RIGHT_Primary_MoveTo();
+      }
+      else if (rtName == "SA_RIGHT_Primary_SwitchOff") { 
+	computeSA_RIGHT_Primary_SwitchOff();
+      }
+      else if (rtName == "SA_RIGHT_Secondary_Initialise") { 
+	computeSA_RIGHT_Secondary_Initialise();
+      }
+      else if (rtName == "SA_RIGHT_Secondary_MoveTo") { 
+	computeSA_RIGHT_Secondary_MoveTo();
+      }
+      else if (rtName == "SA_RIGHT_Secondary_SwitchOff") { 
+	computeSA_RIGHT_Secondary_SwitchOff();
+      }
+
+      //
+      // ADE s/s
+      //
+      else if (rtName == "ADE_Operational2Standby") { 
+	computeADE_Operational2Standby();
+      }
+      else if (rtName == "ADE_Standby2Operational") { 
+	computeADE_Standby2Operational();
+      }
+      else if (rtName == "ADE_SwitchOn") { 
+	computeADE_SwitchOn();
+      }
+      else if (rtName == "ADE_SwitchOff") { 
+	computeADE_SwitchOff();
+      }
+      else if (rtName == "ADEs_Activate") { 
+	computeADEs_Activate();
+      }
+      else if (rtName == "ADEs_DeActivate") { 
+	computeADEs_DeActivate();
+      }
+
+      //
+      // GNC s/s
+      //
       else if (rtName == "GNC_Initialise") { 
 	computeGNC_Initialise();
       }
-      else if (rtName == "Release_Umbilical") { 
-          computeRelease_Umbilical();
+      else if (rtName == "GNC_MonitoringOnly") { 
+	computeGNC_MonitoringOnly();
       }
       else if (rtName == "GNC_SwitchOff") { 
 	computeGNC_SwitchOff();
       }
-      else if (rtName == "GNC_MonitoringOnly") { 
-	computeGNC_MonitoringOnly();
+
+
+      else if (rtName == "Release_Umbilical") { 
+          computeRelease_Umbilical();
       }
       else if (rtName == "RV_WakeUp") { 
 	computeRV_WakeUp();

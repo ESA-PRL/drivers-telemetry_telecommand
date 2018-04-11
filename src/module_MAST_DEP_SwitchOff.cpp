@@ -22,15 +22,7 @@ void orc_Mod_MAST_DEP_SwitchOff::param (char *params)
 
   //  fprintf (stderr, "MAST_DEP_SwitchOff: param\n");
 
-    if (1 != sscanf(params, "%d", &targetMechanism)) {
-      
-      MastState[ABORT_INDEX] = ACTION_RET_ERROR;
-      //      MastState[ABORT_ERROR_INDEX] = MAST_PARAMETERISATION_ERROR;
-      //      theRobotProcedure->
-      //	ExitOnParamValueError(Mt_ptr->GetRobotTaskPtr()->GetMnemonic().c_str(), 
-      //			      params);
-      return;
-    }
+    targetMechanism = TARGET_MECHANISM_DEP;
 
     // the action status is ok
     action_exec_status = ACTION_RET_OK;
@@ -122,7 +114,6 @@ void orc_Mod_MAST_DEP_SwitchOff::compute ()
 	MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
 
 	if (index >= (duration/0.2)) {
-	  MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_OFF;
 	  
 	  if (targetMechanism == TARGET_MECHANISM_DEP) {
 	    MastState[MAST_DEP_STATUS_INDEX]  = MAST_OPER_MODE_DEP_OFF;

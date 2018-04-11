@@ -44,8 +44,12 @@ void* ActiveMQTMSender::thread() {
           return NULL;
         }
 
+	string ade_str("ADE_STATE");
+	string sa_str("SA_STATE");
         string gnc_str("GNC_STATE");
         string ptu_str("PTU_STATE");
+	string dhs_str("DHS_STATE");
+	string ttc_str("TTC_STATE");
         string locom_str("LOCOM_STATE");
         string img_pancam_left_str("PANCAM_LEFT_IMAGE");
         string img_pancam_right_str("PANCAM_RIGHT_IMAGE");
@@ -90,6 +94,62 @@ void* ActiveMQTMSender::thread() {
 
         string file_str("ROVERFILETRANSFER");
 
+	/******** ADE *********/
+	adeDestinationMonitoring = sessionMonitor->createTopic(ade_str);
+	if (adeDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	adeProducerMonitoring = sessionMonitor->createProducer(adeDestinationMonitoring);
+	if (adeProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	adeProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+
+	/******** SA *********/
+	saDestinationMonitoring = sessionMonitor->createTopic(sa_str);
+	if (saDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	saProducerMonitoring = sessionMonitor->createProducer(saDestinationMonitoring);
+	if (saProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	saProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+	
+	/******** DHS *********/
+	dhsDestinationMonitoring = sessionMonitor->createTopic(dhs_str);
+	if (dhsDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	dhsProducerMonitoring = sessionMonitor->createProducer(dhsDestinationMonitoring);
+	if (dhsProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	dhsProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+	
+	/******** TTC *********/
+	ttcDestinationMonitoring = sessionMonitor->createTopic(ttc_str);
+	if (ttcDestinationMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	ttcProducerMonitoring = sessionMonitor->createProducer(ttcDestinationMonitoring);
+	if (ttcProducerMonitoring == NULL) {
+	  std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+	  return NULL;
+	}
+	ttcProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+	isConnected = true;
+	
         /******** GNC *********/
         gncDestinationMonitoring = sessionMonitor->createTopic(gnc_str);
         if (gncDestinationMonitoring == NULL) {

@@ -20,7 +20,7 @@ namespace ControllerModelNamespace {
   void orc_Mod_MAST_TILT_Initialise::param (char *params)
   {
     
-      fprintf (stderr, "MAST_TILT_Initialise: param %s\n", params);
+    //  fprintf (stderr, "MAST_TILT_Initialise: param %s\n", params);
     
     int tmp1, tmp2;
     if (2 != sscanf(params, "%d %d", &tmp1, &tmp2)) {
@@ -64,7 +64,7 @@ namespace ControllerModelNamespace {
   
   void orc_Mod_MAST_TILT_Initialise::init ()
   {
-        std::cerr << "MAST_TILT_Initialise: init" << std::endl;
+    //    std::cerr << "MAST_TILT_Initialise: init" << std::endl;
     
     //
     // if the action status is not ok (because of bad parameterisation
@@ -152,7 +152,6 @@ namespace ControllerModelNamespace {
     
     MastState[MAST_ACTION_ID_INDEX]   = rtId;
     MastState[MAST_ACTION_RET_INDEX]  = ACTION_RET_INITIALISING;
-    MastState[MAST_STATUS_INDEX]      = MAST_OPER_MODE_PTU_INITIALISE;
     if (targetMechanism == TARGET_MECHANISM_PAN) {
       MastState[MAST_PAN_STATUS_INDEX]  = MAST_OPER_MODE_PAN_INITIALISE;
     }
@@ -192,7 +191,7 @@ namespace ControllerModelNamespace {
   
   void orc_Mod_MAST_TILT_Initialise::compute ()
   {
-       std::cerr << "-> MAST_TILT_Initialise: start compute" << std::endl;
+    //   std::cerr << "-> MAST_TILT_Initialise: start compute" << std::endl;
     
     // if the action status is not ok the code is not executed
     if (action_exec_status != ACTION_RET_OK) {
@@ -213,7 +212,6 @@ namespace ControllerModelNamespace {
     }
     
     
-    MastState[MAST_STATUS_INDEX]     = MAST_OPER_MODE_PTU_INITIALISE;
     if (targetMechanism == TARGET_MECHANISM_PAN) {
       MastState[MAST_PAN_STATUS_INDEX]  = MAST_OPER_MODE_PAN_INITIALISE;
     }
@@ -234,7 +232,6 @@ namespace ControllerModelNamespace {
     if (index >= (warmUpTimeout/0.2)) {
       
       // set the state
-      MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_PTU_STNDBY;
       if (targetMechanism == TARGET_MECHANISM_PAN) {
 	MastState[MAST_PAN_STATUS_INDEX]  = MAST_OPER_MODE_PAN_STNDBY;
       }
@@ -302,7 +299,7 @@ namespace ControllerModelNamespace {
 
   void orc_Mod_MAST_TILT_Initialise::end ()
   {
-      fprintf( stderr, "MAST_TILT_Initialise: End\n" );
+    //  fprintf( stderr, "MAST_TILT_Initialise: End\n" );
     // reset the events
     MAST_TILT_Initialise_prec = NO_EVENT;
     MAST_TILT_Initialise_post = NO_EVENT;

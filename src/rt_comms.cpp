@@ -3,11 +3,6 @@
 #include "prr.h"
 #include "ctrl_state.h"
 
-//#include "module_COMMS_LST2WH.h"
-//#include "module_COMMS_SwitchOff.h"
-//#include "module_COMMS_SwitchOn.h"
-//#include "module_COMMS_WH2LST.h"
-
 extern RobotProcedure*  theRobotProcedure;
 
 using namespace ControllerModelNamespace;

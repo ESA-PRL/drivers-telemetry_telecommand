@@ -13,6 +13,8 @@
 static double lastLOCOMState[MAX_STATE_SIZE];
 static double lastMastState[MAX_STATE_SIZE];
 static double lastGNCState[MAX_STATE_SIZE];
+static double lastDhsState[MAX_STATE_SIZE];
+static double lastTtcState[MAX_STATE_SIZE];
 
 static bool first_time=true;
 
@@ -81,6 +83,10 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
  double LOCOMState[MAX_STATE_SIZE];
  double MastState[MAX_STATE_SIZE];
  double GNCState[MAX_STATE_SIZE];
+ double DHSState[MAX_STATE_SIZE];
+ double TTCState[MAX_STATE_SIZE];
+ double ADEState[MAX_STATE_SIZE];
+ double SAState[MAX_STATE_SIZE];
  // flags for state changes
  bool LOCOMStateChanged;
  bool MastStateChanged;
@@ -113,6 +119,22 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
 
   if ( prr->GetParameters()->get( "LOCOMState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) LOCOMState ) == ERROR ){
          std::cout << "Error getting LOCOMState" << std::endl;
+  }
+
+  if ( prr->GetParameters()->get( "AdeState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ){
+         std::cout << "Error getting ADEState" << std::endl;
+  }
+
+  if ( prr->GetParameters()->get( "CommsState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) TTCState ) == ERROR ){
+         std::cout << "Error getting TTCState" << std::endl;
+  }
+
+  if ( prr->GetParameters()->get( "DhsState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) DHSState ) == ERROR ){
+         std::cout << "Error getting DHSState" << std::endl;
+  }
+
+  if ( prr->GetParameters()->get( "SolarArrayState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ){
+         std::cout << "Error getting SAState" << std::endl;
   }
 
   if (activemqTMSender->isConnected)
@@ -186,13 +208,16 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
 
               std::auto_ptr<TextMessage> mastMessage(activemqTMSender->sessionMonitor->createTextMessage
                       ("I'm a mast message"));
-              mastMessage->setIntProperty("iter",seq);
-              mastMessage->setLongProperty("time",time1);
-              mastMessage->setIntProperty("Status", (int)MastState[MAST_STATUS_INDEX]);
-              mastMessage->setFloatProperty("Pan", MastState[MAST_CURRENT_Q2_INDEX]);
-              mastMessage->setFloatProperty("Tilt", MastState[MAST_CURRENT_Q3_INDEX]);
-              //mastMessage->setIntProperty("ActionStatus", (int)MastState[MAST_ACTION_RET_INDEX]);
-              //mastMessage->setIntProperty("ActionId", (int)MastState[MAST_ACTION_ID_INDEX]);
+	      mastMessage->setIntProperty("iter",seq);
+	      mastMessage->setLongProperty("time",time1);
+	      mastMessage->setIntProperty("StatusDep", (int)MastState[MAST_DEP_STATUS_INDEX]);
+	      mastMessage->setIntProperty("StatusPan", (int)MastState[MAST_PAN_STATUS_INDEX]);
+	      mastMessage->setIntProperty("StatusTilt", (int)MastState[MAST_TILT_STATUS_INDEX]);
+	      mastMessage->setFloatProperty("Dep", MastState[MAST_CURRENT_Q1_INDEX]);
+	      mastMessage->setFloatProperty("Pan", MastState[MAST_CURRENT_Q2_INDEX]);
+	      mastMessage->setFloatProperty("Tilt", MastState[MAST_CURRENT_Q3_INDEX]);
+	      mastMessage->setIntProperty("ActionStatus", (int)MastState[MAST_ACTION_RET_INDEX]);
+	      mastMessage->setIntProperty("ActionId", (int)MastState[MAST_ACTION_ID_INDEX]);
               activemqTMSender->ptuProducerMonitoring->send(mastMessage.get()); 
               for (int i=0; i<MAX_STATE_SIZE; i++)
               {
@@ -200,7 +225,59 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
               }
           }
           
+      //
+      // DHS_STATE
+      //
+      {
+	std::auto_ptr<TextMessage> dhsMessage(activemqTMSender->sessionMonitor->createTextMessage
+					       ("I'm a dhs message"));
+	dhsMessage->setIntProperty("iter",seq);
+	dhsMessage->setLongProperty("time",time1);
+	dhsMessage->setIntProperty("Status", (int)DHSState[DHS_STATUS_INDEX]);
+	dhsMessage->setIntProperty("ActionStatus", (int)DHSState[DHS_ACTION_RET_INDEX]);
+	dhsMessage->setIntProperty("ActionId", (int)DHSState[DHS_ACTION_ID_INDEX]);
+	activemqTMSender->dhsProducerMonitoring->send(dhsMessage.get()); 
+	for (int i=0; i<MAX_STATE_SIZE; i++) {
+	  lastDhsState[i]=DHSState[i];
+	}
+      }
 
+      //
+      // TTC_STATE
+      //
+      {
+	std::auto_ptr<TextMessage> ttcMessage(activemqTMSender->sessionMonitor->createTextMessage
+					       ("I'm a ttc message"));
+	ttcMessage->setIntProperty("iter",seq);
+	ttcMessage->setLongProperty("time",time1);
+	ttcMessage->setIntProperty("StatusMain", (int)TTCState[COMMS_MAIN_STATUS_INDEX]);
+	ttcMessage->setIntProperty("StatusRed", (int)TTCState[COMMS_REDUNDANT_STATUS_INDEX]);
+	ttcMessage->setIntProperty("ActionStatus", (int)TTCState[COMMS_ACTION_RET_INDEX]);
+	ttcMessage->setIntProperty("ActionId", (int)TTCState[COMMS_ACTION_ID_INDEX]);
+	activemqTMSender->ttcProducerMonitoring->send(ttcMessage.get()); 
+	for (int i=0; i<MAX_STATE_SIZE; i++) {
+	  lastTtcState[i]=TTCState[i];
+	}
+      }
+
+      {
+	std::auto_ptr<TextMessage> saMessage(activemqTMSender->sessionMonitor->createTextMessage
+					     ("I'm a sa message"));
+	saMessage->setIntProperty("iter",seq);
+	saMessage->setLongProperty("time",time1);
+	saMessage->setFloatProperty("SALEFTPrimStatus", SAState[SA_LEFT_PRIMARY_STATUS_INDEX]);
+	saMessage->setFloatProperty("SALEFTSecStatus", SAState[SA_LEFT_SECONDARY_STATUS_INDEX]);
+	saMessage->setFloatProperty("SARIGHTPrimStatus", SAState[SA_RIGHT_PRIMARY_STATUS_INDEX]);
+	saMessage->setFloatProperty("SARIGHTSecStatus", SAState[SA_RIGHT_SECONDARY_STATUS_INDEX]);
+	saMessage->setFloatProperty("Q1", SAState[SA_CURRENT_Q1_INDEX]);
+	saMessage->setFloatProperty("Q2", SAState[SA_CURRENT_Q2_INDEX]);
+	saMessage->setFloatProperty("Q3", SAState[SA_CURRENT_Q3_INDEX]);
+	saMessage->setFloatProperty("Q4", SAState[SA_CURRENT_Q4_INDEX]);
+	saMessage->setIntProperty("ActionStatus", (int)SAState[SA_ACTION_RET_INDEX]);
+	saMessage->setIntProperty("ActionId", (int)SAState[SA_ACTION_ID_INDEX]);
+	activemqTMSender->saProducerMonitoring->send(saMessage.get()); 
+	
+      }
           //
           // LOCOM State
           //      

@@ -183,8 +183,7 @@ namespace ControllerModelNamespace {
     // set action execution information
     MastState[MAST_ACTION_ID_INDEX]  = rtId;
     MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_INITIALISING;
-    MastState[MAST_STATUS_INDEX]     = MAST_OPER_MODE_PTU_MOVING;
-    MastState[MAST_DEP_STATUS_INDEX] = MAST_OPER_MODE_PTU_MOVING;
+    MastState[MAST_DEP_STATUS_INDEX] = MAST_OPER_MODE_DEP_MOVING;
 
     //
     // set the state
@@ -244,7 +243,7 @@ namespace ControllerModelNamespace {
       }
       //			setMastPosition(currentPose);
       
-      MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_PTU_MOVING;
+      MastState[MAST_DEP_STATUS_INDEX] = MAST_OPER_MODE_DEP_MOVING;
     } 
     else {
       // set the current pose at the final pose
@@ -254,7 +253,7 @@ namespace ControllerModelNamespace {
       
       MastState[MAST_ACTION_ID_INDEX]  = 0.0;
       MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_OK;
-      MastState[MAST_STATUS_INDEX]     = MAST_OPER_MODE_PTU_STNDBY;
+      MastState[MAST_DEP_STATUS_INDEX] = MAST_OPER_MODE_DEP_STNDBY;
       
       MAST_DEP_MoveTo_post = SET_EVENT;
       // moduleSendEvent("MAST_DEP_MoveTo_post;");

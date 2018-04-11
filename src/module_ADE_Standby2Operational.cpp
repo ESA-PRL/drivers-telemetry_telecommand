@@ -26,22 +26,21 @@ orc_Mod_ADE_Standby2Operational::~orc_Mod_ADE_Standby2Operational() {
 
 void orc_Mod_ADE_Standby2Operational::param(char *params) {  
   // the action status is ok 
-  if (1 != sscanf(params, "%s", target_mode)) {
-    //    theRobotProcedure->
-    //      ExitOnParamValueError(Mt_ptr->GetRobotTaskPtr()->GetMnemonic().c_str(), 
-    //			    params);
-    return;
-  }
-  if (!strcmp(target_mode, "STANDBY") || !strcmp(target_mode, "OPERATIONAL")) {
-  } 
-  else {
+  int adeid_int = 0;
+  if (1 != sscanf(params, "%d", &adeid_int)) {
     //    theRobotProcedure->
     //      ExitOnParamValueError(Mt_ptr->GetRobotTaskPtr()->GetMnemonic().c_str(), 
     //			    params);
     return;
   }
   
-  strcpy(ade_id, "left");
+  strcpy(target_mode, "OPERATIONAL");
+  if (adeid_int == 0) {
+    strcpy(ade_id, "left");
+  }
+  else {
+    strcpy(ade_id, "right");
+  }
 }
 
 void orc_Mod_ADE_Standby2Operational::reparam(char *params) { 

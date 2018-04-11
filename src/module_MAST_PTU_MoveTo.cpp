@@ -224,20 +224,19 @@ namespace ControllerModelNamespace {
     // set action execution information
     MastState[MAST_ACTION_ID_INDEX] = rtId;
     MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_INITIALISING;
-    MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_PTU_MOVING;
 
     if ( MastState[MAST_PAN_STATUS_INDEX] == MAST_OPER_MODE_PAN_OFF) {
-		current_pan_mode = MAST_OPER_MODE_PAN_OFF;
-	}
-	else if (MastState[MAST_PAN_STATUS_INDEX] == MAST_OPER_MODE_PAN_STNDBY) {
-	    current_pan_mode = MAST_OPER_MODE_PAN_STNDBY;
-	}
+      current_pan_mode = MAST_OPER_MODE_PAN_OFF;
+    }
+    else if (MastState[MAST_PAN_STATUS_INDEX] == MAST_OPER_MODE_PAN_STNDBY) {
+      current_pan_mode = MAST_OPER_MODE_PAN_STNDBY;
+    }
     if ( MastState[MAST_TILT_STATUS_INDEX] == MAST_OPER_MODE_TILT_OFF) {
-		current_tilt_mode = MAST_OPER_MODE_TILT_OFF;
-	}
-	else if (MastState[MAST_TILT_STATUS_INDEX] == MAST_OPER_MODE_TILT_STNDBY) {
-	    current_tilt_mode = MAST_OPER_MODE_TILT_STNDBY;
-	}
+      current_tilt_mode = MAST_OPER_MODE_TILT_OFF;
+    }
+    else if (MastState[MAST_TILT_STATUS_INDEX] == MAST_OPER_MODE_TILT_STNDBY) {
+      current_tilt_mode = MAST_OPER_MODE_TILT_STNDBY;
+    }
 
     //
     // set the state
@@ -297,7 +296,8 @@ namespace ControllerModelNamespace {
 	}
 	//			setMastPosition(currentPose);
 	
-	MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_PTU_MOVING;
+	MastState[MAST_PAN_STATUS_INDEX] = MAST_OPER_MODE_PAN_MOVING;
+	MastState[MAST_TILT_STATUS_INDEX] = MAST_OPER_MODE_TILT_MOVING;
       } 
       else {
 	// set the current pose at the final pose
@@ -305,9 +305,10 @@ namespace ControllerModelNamespace {
 	  currentPose[i] = finalPose[i];
 	}
 	
-	MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_PTU_STNDBY;
+	MastState[MAST_PAN_STATUS_INDEX]  = MAST_OPER_MODE_PAN_STNDBY;
+	MastState[MAST_TILT_STATUS_INDEX] = MAST_OPER_MODE_TILT_STNDBY;
 	
-	MastState[MAST_ACTION_ID_INDEX] = 0.0;
+	MastState[MAST_ACTION_ID_INDEX]  = 0.0;
 	MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_OK;
 	
 	MAST_PTU_MoveTo_post = SET_EVENT;
@@ -333,12 +334,10 @@ namespace ControllerModelNamespace {
 	    initPose[currentMovingJoint] + (rt) * (finalPose[currentMovingJoint] - initPose[currentMovingJoint]);
 	}
 	if (currentMovingJoint == 1) {
-	  MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_PAN_MOVING;
 	  MastState[MAST_PAN_STATUS_INDEX] = MAST_OPER_MODE_PAN_MOVING;
 	  MastState[MAST_TILT_STATUS_INDEX] = current_tilt_mode;
 	}
 	else if (currentMovingJoint == 2) {
-	  MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_TILT_MOVING;
 	  MastState[MAST_TILT_STATUS_INDEX] = MAST_OPER_MODE_TILT_MOVING;
 	  MastState[MAST_PAN_STATUS_INDEX] = current_pan_mode;
 	}
@@ -358,22 +357,20 @@ namespace ControllerModelNamespace {
 	    currentPose[i] = finalPose[i];
 	  }
 	  	   
-	  MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_PTU_STNDBY;
-	  
 	  if ( current_pan_mode == MAST_OPER_MODE_PAN_OFF) {
-		  MastState[MAST_PAN_STATUS_INDEX] = MAST_OPER_MODE_PAN_OFF;
+	    MastState[MAST_PAN_STATUS_INDEX] = MAST_OPER_MODE_PAN_OFF;
 	  }
 	  else {
-	      MastState[MAST_PAN_STATUS_INDEX] = MAST_OPER_MODE_PAN_STNDBY;
+	    MastState[MAST_PAN_STATUS_INDEX] = MAST_OPER_MODE_PAN_STNDBY;
 	  }
-      if ( current_pan_mode == MAST_OPER_MODE_TILT_OFF) {
-		  MastState[MAST_TILT_STATUS_INDEX] = MAST_OPER_MODE_TILT_OFF;
+	  if ( current_pan_mode == MAST_OPER_MODE_TILT_OFF) {
+	    MastState[MAST_TILT_STATUS_INDEX] = MAST_OPER_MODE_TILT_OFF;
 	  }
 	  else {
-	      MastState[MAST_TILT_STATUS_INDEX] = MAST_OPER_MODE_TILT_STNDBY;
+	    MastState[MAST_TILT_STATUS_INDEX] = MAST_OPER_MODE_TILT_STNDBY;
 	  };
 	  
-	  MastState[MAST_ACTION_ID_INDEX] = 0.0;
+	  MastState[MAST_ACTION_ID_INDEX]  = 0.0;
 	  MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_OK;
 	  
 	  MAST_PTU_MoveTo_prec = SET_EVENT;

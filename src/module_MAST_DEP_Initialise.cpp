@@ -130,8 +130,7 @@ void orc_Mod_MAST_DEP_Initialise::init ()
 
 	MastState[MAST_ACTION_ID_INDEX]  = rtId;
 	MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_INITIALISING;
-	MastState[MAST_STATUS_INDEX]     = MAST_OPER_MODE_DEP_INITIALISE;
-	MastState[MAST_DEP_STATUS_INDEX]     = MAST_OPER_MODE_DEP_INITIALISE;
+	MastState[MAST_DEP_STATUS_INDEX] = MAST_OPER_MODE_DEP_INITIALISE;
 
 	//
 	// reset the resources of the robot task
@@ -185,8 +184,7 @@ void orc_Mod_MAST_DEP_Initialise::compute ()
 	 }
 
 
-	MastState[MAST_STATUS_INDEX]     = MAST_OPER_MODE_DEP_INITIALISE;
-	MastState[MAST_DEP_STATUS_INDEX]     = MAST_OPER_MODE_DEP_INITIALISE;
+	MastState[MAST_DEP_STATUS_INDEX] = MAST_OPER_MODE_DEP_INITIALISE;
 	MastState[MAST_ACTION_ID_INDEX]  = rtId;
 	MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
 
@@ -197,7 +195,6 @@ void orc_Mod_MAST_DEP_Initialise::compute ()
 	if (index >= (warmUpTimeout/0.2)) {
 
 	  // set the state
-	  MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_DEP_STNDBY;
 	  MastState[MAST_DEP_STATUS_INDEX] = MAST_OPER_MODE_DEP_STNDBY;
 	  MastState[MAST_ACTION_ID_INDEX]  = 0.0;
 	  MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_OK;

@@ -3,21 +3,6 @@
 #include "prr.h"
 #include "ctrl_state.h"
 
-//#include "module_Deploy_LEFT_SA.h"
-//#include "module_Deploy_RIGHT_SA.h"
-//#include "module_SA_LEFT_Primary_Initialise.h"
-//#include "module_SA_LEFT_Primary_MoveTo.h"
-//#include "module_SA_LEFT_Primary_SwitchOff.h"
-//#include "module_SA_LEFT_Secondary_Initialise.h"
-//#include "module_SA_LEFT_Secondary_MoveTo.h"
-//#include "module_SA_LEFT_Secondary_SwitchOff.h"
-//#include "module_SA_RIGHT_Primary_Initialise.h"
-//#include "module_SA_RIGHT_Primary_MoveTo.h"
-//#include "module_SA_RIGHT_Primary_SwitchOff.h"
-//#include "module_SA_RIGHT_Secondary_Initialise.h"
-//#include "module_SA_RIGHT_Secondary_MoveTo.h"
-//#include "module_SA_RIGHT_Secondary_SwitchOff.h"
-
 extern RobotProcedure*  theRobotProcedure;
 
 using namespace ControllerModelNamespace;

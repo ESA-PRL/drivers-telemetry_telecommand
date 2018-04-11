@@ -245,59 +245,40 @@ static const short SA_DOF = 4;
 #define DEFAULT_SA_WARMUP_TIME 60
 
 
-//
+//---------------------------------------------------
 // MAST STATUS
-//
+//---------------------------------------------------
+static const short MAST_DEP_STATUS_INDEX	= 0;
+static const short MAST_PAN_STATUS_INDEX	= 1;
+static const short MAST_TILT_STATUS_INDEX	= 2;
 
-static const short MAST_STATUS_INDEX		= 0;
-static const short MAST_DEP_STATUS_INDEX    = 0; //TODO change me
-static const short MAST_PAN_STATUS_INDEX	= 0; //TODO change me
-static const short MAST_TILT_STATUS_INDEX	= 0; //TODO change me
-static const short MAST_TEMPERATURE_INDEX	= 1;
+static const short MAST_TEMPERATURE_INDEX	= 11;
 
-static const short MAST_CURRENT_Q1_INDEX	= 2;
-static const short MAST_CURRENT_Q2_INDEX	= 3;
-static const short MAST_CURRENT_Q3_INDEX	= 4;
-static const short MAST_CURRENT_Q4_INDEX	= 5;
-static const short MAST_CURRENT_Q5_INDEX	= 6;
+static const short MAST_CURRENT_Q1_INDEX	= 12;
+static const short MAST_CURRENT_Q2_INDEX	= 13;
+static const short MAST_CURRENT_Q3_INDEX	= 14;
+static const short MAST_CURRENT_Q4_INDEX	= 15;
+static const short MAST_CURRENT_Q5_INDEX	= 16;
 
-static const short MAST_DES_Q1_INDEX	= 7;
-static const short MAST_DES_Q2_INDEX	= 8;
-static const short MAST_DES_Q3_INDEX	= 9;
-static const short MAST_DES_Q4_INDEX	= 10;
-static const short MAST_DES_Q5_INDEX	= 11;
+static const short MAST_DES_Q1_INDEX	= 17;
+static const short MAST_DES_Q2_INDEX	= 18;
+static const short MAST_DES_Q3_INDEX	= 19;
+static const short MAST_DES_Q4_INDEX	= 20;
+static const short MAST_DES_Q5_INDEX	= 21;
 
-static const short MAST_TRAJ_DUR_INDEX     = 12;
-static const short MAST_POWER_CONS_INDEX   =  13;
-static const short MAST_DATARATE_INDEX     =  14;  // 3-11-2010
+static const short MAST_TRAJ_DUR_INDEX     = 22;
+static const short MAST_POWER_CONS_INDEX   = 23;
+static const short MAST_DATARATE_INDEX     = 24;  // 3-11-2010
 
-static const short MAST_WARMUP_TIME_PTU_INDEX = 15;
-static const short MAST_WARMUP_TIME_DEP_INDEX = 16;
+static const short MAST_WARMUP_TIME_DEP_INDEX  = 25;
+static const short MAST_WARMUP_TIME_PAN_INDEX  = 26;
+static const short MAST_WARMUP_TIME_TILT_INDEX = 27;
 
-static const short MAST_ACTION_ID_INDEX    = 17; // 12-nov-2010 (Action ID)
-static const short MAST_ACTION_RET_INDEX   = 18; // 12-nov-2010 (OK/ERROR/RUNNING)
+static const short MAST_ACTION_ID_INDEX    = 30; 
+static const short MAST_ACTION_RET_INDEX   = 31; 
 
+static const short MAST_DOF = 3;
 
-// (m/sec, deg/sec) 
-#define MAST_MAX_TRANSLATION_SPEED 0.05 
-#define MAST_MAX_ROTATION_SPEED    3.0  
-#define MAST_MIN_OPER_TEMPERATURE  260.0
-#define MAST_INITIALISE_TIME       1800
-#define MAST_PTU_MIN_LINE_VOLTAGE 10
-#define MAST_SWITCH_OFF_TIME      2 
-#define MAST_WARMUP_TIMEOUT       2
-
-// TODO delete me? from before 9.4.2018
-#define MAST_DOF                       3
-#define MAST_OPER_MODE_OFF             0
-#define MAST_OPER_MODE_PTU_INITIALISE  1
-#define MAST_OPER_MODE_PTU_STNDBY      2
-#define MAST_OPER_MODE_PTU_MOVING      3
-#define MAST_OPER_MODE_DEP_INITIALISE  4
-#define MAST_OPER_MODE_DEP_STNDBY      5
-#define MAST_OPER_MODE_DEP_MOVING      6
-
-// TODO verify. from 9.4.2018
 #define MAST_OPER_MODE_DEP_OFF          0
 #define MAST_OPER_MODE_DEP_INITIALISE   1
 #define MAST_OPER_MODE_DEP_STNDBY       2
@@ -310,15 +291,21 @@ static const short MAST_ACTION_RET_INDEX   = 18; // 12-nov-2010 (OK/ERROR/RUNNIN
 #define MAST_OPER_MODE_TILT_INITIALISE  1
 #define MAST_OPER_MODE_TILT_STNDBY      2
 #define MAST_OPER_MODE_TILT_MOVING      3
-#define  MAST_OPER_MODE_OFF 1015
-#define  MAST_OPER_MODE_PTU_INITIALISE  1016
-#define  MAST_OPER_MODE_PTU_STNDBY   1017
-#define  MAST_OPER_MODE_PTU_MOVING 1018
 
-//
+
+// (m/sec, deg/sec) 
+#define MAST_MAX_TRANSLATION_SPEED 0.05 
+#define MAST_MAX_ROTATION_SPEED    3.0  
+#define MAST_MIN_OPER_TEMPERATURE  260.0
+#define MAST_INITIALISE_TIME       1800
+#define MAST_PTU_MIN_LINE_VOLTAGE 10
+#define MAST_SWITCH_OFF_TIME      2 
+#define MAST_WARMUP_TIMEOUT       2
+
+
+//---------------------------------------------------
 // ADE
-//
-
+//---------------------------------------------------
 static const short ADE_STATUS_LEFT_INDEX      = 0;
 static const short ADE_STATUS_RIGHT_INDEX     = 1;
 static const short ADE_LEFT_TEMPERATURE_INDEX = 2;

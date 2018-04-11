@@ -152,7 +152,7 @@ namespace ControllerModelNamespace {
     
     MastState[MAST_ACTION_ID_INDEX]   = rtId;
     MastState[MAST_ACTION_RET_INDEX]  = ACTION_RET_INITIALISING;
-    MastState[MAST_STATUS_INDEX]      = MAST_OPER_MODE_PTU_INITIALISE;
+
     if (targetMechanism == TARGET_MECHANISM_PAN) {
       MastState[MAST_PAN_STATUS_INDEX]  = MAST_OPER_MODE_PAN_INITIALISE;
     }
@@ -214,7 +214,6 @@ namespace ControllerModelNamespace {
     }
     
     
-    MastState[MAST_STATUS_INDEX]     = MAST_OPER_MODE_PTU_INITIALISE;
     if (targetMechanism == TARGET_MECHANISM_PAN) {
       MastState[MAST_PAN_STATUS_INDEX]  = MAST_OPER_MODE_PAN_INITIALISE;
     }
@@ -235,7 +234,6 @@ namespace ControllerModelNamespace {
     if (index >= (warmUpTimeout/0.2)) {
       
       // set the state
-      MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_PTU_STNDBY;
       if (targetMechanism == TARGET_MECHANISM_PAN) {
 	MastState[MAST_PAN_STATUS_INDEX]  = MAST_OPER_MODE_PAN_STNDBY;
       }
