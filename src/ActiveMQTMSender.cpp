@@ -47,7 +47,7 @@ void* ActiveMQTMSender::thread() {
 	string ade_str("ADE_STATE");
 	string sa_str("SA_STATE");
         string gnc_str("GNC_STATE");
-        string ptu_str("PTU_STATE");
+        string mast_str("MAST_STATE");
 	string dhs_str("DHS_STATE");
 	string ttc_str("TTC_STATE");
         string locom_str("LOCOM_STATE");
@@ -165,17 +165,17 @@ void* ActiveMQTMSender::thread() {
         isConnected = true;
 
         /******** PTU *********/
-        ptuDestinationMonitoring = sessionMonitor->createTopic(ptu_str);
-        if (ptuDestinationMonitoring == NULL) {
+        mastDestinationMonitoring = sessionMonitor->createTopic(mast_str);
+        if (mastDestinationMonitoring == NULL) {
           std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
           return NULL;
         }
-        ptuProducerMonitoring = sessionMonitor->createProducer(ptuDestinationMonitoring);
-        if (ptuProducerMonitoring == NULL) {
+        mastProducerMonitoring = sessionMonitor->createProducer(mastDestinationMonitoring);
+        if (mastProducerMonitoring == NULL) {
           std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
           return NULL;
         }
-        ptuProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+        mastProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
         isConnected = true;
 
         /******** LOCOM *********/
