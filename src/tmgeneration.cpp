@@ -13,8 +13,6 @@
 static double lastLOCOMState[MAX_STATE_SIZE];
 static double lastMastState[MAX_STATE_SIZE];
 static double lastGNCState[MAX_STATE_SIZE];
-static double lastDhsState[MAX_STATE_SIZE];
-static double lastTtcState[MAX_STATE_SIZE];
 static double lastDHSState[MAX_STATE_SIZE];
 static double lastTTCState[MAX_STATE_SIZE];
 static double lastADEState[MAX_STATE_SIZE];
@@ -267,7 +265,7 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
 	    dhsMessage->setIntProperty("ActionId", (int)DHSState[DHS_ACTION_ID_INDEX]);
 	    activemqTMSender->dhsProducerMonitoring->send(dhsMessage.get()); 
 	    for (int i=0; i<MAX_STATE_SIZE; i++) {
-	      lastDhsState[i] = DHSState[i];
+	      lastDHSState[i] = DHSState[i];
 	    }
 	  }
 
@@ -290,7 +288,7 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
 	ttcMessage->setIntProperty("ActionId",     (int)TTCState[COMMS_ACTION_ID_INDEX]);
 	activemqTMSender->ttcProducerMonitoring->send(ttcMessage.get()); 
 	for (int i=0; i<MAX_STATE_SIZE; i++) {
-	  lastTtcState[i]=TTCState[i];
+	  lastTTCState[i]=TTCState[i];
 	}
       }
 
