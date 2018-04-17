@@ -1,8 +1,7 @@
 #ifndef ORC_MOD_GNC_MonitoringOnly_H
 #define ORC_MOD_GNC_MonitoringOnly_H
 
-//#include "module.h"
-
+#include "module.h"
 #include "module_GNC_MonitoringOnly_Inc.h"
 
 class orc_ProcRoverCtrl;
@@ -14,9 +13,9 @@ namespace ControllerModelNamespace {
    * \brief Implements the GNC_MonitoringOnly Action. 
    * Switches the GNC in the Monitoring Only State
    */
-  class orc_Mod_GNC_MonitoringOnly // : public ModuleAlgo
-{
- public:
+  class orc_Mod_GNC_MonitoringOnly : public ModuleAlgo
+  {
+  public:
 
 
 	// counter for the move to logic

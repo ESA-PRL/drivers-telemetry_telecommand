@@ -1,6 +1,12 @@
 #include "module_ADEs_Activate.h"
 #include "prr.h"
 
+//
+// KK implemented the parallel execution of ADE_SwitchOn(0) and ADE_SwitchOn(1)
+// TODO durations
+// TODO to manage the WARMUP - INIT - STNDBY phases
+//
+ 
 /** The model of the o/b controller */
 namespace ControllerModelNamespace {
 
@@ -9,7 +15,7 @@ namespace ControllerModelNamespace {
 
 orc_Mod_ADEs_Activate::orc_Mod_ADEs_Activate (/*ModuleTask* mt,
 						int indexclk*/)
-//  : ModuleAlgo ("orc_Mod_ADEs_Activate", mt, indexclk)
+  : ModuleAlgo (/*"orc_Mod_ADEs_Activate", mt, indexclk*/)
 {
   //  PRINT1("** orc_Mod_ADEs_Activate constructor")
 }
@@ -22,17 +28,6 @@ orc_Mod_ADEs_Activate::~orc_Mod_ADEs_Activate ()
 void orc_Mod_ADEs_Activate::param (char *params)
 {
 
-  //  fprintf (stderr, "ADEs_Activate:: param\n");
-  /*
-	int params_nbr =  sscanf(params, "%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s",Mt_ptr->GetRobotTaskPtr()->taskParams[0], Mt_ptr->GetRobotTaskPtr()->taskParams[1], Mt_ptr->GetRobotTaskPtr()->taskParams[2], Mt_ptr->GetRobotTaskPtr()->taskParams[3], Mt_ptr->GetRobotTaskPtr()->taskParams[4], Mt_ptr->GetRobotTaskPtr()->taskParams[5], Mt_ptr->GetRobotTaskPtr()->taskParams[6], Mt_ptr->GetRobotTaskPtr()->taskParams[7], Mt_ptr->GetRobotTaskPtr()->taskParams[8], Mt_ptr->GetRobotTaskPtr()->taskParams[9], Mt_ptr->GetRobotTaskPtr()->taskParams[10], Mt_ptr->GetRobotTaskPtr()->taskParams[11], Mt_ptr->GetRobotTaskPtr()->taskParams[12], Mt_ptr->GetRobotTaskPtr()->taskParams[13], Mt_ptr->GetRobotTaskPtr()->taskParams[14], Mt_ptr->GetRobotTaskPtr()->taskParams[15], Mt_ptr->GetRobotTaskPtr()->taskParams[16], Mt_ptr->GetRobotTaskPtr()->taskParams[17], Mt_ptr->GetRobotTaskPtr()->taskParams[18]);
-
-	sscanf(Mt_ptr->GetRobotTaskPtr()->taskParams[3], "%lf", &Natural_WUP_targetT);
-
-	char start_task_event[80];
-	sprintf(start_task_event, "ADEs_Activate_start;");
-
-	moduleSendEvent(start_task_event);
-  */
 
 }
 
@@ -92,6 +87,40 @@ void orc_Mod_ADEs_Activate::init ()
     getModuleTaskPtr()->GetRobotTaskPtr()->setMemoryMassCons(memmass_cons);
     getModuleTaskPtr()->GetRobotTaskPtr()->setDuration(act_duration);
     */
+
+    AdeState[ADE_STATUS_LEFT_INDEX]  = ADE_OPER_MODE_WARMUP;
+    AdeState[ADE_STATUS_RIGHT_INDEX] = ADE_OPER_MODE_WARMUP;
+
+    if (theRobotProcedure->GetParameters()->get("AdeState", DOUBLE,
+						MAX_STATE_SIZE, 0, (char *) AdeState) == ERROR) {
+      //      theRobotProcedure->ExitOnMissingStateSymbol(
+      //						  Mt_ptr->GetRobotTaskPtr()->GetMnemonic().c_str(), "AdeState");
+    }
+
+
+    AdeState[ADE_STATUS_LEFT_INDEX]  = ADE_OPER_MODE_WARMUP;
+    AdeState[ADE_STATUS_RIGHT_INDEX] = ADE_OPER_MODE_WARMUP;
+    
+    if (index > 5) {
+      AdeState[ADE_STATUS_LEFT_INDEX] = ADE_OPER_MODE_INIT;
+      AdeState[ADE_STATUS_RIGHT_INDEX] = ADE_OPER_MODE_INIT;
+    }
+    
+    if (index > 10) {
+
+      AdeState[ADE_STATUS_LEFT_INDEX] = ADE_OPER_MODE_STNDBY;
+      AdeState[ADE_STATUS_RIGHT_INDEX] = ADE_OPER_MODE_STNDBY;
+      ADEs_Activate_post = SET_EVENT;
+
+    }
+    
+    if (theRobotProcedure->GetParameters()->set("AdeState", DOUBLE,
+						MAX_STATE_SIZE, 0, (char *) AdeState) == ERROR) {
+      //      theRobotProcedure->ExitOnMissingStateSymbol(
+      //						  Mt_ptr->GetRobotTaskPtr()->GetMnemonic().c_str(), "AdeState");
+    }
+
+    index ++;
   }
   
   void orc_Mod_ADEs_Activate::end ()

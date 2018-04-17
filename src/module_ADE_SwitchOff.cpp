@@ -9,10 +9,10 @@ namespace ControllerModelNamespace {
   
   orc_Mod_ADE_SwitchOff::orc_Mod_ADE_SwitchOff(/*ModuleTask* mt,
 						 int indexclk*/) 
-  // : ModuleAlgo("orc_Mod_ADE_SwitchOff", mt, indexclk) 
+    : ModuleAlgo(/*"orc_Mod_ADE_SwitchOff", mt, indexclk*/) 
   { 
     
-    rtId = 0; 
+    rtId = 71; 
     index = 0;
     duration = 10.0;
     //    phrAde = NULL;

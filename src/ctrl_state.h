@@ -323,26 +323,27 @@ static const short ADE_RIGHT_WARMUP_TIME_INDEX = 16;
 static const short ADE_ACTION_ID_INDEX    = 17;
 static const short ADE_ACTION_RET_INDEX   = 18;
 
-static const short HDRM_BODY_1_STATUS_INDEX = 20;
-static const short HDRM_BODY_2_STATUS_INDEX = 21; 
-static const short HDRM_BODY_3_STATUS_INDEX = 22; 
-static const short HDRM_DRILL_1_STATUS_INDEX = 23;
-static const short HDRM_DRILL_2_STATUS_INDEX = 24; 
-static const short HDRM_MAST_STATUS_INDEX = 25; 
-static const short HDRM_SA_LEFT_1_STATUS_INDEX = 26; 
-static const short HDRM_SA_LEFT_2_STATUS_INDEX = 27; 
-static const short HDRM_SA_LEFT_3_STATUS_INDEX = 28; 
-static const short HDRM_SA_RIGHT_1_STATUS_INDEX = 29; 
-static const short HDRM_SA_RIGHT_2_STATUS_INDEX = 30; 
-static const short HDRM_SA_RIGHT_3_STATUS_INDEX = 31; 
-static const short HDRM_UMBILICAL_1_STATUS_INDEX = 32; 
-static const short HDRM_UMBILICAL_2_STATUS_INDEX = 33; 
-static const short HDRM_WHEEL_FL_STATUS_INDEX = 34; 
-static const short HDRM_WHEEL_FR_STATUS_INDEX = 35;
-static const short HDRM_WHEEL_ML_STATUS_INDEX = 36; 
-static const short HDRM_WHEEL_MR_STATUS_INDEX = 37; 
-static const short HDRM_WHEEL_RL_STATUS_INDEX = 38; 
-static const short HDRM_WHEEL_RR_STATUS_INDEX = 39;
+static const short HDRM_DMA_1_INDEX    = 30; // 0
+static const short HDRM_DMA_2_INDEX    = 31;  
+static const short HDRM_DRILL_L_INDEX  = 32;  
+static const short HDRM_DRILL_R_INDEX  = 33;
+static const short HDRM_SA_LFI_INDEX   = 34;
+static const short HDRM_SA_LFO_INDEX   = 35; // 5
+static const short HDRM_SA_LRI_INDEX   = 36; 
+static const short HDRM_SA_RFI_INDEX   = 37;
+static const short HDRM_SA_RFO_INDEX   = 38;
+static const short HDRM_SA_RRI_INDEX   = 39;
+static const short HDRM_UMB_L_INDEX    = 40; // 10
+static const short HDRM_UMB_R_INDEX    = 41; 
+static const short HDRM_WHEEL_LF_INDEX = 42;
+static const short HDRM_WHEEL_LM_INDEX = 43;
+static const short HDRM_WHEEL_LR_INDEX = 44;
+static const short HDRM_WHEEL_RF_INDEX = 45; // 15
+static const short HDRM_WHEEL_RM_INDEX = 46;  
+static const short HDRM_WHEEL_RR_INDEX = 47;
+static const short HDRM_BODY_LF_INDEX  = 48;
+static const short HDRM_BODY_RF_INDEX  = 49;
+static const short HDRM_BODY_R_INDEX   = 50; // 20
 
 
 #define HDRM_OFF 0
@@ -401,39 +402,41 @@ static const short PANCAM_INDEX                 = 27; // Index of stored images
 static const short NAVCAM_INDEX                 = 28; // Index of stored images
 static const short LOCCAM_INDEX                 = 29; // Index of stored images
 
-// PanCam Operational Modes
+// PanCam Operational Modes // KK PANCAM OPER MODES UPDATED
 #define PANCAM_OPER_MODE_OFF                    0
-#define PANCAM_OPER_MODE_INITIALISING 		    1
-#define PANCAM_OPER_MODE_STNDBY                 3
-#define PANCAM_OPER_MODE_WACS_INITIALISE        2    
-#define PANCAM_OPER_MODE_HRC_INITIALISE         4    
-#define PANCAM_OPER_MODE_OPERATING              5
-#define PANCAM_OPER_MODE_SWITCHING_OFF          29
-#define PANCAM_OPER_MODE_FAIL                   7
+#define PANCAM_OPER_MODE_INIT        		1 
+#define PANCAM_OPER_MODE_INIT_CAM               2   
+#define PANCAM_OPER_MODE_STANDBY                3
 
+#define PANCAM_OPER_MODE_WAC_L_ENABLE                     4
+#define PANCAM_OPER_MODE_WAC_L_STANDBY                    5
+#define PANCAM_OPER_MODE_WAC_L_SWITCH_ON                  6
+#define PANCAM_OPER_MODE_WAC_L_MODE                       7
+#define PANCAM_OPER_MODE_WAC_L_FILTER_SELECTION           8
+#define PANCAM_OPER_MODE_WAC_L_GET_IMAGE                  9
+#define PANCAM_OPER_MODE_WAC_L_SWITCH_OFF                 10
+#define PANCAM_OPER_MODE_WAC_L_DISABLE                    11
 
-#define PANCAM_OPER_MODE_WAC_OFF                0
-#define PANCAM_OPER_MODE_WAC_STANDBY            1
-#define PANCAM_OPER_MODE_WAC_FILTER_SELECTION   2
-#define PANCAM_OPER_MODE_WAC_ACQUIRING_RRGB_IMAGE       3
-#define PANCAM_OPER_MODE_WAC_ACQUIRING_GEOLOGY_IMAGE    4
-#define PANCAM_OPER_MODE_WAC_GETTING_IMAGE_LOSSLESS     5
-#define PANCAM_OPER_MODE_WAC_GETTING_IMAGE_LOSSY        6
-#define PANCAM_OPER_MODE_WAC_GETTING_IMAGE_THUMBNAIL    7
+#define PANCAM_OPER_MODE_WAC_R_ENABLE                     12
+#define PANCAM_OPER_MODE_WAC_R_STANDBY                    13
+#define PANCAM_OPER_MODE_WAC_R_SWITCH_ON                  14
+#define PANCAM_OPER_MODE_WAC_R_MODE                       15
+#define PANCAM_OPER_MODE_WAC_R_FILTER_SELECTION           16
+#define PANCAM_OPER_MODE_WAC_R_GET_IMAGE                  17
+#define PANCAM_OPER_MODE_WAC_R_SWITCH_OFF                 18
+#define PANCAM_OPER_MODE_WAC_R_DISABLE                    19
 
-#define PANCAM_OPER_MODE_HRC_OFF             0
-#define PANCAM_OPER_MODE_HRC_STANDBY         1   
-#define PANCAM_OPER_MODE_HRC_GETTING_IMAGE   2 
-#define PANCAM_OPER_MODE_HRC_ACQUIRING_AF_AE_IMAGE 3
-#define PANCAM_OPER_MODE_HRC_ACQUIRING_AF_ME_IMAGE 4
-#define PANCAM_OPER_MODE_HRC_ACQUIRING_MF_AE_IMAGE 5
-#define PANCAM_OPER_MODE_HRC_ACQUIRING_MF_ME_IMAGE 6
-#define PANCAM_OPER_MODE_HRC_FOCUSSING_IMAGE 7
-#define PANCAM_OPER_MODE_HRC_EXPOSURE        8 
+#define PANCAM_OPER_MODE_HRC_ENABLE                     20
+#define PANCAM_OPER_MODE_HRC_STANDBY                    21
+#define PANCAM_OPER_MODE_HRC_SWITCH_ON                  22
+#define PANCAM_OPER_MODE_HRC_MODE                       23
+#define PANCAM_OPER_MODE_HRC_FOCUS                      24
+#define PANCAM_OPER_MODE_HRC_EXPOSURE                   25
+#define PANCAM_OPER_MODE_HRC_GET_IMAGE                  26
+#define PANCAM_OPER_MODE_HRC_SWITCH_OFF                 27
+#define PANCAM_OPER_MODE_HRC_DISABLE                    28
 
-#define PANCAM_COMPRESSION_LEVEL_LOSSLESS  1
-#define PANCAM_COMPRESSION_LEVEL_LOSSY     2
-#define PANCAM_COMPRESSION_LEVEL_THUMBNAIL 3
+#define PANCAM_OPER_MODE_SWITCH_OFF                     29
 
 //#define PANCAM_THERMAL_MODE_NONOPERATIONAL 0
 //#define PANCAM_THERMAL_MODE_OPERATIONAL    1

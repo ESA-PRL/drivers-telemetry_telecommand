@@ -7,7 +7,7 @@ namespace ControllerModelNamespace {
 
 orc_Mod_MAST_DEP_SwitchOff::orc_Mod_MAST_DEP_SwitchOff (/*ModuleTask* mt,
 							  int indexclk*/)
-// : ModuleAlgo ("orc_Mod_MAST_DEP_SwitchOff", mt, indexclk)
+  : ModuleAlgo (/*"orc_Mod_MAST_DEP_SwitchOff", mt, indexclk*/)
 {
   //  PRINT1("** orc_Mod_MAST_DEP_SwitchOff constructor")
 }
@@ -20,7 +20,7 @@ orc_Mod_MAST_DEP_SwitchOff::~orc_Mod_MAST_DEP_SwitchOff ()
 void orc_Mod_MAST_DEP_SwitchOff::param (char *params)
 {
 
-  //  fprintf (stderr, "MAST_DEP_SwitchOff: param\n");
+  fprintf (stderr, "MAST_DEP_SwitchOff: param\n");
 
     targetMechanism = TARGET_MECHANISM_DEP;
 
@@ -36,7 +36,7 @@ void orc_Mod_MAST_DEP_SwitchOff::reparam (char *params)
 
 void orc_Mod_MAST_DEP_SwitchOff::init ()
 {
-  // std::cerr << "MAST_DEP_SwitchOff: init" << std::endl;
+  std::cerr << "MAST_DEP_SwitchOff: init" << std::endl;
 
 	// reset the counter
 	index = 0;
@@ -60,7 +60,7 @@ void orc_Mod_MAST_DEP_SwitchOff::init ()
 	*/
 
 	// get the action Id
-	rtId = 0; // Mt_ptr->GetRobotTaskPtr()->GetId();
+	rtId = 38; // Mt_ptr->GetRobotTaskPtr()->GetId();
 
 	// get the duration of the Activity
 	// phrMast = ((orc_PhR_Mast *)(Mt_ptr->GetRobotTaskPtr () -> GetPhR ()));
@@ -171,7 +171,7 @@ void orc_Mod_MAST_DEP_SwitchOff::compute ()
 
 void orc_Mod_MAST_DEP_SwitchOff::end ()
 {
-  //  fprintf( stderr, "MAST_DEP_SwitchOff: End\n" );
+  fprintf( stderr, "MAST_DEP_SwitchOff: End\n" );
 
 	// reset the events
 	MAST_DEP_SwitchOff_prec = NO_EVENT;

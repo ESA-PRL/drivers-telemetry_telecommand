@@ -1,14 +1,14 @@
 #ifndef ORC_MOD_MAST_TILT_MoveTo_H
 #define ORC_MOD_MAST_TILT_MoveTo_H
 
-#include "module_MAST_TILT_MoveTo_Inc.h"
-// #include "module.h"
+#include "module.h"
 
+#include "module_MAST_TILT_MoveTo_Inc.h"
 
 /** The model of the o/b controller */
 namespace ControllerModelNamespace {
 
-  class orc_Mod_MAST_TILT_MoveTo // : public ModuleAlgo
+  class orc_Mod_MAST_TILT_MoveTo : public ModuleAlgo
 {
  public:
 

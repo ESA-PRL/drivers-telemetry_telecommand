@@ -6,7 +6,7 @@ namespace ControllerModelNamespace {
 
 orc_Mod_SA_RIGHT_Secondary_MoveTo::orc_Mod_SA_RIGHT_Secondary_MoveTo (/*ModuleTask* mt,
 									int indexclk*/)
-//  : ModuleAlgo ("orc_Mod_SA_RIGHT_Secondary_MoveTo", mt, indexclk)
+  : ModuleAlgo (/*"orc_Mod_SA_RIGHT_Secondary_MoveTo", mt, indexclk*/)
 {
   //  PRINT1("** orc_Mod_SA_RIGHT_Secondary_MoveTo constructor")
 
@@ -21,6 +21,7 @@ orc_Mod_SA_RIGHT_Secondary_MoveTo::~orc_Mod_SA_RIGHT_Secondary_MoveTo ()
 
 void orc_Mod_SA_RIGHT_Secondary_MoveTo::param (char *params)
 {
+  std::cerr << "-> SA_RIGHT_Secondary_MoveTo: param" << std::endl;
 
 	if (1 != sscanf(params, "%lf", &tilt)) {
 	  //		theRobotProcedure->ExitOnParamValueError(
@@ -42,7 +43,7 @@ void orc_Mod_SA_RIGHT_Secondary_MoveTo::reparam (char *params)
 
 void orc_Mod_SA_RIGHT_Secondary_MoveTo::init ()
 {
-  //  std::cerr << "-> SA_RIGHT_Secondary_MoveTo: start init" << std::endl;
+  std::cerr << "-> SA_RIGHT_Secondary_MoveTo: start init" << std::endl;
 
 	// reset the index
 	index = 0;
@@ -57,6 +58,8 @@ void orc_Mod_SA_RIGHT_Secondary_MoveTo::init ()
 	  //						Mt_ptr->GetRobotTaskPtr()->GetMnemonic().c_str(),
 	  //						"SolarArrayState");
 	 }
+
+	rtId = 81;
 
 	//
 	// check the preconditions
@@ -322,7 +325,7 @@ void orc_Mod_SA_RIGHT_Secondary_MoveTo::compute ()
 
 void orc_Mod_SA_RIGHT_Secondary_MoveTo::end ()
 {
-  //  fprintf( stderr, "SA_RIGHT_Secondary_MoveTo:: End\n" );
+  fprintf( stderr, "SA_RIGHT_Secondary_MoveTo:: End\n" );
 	SA_RIGHT_Secondary_MoveTo_prec = NO_EVENT;
 	SA_RIGHT_Secondary_MoveTo_post = NO_EVENT;
 

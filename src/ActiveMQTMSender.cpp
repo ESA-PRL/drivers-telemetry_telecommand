@@ -164,7 +164,7 @@ void* ActiveMQTMSender::thread() {
         gncProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
         isConnected = true;
 
-        /******** PTU *********/
+        /******** MAST *********/
         mastDestinationMonitoring = sessionMonitor->createTopic(mast_str);
         if (mastDestinationMonitoring == NULL) {
           std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;

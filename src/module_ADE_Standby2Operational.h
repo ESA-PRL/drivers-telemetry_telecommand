@@ -1,7 +1,7 @@
 #ifndef ORC_MOD_ADE_Standby2Operational_H
 #define ORC_MOD_ADE_Standby2Operational_H
 
-//#include "module.h"
+#include "module.h"
 //#include "PhR_Ade.h"
 
 #include "module_ADE_Standby2Operational_Inc.h"
@@ -9,7 +9,7 @@
 /** The model of the o/b controller */
 namespace ControllerModelNamespace {
   
-  class orc_Mod_ADE_Standby2Operational // : public ModuleAlgo
+  class orc_Mod_ADE_Standby2Operational : public ModuleAlgo
   {
   public:
     

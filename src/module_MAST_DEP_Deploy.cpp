@@ -10,7 +10,7 @@ namespace ControllerModelNamespace {
 //					int indexclk)
 //  : ModuleAlgo ("orc_Mod_DMA_DEP_Deploy", mt, indexclk)
 //{
-orc_Mod_MAST_DEP_Deploy::orc_Mod_MAST_DEP_Deploy ()
+  orc_Mod_MAST_DEP_Deploy::orc_Mod_MAST_DEP_Deploy (): ModuleAlgo ()
 {
   //PRINT1("** orc_Mod_DMA_DEP_Deploy constructor")
 
@@ -124,7 +124,7 @@ void orc_Mod_MAST_DEP_Deploy::init ()
   //getModuleTaskPtr()->GetRobotTaskPtr()->setMemoryMassCons(0.0);
 
   // get the action Id
-  //rtId = Mt_ptr->GetRobotTaskPtr()->GetId();
+  rtId = 41; //Mt_ptr->GetRobotTaskPtr()->GetId();
 
   // get the reference to the physical resource
   //phrMast = ((orc_PhR_Mast *)(Mt_ptr->GetRobotTaskPtr () -> GetPhR ()));
@@ -223,7 +223,7 @@ void orc_Mod_MAST_DEP_Deploy::init ()
   // set action execution information
   MastState[MAST_ACTION_ID_INDEX]  = rtId;
   MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_INITIALISING;
-  MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_DEP_MOVING;
+  //  MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_DEP_MOVING; // KK
   MastState[MAST_DEP_STATUS_INDEX] = MAST_OPER_MODE_DEP_MOVING;
 
   //

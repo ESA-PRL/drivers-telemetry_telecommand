@@ -1,8 +1,10 @@
 #ifndef ORC_MOD_MAST_DEP_Initialise_H
 #define ORC_MOD_MAST_DEP_Initialise_H
 
+#include "module.h"
+
 #include "module_MAST_DEP_Initialise_Inc.h"
-//#include "module.h"
+
 
 
 /** The model of the o/b controller */
@@ -11,7 +13,7 @@ namespace ControllerModelNamespace {
   /**
    * \brief Implements the **MAST_DEP_Initialise** Action to Warm up and switch ON of the Mast deployment actuator
    */
-  class orc_Mod_MAST_DEP_Initialise // : public ModuleAlgo
+  class orc_Mod_MAST_DEP_Initialise : public ModuleAlgo
 {
  public:
 

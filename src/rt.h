@@ -186,6 +186,8 @@ class RobotTask : public SimpleThread
   int computeADE_Standby2Operational();
   int computeADE_SwitchOn();
   int computeADE_SwitchOff();
+  int computeADE_ReleaseHDRM();
+  int computeHDRM_Release();
 
   //
   // GNC s/s 
@@ -193,30 +195,39 @@ class RobotTask : public SimpleThread
   int computeGNC_Initialise();
   int computeGNC_MonitoringOnly();
   int computeGNC_SwitchOff();
+  int computeGNC_AbsLocalisation();
 
-
+  // PANCAM s/s KK reorganised for egress
   int computePanCam_Initialise();
-  int computePanCam_InitWACs();
-  int computePanCam_SwitchOn();
-  int computePanCam_WACAcqImage();
-  int computePanCam_WACGetImage();
-  int computePanCam_SwitchOff();
   int computePanCam_PIUSwitchOff();
-  int computePANCAM_WAC_RRGB();
-  int computePanCam_FilterSel();
-  int computeBEMA_Deploy_1();
-  int computeBEMA_Deploy_2();
-  int computeRelease_Umbilical();
+  //  int computePanCam_InitWACs();
+  //  int computePanCam_SwitchOn();
+  //  int computePanCam_WACAcqImage();
+  //  int computePanCam_WACGetImage();
+  //  int computePanCam_SwitchOff();
+  //  int computePANCAM_WAC_RRGB();
+  //  int computePanCam_FilterSel();
+
+  // RV s/s 
   int computeRV_WakeUp();
-  int computeMMS_WaitAbsTime();
-  int computeMMS_WaitRelTime();
   int computeRV_Prepare4Comms();
   int computeRV_SwitchOffMobility();
   int computeRV_PostComms();
-  int computeDHS_Go2Nominal();
   int computeRV_Prepare4Travel();
   int computeRV_Prepare4Night();
   int computeRV_Prepare4Dozing();
+  int computeRV_Prepare4Science();
+  int computeRelease_Body();
+  int computeRelease_Umbilical();
+
+  int computeBEMA_Deploy_1();
+  int computeBEMA_Deploy_2();
+
+  //
+  // MMS s/s
+  //
+  int computeMMS_WaitAbsTime();
+  int computeMMS_WaitRelTime();
 
   // method used only for the continuous execution; in this
   // case it does not do anything
@@ -285,14 +296,42 @@ class RobotTask : public SimpleThread
   ControllerModelNamespace::orc_Mod_ADE_SwitchOff           ADE_SwitchOff; 
   ControllerModelNamespace::orc_Mod_ADEs_Activate           ADEs_Activate; 
   ControllerModelNamespace::orc_Mod_ADEs_DeActivate         ADEs_DeActivate; 
+  ControllerModelNamespace::orc_Mod_ADE_ReleaseHDRM         ADE_ReleaseHDRM; 
+  ControllerModelNamespace::orc_Mod_HDRM_Release            HDRM_Release; 
 
   //
   // GNC s/s
   //
-  ControllerModelNamespace::orc_Mod_GNC_Initialise     GNC_Initialise; 
-  ControllerModelNamespace::orc_Mod_GNC_MonitoringOnly GNC_MonitoringOnly; 
-  ControllerModelNamespace::orc_Mod_GNC_SwitchOff      GNC_SwitchOff; 
+  ControllerModelNamespace::orc_Mod_GNC_Initialise      GNC_Initialise; 
+  ControllerModelNamespace::orc_Mod_GNC_MonitoringOnly  GNC_MonitoringOnly; 
+  ControllerModelNamespace::orc_Mod_GNC_SwitchOff       GNC_SwitchOff; 
+  ControllerModelNamespace::orc_Mod_GNC_AbsLocalisation GNC_AbsLocalisation; 
 
+  //
+  // PANCAM s/s KK 
+  //
+  ControllerModelNamespace::orc_Mod_PanCam_Initialise   PanCam_Initialise;   
+  ControllerModelNamespace::orc_Mod_PanCam_PIUSwitchOff PanCam_PIUSwitchOff;
+
+  //
+  // PANCAM s/s KK 
+  //
+  ControllerModelNamespace::orc_Mod_RV_PostComms         RV_PostComms; 
+  ControllerModelNamespace::orc_Mod_RV_Prepare4Comms     RV_Prepare4Comms; 
+  ControllerModelNamespace::orc_Mod_RV_Prepare4Dozing    RV_Prepare4Dozing; 
+  ControllerModelNamespace::orc_Mod_RV_Prepare4Night     RV_Prepare4Night; 
+  ControllerModelNamespace::orc_Mod_RV_Prepare4Science   RV_Prepare4Science; 
+  ControllerModelNamespace::orc_Mod_RV_Prepare4Travel    RV_Prepare4Travel; 
+  ControllerModelNamespace::orc_Mod_RV_SwitchOffMobility RV_SwitchOffMobility; 
+  ControllerModelNamespace::orc_Mod_RV_WakeUp            RV_WakeUp;
+  ControllerModelNamespace::orc_Mod_Release_Body         Release_Body;
+  ControllerModelNamespace::orc_Mod_Release_Umbilical    Release_Umbilical;
+
+  //
+  // MMS s/s KK 
+  // 
+  ControllerModelNamespace::orc_Mod_MMS_WaitRelTime         MMS_WaitRelTime; 
+  ControllerModelNamespace::orc_Mod_MMS_WaitAbsTime         MMS_WaitAbsTime; 
 };
 
 #endif

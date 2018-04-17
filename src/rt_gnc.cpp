@@ -70,3 +70,26 @@ if (compute_completed == 1 && end_completed == 0){
   end_completed = 1;
 }
 }
+
+int RobotTask::computeGNC_AbsLocalisation(){
+if (param_completed == 0){
+  GNC_AbsLocalisation.param(rtParams);
+  param_completed = 1;
+}
+if (param_completed == 1 && init_completed == 0){
+  GNC_AbsLocalisation.init();
+  init_completed = 1;
+}
+if (init_completed == 1 && compute_completed == 0){
+    GNC_AbsLocalisation.compute();
+  if (  GNC_AbsLocalisation.  GNC_AbsLocalisation_post == 1)
+  {
+    post_cond = 1;
+    compute_completed = 1;
+  }
+}
+if (compute_completed == 1 && end_completed == 0){
+    GNC_AbsLocalisation.end();
+  end_completed = 1;
+}
+}

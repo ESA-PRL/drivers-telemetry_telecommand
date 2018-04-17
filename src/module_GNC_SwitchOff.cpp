@@ -7,7 +7,7 @@ namespace ControllerModelNamespace {
 
 orc_Mod_GNC_SwitchOff::orc_Mod_GNC_SwitchOff (/*ModuleTask* mt,
 						int indexclk*/)
-//  : ModuleAlgo ("orc_Mod_GNC_SwitchOff", mt, indexclk)
+  : ModuleAlgo (/*"orc_Mod_GNC_SwitchOff", mt, indexclk*/)
 {
   //  PRINT1("** orc_Mod_GNC_SwitchOff constructor")
 }
@@ -20,7 +20,7 @@ orc_Mod_GNC_SwitchOff::~orc_Mod_GNC_SwitchOff ()
 void orc_Mod_GNC_SwitchOff::param (char *params)
 {
 
-  //  fprintf (stderr, "GNC_SwitchOff:: param\n");
+    fprintf (stderr, "GNC_SwitchOff:: param\n");
 
 	// the action status is ok
 	action_exec_status = ACTION_RET_OK;
@@ -35,7 +35,7 @@ void orc_Mod_GNC_SwitchOff::reparam (char *params)
 
 void orc_Mod_GNC_SwitchOff::init ()
 {
-  //  std::cerr << "-> GNC_SwitchOff: start init" << std::endl;
+   std::cerr << "-> GNC_SwitchOff: start init" << std::endl;
 
 	// if the action status is not ok the code is not executed
 	if (action_exec_status != ACTION_RET_OK) {
@@ -77,7 +77,7 @@ void orc_Mod_GNC_SwitchOff::init ()
 	 }
 	*/
 	// get the action Id
-	rtId = 0; // Mt_ptr->GetRobotTaskPtr()->GetId();
+	rtId = 60; // Mt_ptr->GetRobotTaskPtr()->GetId();
 
 
 	//
@@ -209,7 +209,7 @@ void orc_Mod_GNC_SwitchOff::compute ()
 
 void orc_Mod_GNC_SwitchOff::end ()
 {
-  //  fprintf( stderr, "GNC_SwitchOff:: End\n" );
+  fprintf( stderr, "GNC_SwitchOff:: End\n" );
 
 
 	// reset the events

@@ -9,10 +9,10 @@ namespace ControllerModelNamespace {
   
   orc_Mod_ADE_SwitchOn::orc_Mod_ADE_SwitchOn(/*ModuleTask* mt,
 					       int indexclk*/) 
-  // : ModuleAlgo("orc_Mod_ADE_SwitchOn", mt, indexclk) 
+    : ModuleAlgo(/*"orc_Mod_ADE_SwitchOn", mt, indexclk*/) 
 { 
     
-    rtId = 0; 
+    rtId = 70; 
     index = 0;
     duration = 0.0;
     //    phrAde = NULL;
@@ -53,7 +53,7 @@ namespace ControllerModelNamespace {
       return;
     }
     
-    std::cerr << " orc_Mod_ADE_SwitchOn::param end" << std::endl;
+    std::cerr << " orc_Mod_ADE_SwitchOn::param " << std::endl;
   }
   
   void orc_Mod_ADE_SwitchOn::reparam(char *params) { 
@@ -61,6 +61,7 @@ namespace ControllerModelNamespace {
   }
   
   void orc_Mod_ADE_SwitchOn::init() { 
+    std::cerr << "orc_Mod_ADE_SwitchOn: init" << std::endl; 
     
     index = 0;
     
@@ -223,6 +224,7 @@ namespace ControllerModelNamespace {
   }
   
   void orc_Mod_ADE_SwitchOn::end() { 
+    std::cerr << "orc_Mod_ADE_SwitchOn: end" << std::endl; 
     ADE_SwitchOn_prec = NO_EVENT;
     ADE_SwitchOn_post = NO_EVENT;
   }

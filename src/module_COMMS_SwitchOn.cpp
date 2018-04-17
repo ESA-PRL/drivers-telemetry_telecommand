@@ -9,7 +9,7 @@ namespace ControllerModelNamespace {
   
   orc_Mod_COMMS_SwitchOn::orc_Mod_COMMS_SwitchOn(/*ModuleTask* mt,
 						   int indexclk*/) 
-//: ModuleAlgo("orc_Mod_COMMS_SwitchOn", mt, indexclk) 
+    : ModuleAlgo(/*"orc_Mod_COMMS_SwitchOn", mt, indexclk*/) 
   { 
     
   }
@@ -51,7 +51,7 @@ namespace ControllerModelNamespace {
     duration = 10; // phrComms->PARAM_COMMS_INITIALISATION_TIME; 
     
     // Get Action ID
-    rtId = 0; // Mt_ptr->GetRobotTaskPtr()->GetId();
+    rtId = 21; // Mt_ptr->GetRobotTaskPtr()->GetId();
     
     
     if ( theRobotProcedure->GetParameters()->get( "CommsState", DOUBLE,

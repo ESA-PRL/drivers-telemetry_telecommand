@@ -36,7 +36,7 @@
   class MyClock {
 	  public:
 	  double period;
-	  MyClock() { period =1.0;}
+	  MyClock() { period = 0.2;} // KK
 	  double GetBasePeriod() {return period;}
   };
   
@@ -108,6 +108,7 @@ public:
   char* GetPath ();
   void SetPath (char*);
 
+  MyClock *GetClock() { return Clock;} // KK
 private:
   //ControllerModelNamespace::orc_Mod_Deploy_Mast Deploy_Mast;
 };

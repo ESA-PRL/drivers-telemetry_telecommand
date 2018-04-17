@@ -1,14 +1,14 @@
 #ifndef ORC_MOD_MAST_TILT_SwitchOff_H
 #define ORC_MOD_MAST_TILT_SwitchOff_H
 
-#include "module_MAST_TILT_SwitchOff_Inc.h"
-//#include "module.h"
+#include "module.h"
 
+#include "module_MAST_TILT_SwitchOff_Inc.h"
 
 /** The model of the o/b controller */
 namespace ControllerModelNamespace {
 
-class orc_Mod_MAST_TILT_SwitchOff
+  class orc_Mod_MAST_TILT_SwitchOff : public ModuleAlgo
 {
  public:
   static const int TARGET_MECHANISM_DEP  = 0;

@@ -6,7 +6,7 @@ namespace ControllerModelNamespace {
 
 orc_Mod_SA_RIGHT_Primary_SwitchOff::orc_Mod_SA_RIGHT_Primary_SwitchOff (/*ModuleTask* mt,
 									  int indexclk*/)
-//  : ModuleAlgo ("orc_Mod_SA_RIGHT_Primary_SwitchOff", mt, indexclk)
+  : ModuleAlgo (/*"orc_Mod_SA_RIGHT_Primary_SwitchOff", mt, indexclk*/)
 {
   //  PRINT1("** orc_Mod_SA_RIGHT_Primary_SwitchOff constructor")
 }
@@ -18,8 +18,7 @@ orc_Mod_SA_RIGHT_Primary_SwitchOff::~orc_Mod_SA_RIGHT_Primary_SwitchOff ()
 
 void orc_Mod_SA_RIGHT_Primary_SwitchOff::param (char *params)
 {
-
-  //  fprintf (stderr, "SA_RIGHT_Primary_SwitchOff:: param\n");
+   fprintf (stderr, "SA_RIGHT_Primary_SwitchOff:: param\n");
 }
 
 void orc_Mod_SA_RIGHT_Primary_SwitchOff::reparam (char *params)
@@ -30,7 +29,7 @@ void orc_Mod_SA_RIGHT_Primary_SwitchOff::reparam (char *params)
 
 void orc_Mod_SA_RIGHT_Primary_SwitchOff::init ()
 {
-  //  std::cerr << "-> SA_RIGHT_Primary_SwitchOff: start init" << std::endl;
+   std::cerr << "-> SA_RIGHT_Primary_SwitchOff: start init" << std::endl;
 
 	// example code
 	index = 0;
@@ -44,7 +43,7 @@ void orc_Mod_SA_RIGHT_Primary_SwitchOff::init ()
 
 
 	// Get Action ID
-	rtId = 0; // Mt_ptr->GetRobotTaskPtr()->GetId();
+	rtId = 83; // Mt_ptr->GetRobotTaskPtr()->GetId();
 	SolarArrayState[SA_ACTION_ID_INDEX]  = rtId;
 	SolarArrayState[SA_ACTION_RET_INDEX] = ACTION_RET_INITIALISING;
 
@@ -132,7 +131,7 @@ void orc_Mod_SA_RIGHT_Primary_SwitchOff::compute ()
 
 void orc_Mod_SA_RIGHT_Primary_SwitchOff::end ()
 {
-  //  fprintf( stderr, "SA_RIGHT_Primary_SwitchOff:: End\n" );
+   fprintf( stderr, "SA_RIGHT_Primary_SwitchOff:: End\n" );
 	SA_RIGHT_Primary_SwitchOff_prec = NO_EVENT;
 	SA_RIGHT_Primary_SwitchOff_post = NO_EVENT;
 

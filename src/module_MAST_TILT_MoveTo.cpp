@@ -8,7 +8,7 @@ namespace ControllerModelNamespace {
 						   // ModuleTask* mt_ade_left, 
 						   // ModuleTask* mt_ade_right,
 						   int indexclk*/) 
-  //:    ModuleAlgo("orc_Mod_MAST_TILT_MoveTo", mt, indexclk) 
+    :    ModuleAlgo(/*"orc_Mod_MAST_TILT_MoveTo", mt, indexclk*/) 
 {
     // PRINT1("** orc_Mod_MAST_TILT_MoveTo constructor")
     //    adeManagement.setADELeftModuleTask(mt_ade_left);
@@ -20,6 +20,7 @@ namespace ControllerModelNamespace {
   }
   
   void orc_Mod_MAST_TILT_MoveTo::param(char *params) {
+    fprintf( stderr, "MAST_TILT_MoveTo: param\n" );
     //
     // the action status is ok
     //
@@ -74,6 +75,7 @@ namespace ControllerModelNamespace {
   }
 
   void orc_Mod_MAST_TILT_MoveTo::init() {
+    fprintf( stderr, "MAST_TILT_MoveTo: init\n" );
     // if the action status is not ok (because of bad parameterisation
     // the code is not executed
     if (action_exec_status != ACTION_RET_OK) {
@@ -100,10 +102,10 @@ namespace ControllerModelNamespace {
     getModuleTaskPtr()->GetRobotTaskPtr()->setEnergyCons(0.0);
     getModuleTaskPtr()->GetRobotTaskPtr()->setDuration(0.0);
     getModuleTaskPtr()->GetRobotTaskPtr()->setMemoryMassCons(0.0);
-    
+    */    
     // get the action Id
-    rtId = Mt_ptr->GetRobotTaskPtr()->GetId();
-    */
+    rtId = 31; // Mt_ptr->GetRobotTaskPtr()->GetId();
+
     // get the reference to the physical resource
     //    phrMast = ((orc_PhR_Mast *) (Mt_ptr->GetRobotTaskPtr()->GetPhR()));
     
@@ -318,7 +320,7 @@ namespace ControllerModelNamespace {
   }
   
   void orc_Mod_MAST_TILT_MoveTo::end() {
-    //  fprintf( stderr, "MAST_TILT_MoveTo: End\n" );
+    fprintf( stderr, "MAST_TILT_MoveTo: End\n" );
     
     // reset the events
     MAST_TILT_MoveTo_prec = NO_EVENT;

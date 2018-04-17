@@ -1,7 +1,7 @@
 #ifndef ORC_MOD_GNC_SwitchOff_H
 #define ORC_MOD_GNC_SwitchOff_H
 
-//#include "module.h"
+#include "module.h"
 
 #include "module_GNC_SwitchOff_Inc.h"
 
@@ -11,7 +11,7 @@ namespace ControllerModelNamespace {
   /**
    * \brief Implements the **GNC_SwitchOff** Action. 
    */
-  class orc_Mod_GNC_SwitchOff // : public ModuleAlgo
+  class orc_Mod_GNC_SwitchOff : public ModuleAlgo
 {
  public:
 

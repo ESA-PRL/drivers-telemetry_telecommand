@@ -14,6 +14,8 @@ rock_library(telemetry_telecommand
     rt_dhs.cpp
     rt_gnc.cpp
     rt_sa.cpp
+    rt_rv.cpp
+    rt_mms.cpp
     ActiveMQAdmin.cpp
     ActiveMQTCReceiver.cpp
     ActiveMQTMSender.cpp
@@ -29,6 +31,8 @@ rock_library(telemetry_telecommand
     module_ADE_Standby2Operational.cpp
     module_ADE_SwitchOn.cpp
     module_ADE_SwitchOff.cpp
+    module_ADE_ReleaseHDRM.cpp
+    module_HDRM_Release.cpp
     module_COMMS_LST2WH.cpp
     module_COMMS_SwitchOff.cpp
     module_COMMS_SwitchOn.cpp
@@ -45,6 +49,7 @@ rock_library(telemetry_telecommand
     module_GNC_Initialise.cpp
     module_GNC_MonitoringOnly.cpp
     module_GNC_SwitchOff.cpp
+    module_GNC_AbsLocalisation.cpp
     module_MAST_DEP_Initialise.cpp
     module_MAST_DEP_MoveTo.cpp
     module_MAST_DEP_SwitchOff.cpp
@@ -67,38 +72,54 @@ rock_library(telemetry_telecommand
     module_SA_RIGHT_Secondary_Initialise.cpp
     module_SA_RIGHT_Secondary_MoveTo.cpp
     module_SA_RIGHT_Secondary_SwitchOff.cpp
+    module_PanCam_Initialise.cpp
+    module_PanCam_PIUSwitchOff.cpp
+    module_RV_PostComms.cpp       
+    module_RV_Prepare4Night.cpp
+    module_RV_SwitchOffMobility.cpp
+    module_RV_Prepare4Comms.cpp
+    module_RV_Prepare4Science.cpp
+    module_RV_SwitchOffTravel.cpp
+    module_RV_Prepare4Dozing.cpp
+    module_RV_Prepare4Travel.cpp
+    module_RV_WakeUp.cpp
+    module_Release_Body.cpp
+    module_Release_Umbilical.cpp
+    module_MMS_WaitAbsTime.cpp
+    module_MMS_WaitRelTime.cpp
 
     HEADERS
-    comm.h
-    ctrl_state.h
-    simplethread.h
-    linuxOrcc.h
-    rt.h
-    param.h
-    prr.h
-    utils.h
-    RobotProcedure.h
+    Messages.hpp
+    aa.h
     ActiveMQAdmin.h
     ActiveMQTCReceiver.h
     ActiveMQTMSender.h
+    comm.h
+    ctrl_state.h
     GeneralSupportLibrary.h
-    Messages.hpp
+    linuxOrcc.h
+    param.h
+    prr.h
     rapdGrammar_tab.h
+    RobotProcedure.h
+    rt.h
+    simplethread.h
     tasklib.h
-    aa.h
-    module_includes.h
+    utils.h
     module_ADE_Operational2Standby.h
     module_ADE_Operational2Standby_Inc.h
+    module_ADE_ReleaseHDRM.h
+    module_ADE_ReleaseHDRM_Inc.h
     module_ADEs_Activate.h
     module_ADEs_Activate_Inc.h
     module_ADEs_DeActivate.h
     module_ADEs_DeActivate_Inc.h
     module_ADE_Standby2Operational.h
     module_ADE_Standby2Operational_Inc.h
-    module_ADE_SwitchOn.h
-    module_ADE_SwitchOn_Inc.h
     module_ADE_SwitchOff.h
     module_ADE_SwitchOff_Inc.h
+    module_ADE_SwitchOn.h
+    module_ADE_SwitchOn_Inc.h
     module_COMMS_LST2WH.h
     module_COMMS_LST2WH_Inc.h
     module_COMMS_SwitchOff.h
@@ -125,12 +146,20 @@ rock_library(telemetry_telecommand
     module_DHS_Reduced2LowPwr_Inc.h
     module_DHS_Reduced2Nominal.h
     module_DHS_Reduced2Nominal_Inc.h
+    module_GNC_AbsLocalisation.h
+    module_GNC_AbsLocalisation_Inc.h
     module_GNC_Initialise.h
     module_GNC_Initialise_Inc.h
     module_GNC_MonitoringOnly.h
     module_GNC_MonitoringOnly_Inc.h
     module_GNC_SwitchOff.h
     module_GNC_SwitchOff_Inc.h
+    module.h
+    module_HDRM_Release.h
+    module_HDRM_Release_Inc.h
+    module_includes.h
+    module_MAST_DEP_Deploy.h
+    module_MAST_DEP_Deploy_Inc.h
     module_MAST_DEP_Initialise.h
     module_MAST_DEP_Initialise_Inc.h
     module_MAST_DEP_MoveTo.h
@@ -145,12 +174,42 @@ rock_library(telemetry_telecommand
     module_MAST_PAN_SwitchOff_Inc.h
     module_MAST_PTU_MoveTo.h
     module_MAST_PTU_MoveTo_Inc.h
+    module_MAST_SwitchOff.h
+    module_MAST_SwitchOff_Inc.h
     module_MAST_TILT_Initialise.h
     module_MAST_TILT_Initialise_Inc.h
     module_MAST_TILT_MoveTo.h
     module_MAST_TILT_MoveTo_Inc.h
     module_MAST_TILT_SwitchOff.h
     module_MAST_TILT_SwitchOff_Inc.h
+    module_MMS_WaitAbsTime.h
+    module_MMS_WaitRelTime.h
+    module_MMS_WaitRelTime_Inc.h
+    module_PanCam_Initialise.h
+    module_PanCam_Initialise_Inc.h
+    module_PanCam_PIUSwitchOff.h
+    module_PanCam_PIUSwitchOff_Inc.h
+    module_Release_Body.h
+    module_Release_Umbilical.h
+    module_Release_Umbilical_Inc.h
+    module_RV_PostComms.h
+    module_RV_PostComms_Inc.h
+    module_RV_Prepare4Comms.h
+    module_RV_Prepare4Comms_Inc.h
+    module_RV_Prepare4Dozing.h
+    module_RV_Prepare4Dozing_Inc.h
+    module_RV_Prepare4Night.h
+    module_RV_Prepare4Night_Inc.h
+    module_RV_Prepare4Science.h
+    module_RV_Prepare4Science_Inc.h
+    module_RV_Prepare4Travel.h
+    module_RV_Prepare4Travel_Inc.h
+    module_RV_SwitchOffMobility.h
+    module_RV_SwitchOffMobility_Inc.h
+    module_RV_SwitchOffTravel.h
+    module_RV_SwitchOffTravel_Inc.h
+    module_RV_WakeUp.h
+    module_RV_WakeUp_Inc.h
     module_SA_LEFT_Primary_Initialise.h
     module_SA_LEFT_Primary_Initialise_Inc.h
     module_SA_LEFT_Primary_MoveTo.h

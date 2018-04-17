@@ -1,14 +1,14 @@
 #ifndef ORC_MOD_MAST_PAN_SwitchOff_H
 #define ORC_MOD_MAST_PAN_SwitchOff_H
 
+#include "module.h"
 #include "module_MAST_PAN_SwitchOff_Inc.h"
-// #include "module.h"
 
 
 /** The model of the o/b controller */
 namespace ControllerModelNamespace {
 
-  class orc_Mod_MAST_PAN_SwitchOff // : public ModuleAlgo
+  class orc_Mod_MAST_PAN_SwitchOff : public ModuleAlgo
 {
  public:
   static const int TARGET_MECHANISM_DEP  = 0;

@@ -7,7 +7,7 @@ namespace ControllerModelNamespace {
 
 orc_Mod_MAST_DEP_Initialise::orc_Mod_MAST_DEP_Initialise (/*ModuleTask* mt,
 							    int indexclk*/)
-//  : ModuleAlgo ("orc_Mod_MAST_DEP_Initialise", mt, indexclk)
+  : ModuleAlgo (/*"orc_Mod_MAST_DEP_Initialise", mt, indexclk*/)
 {
   //   PRINT1("** orc_Mod_MAST_DEP_Initialise constructor")
 }
@@ -20,7 +20,7 @@ orc_Mod_MAST_DEP_Initialise::~orc_Mod_MAST_DEP_Initialise ()
 void orc_Mod_MAST_DEP_Initialise::param (char *params)
 {
 
-  //  fprintf (stderr, "MAST_DEP_Initialise: param %s\n", params);
+  fprintf (stderr, "MAST_DEP_Initialise: param %s\n", params);
 
   int tmp1, tmp2;
   if (2 != sscanf(params, "%d %d", &tmp1, &tmp2)) {
@@ -47,7 +47,7 @@ void orc_Mod_MAST_DEP_Initialise::reparam (char *params)
 
 void orc_Mod_MAST_DEP_Initialise::init ()
 {
-  //  std::cerr << "MAST_DEP_Initialise: init" << std::endl;
+  std::cerr << "MAST_DEP_Initialise: init" << std::endl;
 
 	//
 	// if the action status is not ok (because of bad parameterisation
@@ -72,7 +72,7 @@ void orc_Mod_MAST_DEP_Initialise::init ()
 	 }
 
 	// get the action Id
-	rtId = 0; // Mt_ptr->GetRobotTaskPtr()->GetId();
+	rtId = 40; // Mt_ptr->GetRobotTaskPtr()->GetId();
 
 	// get the reference to the physical resource
 	// phrMast = ((orc_PhR_Mast *)(Mt_ptr->GetRobotTaskPtr () -> GetPhR ()));
@@ -244,7 +244,7 @@ void orc_Mod_MAST_DEP_Initialise::compute ()
 
 void orc_Mod_MAST_DEP_Initialise::end ()
 {
-  //  fprintf( stderr, "MAST_DEP_Initialise: End\n" );
+  fprintf( stderr, "MAST_DEP_Initialise: End\n" );
 	// reset the events
 	MAST_DEP_Initialise_prec = NO_EVENT;
 	MAST_DEP_Initialise_post = NO_EVENT;

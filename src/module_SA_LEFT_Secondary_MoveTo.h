@@ -1,7 +1,7 @@
 #ifndef ORC_MOD_SA_LEFT_Secondary_MoveTo_H
 #define ORC_MOD_SA_LEFT_Secondary_MoveTo_H
   
-// #include "module.h"
+#include "module.h"
   
 #include "module_SA_LEFT_Secondary_MoveTo_Inc.h"
 // #include "ADEManagement.h"
@@ -12,7 +12,7 @@ namespace ControllerModelNamespace {
  /**
    * \brief Implements the **SA_LEFT_Secondary_MoveTo** Action. Move LEFT Solar Arrays Secondary hinge motor.
    */
-  class orc_Mod_SA_LEFT_Secondary_MoveTo // : public ModuleAlgo
+  class orc_Mod_SA_LEFT_Secondary_MoveTo : public ModuleAlgo
 {
  public:
 	int rtId;     // Action Id

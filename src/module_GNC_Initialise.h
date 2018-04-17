@@ -1,7 +1,7 @@
 #ifndef ORC_MOD_GNC_Initialise_H
 #define ORC_MOD_GNC_Initialise_H
 
-// #include "module.h"
+#include "module.h"
 
 #include "module_GNC_Initialise_Inc.h"
 
@@ -13,7 +13,7 @@ namespace ControllerModelNamespace {
   /**
    * \brief Implements the **GNC_Initialise** Action. 
    */
-  class orc_Mod_GNC_Initialise // : public ModuleAlgo
+  class orc_Mod_GNC_Initialise : public ModuleAlgo
 {
  public:
 

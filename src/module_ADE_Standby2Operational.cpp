@@ -9,9 +9,9 @@ namespace ControllerModelNamespace {
 
 orc_Mod_ADE_Standby2Operational::orc_Mod_ADE_Standby2Operational(/*ModuleTask* mt,
 								   int indexclk*/) 
-// : ModuleAlgo("orc_Mod_ADE_Standby2Operational", mt, indexclk) 
+  : ModuleAlgo(/*"orc_Mod_ADE_Standby2Operational", mt, indexclk*/) 
 { 
-  rtId = 0;
+  rtId = 72;
   index = 0;
   target_mode_id = 0;
   duration = 0.0;

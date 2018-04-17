@@ -148,3 +148,50 @@ if (compute_completed == 1 && end_completed == 0){
   end_completed = 1;
 }
 }
+
+
+int RobotTask::computeADE_ReleaseHDRM(){
+if (param_completed == 0){
+  ADE_ReleaseHDRM.param(rtParams);
+  param_completed = 1;
+}
+if (param_completed == 1 && init_completed == 0){
+  ADE_ReleaseHDRM.init();
+  init_completed = 1;
+}
+if (init_completed == 1 && compute_completed == 0){
+    ADE_ReleaseHDRM.compute();
+  if (  ADE_ReleaseHDRM.  ADE_ReleaseHDRM_post == 1)
+  {
+    post_cond = 1;
+    compute_completed = 1;
+  }
+}
+if (compute_completed == 1 && end_completed == 0){
+    ADE_ReleaseHDRM.end();
+  end_completed = 1;
+}
+}
+
+int RobotTask::computeHDRM_Release(){
+if (param_completed == 0){
+  HDRM_Release.param(rtParams);
+  param_completed = 1;
+}
+if (param_completed == 1 && init_completed == 0){
+  HDRM_Release.init();
+  init_completed = 1;
+}
+if (init_completed == 1 && compute_completed == 0){
+    HDRM_Release.compute();
+  if (  HDRM_Release.  HDRM_Release_post == 1)
+  {
+    post_cond = 1;
+    compute_completed = 1;
+  }
+}
+if (compute_completed == 1 && end_completed == 0){
+    HDRM_Release.end();
+  end_completed = 1;
+}
+}

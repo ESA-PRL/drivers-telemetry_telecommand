@@ -1,8 +1,8 @@
 #ifndef ORC_MOD_MAST_PAN_Initialise_H
 #define ORC_MOD_MAST_PAN_Initialise_H
 
+#include "module.h"
 #include "module_MAST_PAN_Initialise_Inc.h"
-// #include "module.h"
 
 
 /** The model of the o/b controller */
@@ -11,7 +11,7 @@ namespace ControllerModelNamespace {
   /**
    * \brief Implements the **MAST_PAN_Initialise** Action to Warm up and switch ON of the Mast pan actuator
    */
-  class orc_Mod_MAST_PAN_Initialise // : public ModuleAlgo
+  class orc_Mod_MAST_PAN_Initialise : public ModuleAlgo
   {
   public:
     static const int TARGET_MECHANISM_PAN  = 1;

@@ -9,7 +9,7 @@ namespace ControllerModelNamespace {
   
   orc_Mod_ADE_Operational2Standby::orc_Mod_ADE_Operational2Standby(/*ModuleTask* mt,
 								     int indexclk*/) 
-  // : ModuleAlgo("orc_Mod_ADE_Operational2Standby", mt, indexclk) 
+    : ModuleAlgo(/*"orc_Mod_ADE_Operational2Standby", mt, indexclk*/) 
   { 
     
   }
@@ -144,7 +144,7 @@ namespace ControllerModelNamespace {
   
   void orc_Mod_ADE_Operational2Standby::compute() { 
     	// Get Action ID
-    rtId = 0; // Mt_ptr->GetRobotTaskPtr()->GetId();
+    rtId = 74; // Mt_ptr->GetRobotTaskPtr()->GetId();
 
 	//
 	// get the global state

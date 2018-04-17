@@ -1,7 +1,7 @@
 #ifndef ORC_MOD_SA_RIGHT_Primary_Initialise_H
 #define ORC_MOD_SA_RIGHT_Primary_Initialise_H
   
-// #include "module.h"
+#include "module.h"
   
 #include "module_SA_RIGHT_Primary_Initialise_Inc.h"
   
@@ -11,15 +11,13 @@ namespace ControllerModelNamespace {
  /**
    * \brief Implements the **SA_RIGHT_PrimaryInitialise** Action. Warm up and switch ON of RIGHT Solar Arrays primary hinges motor.
    */
-  class orc_Mod_SA_RIGHT_Primary_Initialise // : public ModuleAlgo
+  class orc_Mod_SA_RIGHT_Primary_Initialise : public ModuleAlgo
 {
  public:
 	int rtId;     // Action Id
 	int index;
 
 	double SolarArrayState[MAX_STATE_SIZE];
-	// includes power system information
-	double PowerState[MAX_STATE_SIZE];
 
 	char sa_type[80]; //  primary / secondary
 	char sa_position[80]; // left / right

@@ -7,7 +7,7 @@ namespace ControllerModelNamespace {
 
 orc_Mod_DHS_Nominal2Reduced::orc_Mod_DHS_Nominal2Reduced (/*ModuleTask* mt,
 					int indexclk*/)
-//  : ModuleAlgo ("orc_Mod_DHS_Nominal2Reduced", mt, indexclk)
+  : ModuleAlgo (/*"orc_Mod_DHS_Nominal2Reduced", mt, indexclk*/)
 {
   //  PRINT1("** orc_Mod_DHS_Nominal2Reduced constructor")
 }
@@ -112,7 +112,7 @@ void orc_Mod_DHS_Nominal2Reduced::compute ()
   //  std::cerr << "-> DHS_Nominal2Reduced: start compute" << std::endl;
 
 	// Get Action ID
-  rtId = 0; //Mt_ptr->GetRobotTaskPtr()->GetId();
+  rtId = 13; //Mt_ptr->GetRobotTaskPtr()->GetId();
 
 
 	//

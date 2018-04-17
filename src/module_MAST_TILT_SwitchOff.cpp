@@ -7,7 +7,7 @@ namespace ControllerModelNamespace {
 
 orc_Mod_MAST_TILT_SwitchOff::orc_Mod_MAST_TILT_SwitchOff (/*ModuleTask* mt,
 							    int indexclk*/)
-//  : ModuleAlgo ("orc_Mod_MAST_TILT_SwitchOff", mt, indexclk)
+  : ModuleAlgo (/*"orc_Mod_MAST_TILT_SwitchOff", mt, indexclk*/)
 {
   //  PRINT1("** orc_Mod_MAST_TILT_SwitchOff constructor")
 }
@@ -20,7 +20,7 @@ orc_Mod_MAST_TILT_SwitchOff::~orc_Mod_MAST_TILT_SwitchOff ()
 void orc_Mod_MAST_TILT_SwitchOff::param (char *params)
 {
 
-  //  fprintf (stderr, "MAST_TILT_SwitchOff: param\n");
+  fprintf (stderr, "MAST_TILT_SwitchOff: param\n");
   targetMechanism = TARGET_MECHANISM_TILT;
     //    if (1 != sscanf(params, "%d", &targetMechanism)) {
       
@@ -45,7 +45,7 @@ void orc_Mod_MAST_TILT_SwitchOff::reparam (char *params)
 
 void orc_Mod_MAST_TILT_SwitchOff::init ()
 {
-  // std::cerr << "MAST_TILT_SwitchOff: init" << std::endl;
+  std::cerr << "MAST_TILT_SwitchOff: init" << std::endl;
 
 	// reset the counter
 	index = 0;
@@ -68,7 +68,7 @@ void orc_Mod_MAST_TILT_SwitchOff::init ()
 
 
 	// get the action Id
-	rtId = 0; // Mt_ptr->GetRobotTaskPtr()->GetId();
+	rtId = 30; // Mt_ptr->GetRobotTaskPtr()->GetId();
 
 	// get the duration of the Activity
 	//	phrMast = ((orc_PhR_Mast *)(Mt_ptr->GetRobotTaskPtr () -> GetPhR ()));
@@ -181,7 +181,7 @@ void orc_Mod_MAST_TILT_SwitchOff::compute ()
 
 void orc_Mod_MAST_TILT_SwitchOff::end ()
 {
-  //  fprintf( stderr, "MAST_TILT_SwitchOff: End\n" );
+  fprintf( stderr, "MAST_TILT_SwitchOff: End\n" );
 
 	// reset the events
 	MAST_TILT_SwitchOff_prec = NO_EVENT;

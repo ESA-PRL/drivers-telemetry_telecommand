@@ -6,7 +6,7 @@ namespace ControllerModelNamespace {
 
 orc_Mod_SA_RIGHT_Primary_MoveTo::orc_Mod_SA_RIGHT_Primary_MoveTo (/*ModuleTask* mt,
 								    int indexclk*/)
-//  : ModuleAlgo ("orc_Mod_SA_RIGHT_Primary_MoveTo", mt, indexclk)
+  : ModuleAlgo (/*"orc_Mod_SA_RIGHT_Primary_MoveTo", mt, indexclk*/)
 {
   //  PRINT1("** orc_Mod_SA_RIGHT_Primary_MoveTo constructor")
 
@@ -22,7 +22,7 @@ orc_Mod_SA_RIGHT_Primary_MoveTo::~orc_Mod_SA_RIGHT_Primary_MoveTo ()
 void orc_Mod_SA_RIGHT_Primary_MoveTo::param (char *params)
 {
 
-  //  fprintf (stderr, "SA_RIGHT_Primary_MoveTo:: param\n");
+    fprintf (stderr, "SA_RIGHT_Primary_MoveTo:: param\n");
 
 
 
@@ -49,7 +49,7 @@ void orc_Mod_SA_RIGHT_Primary_MoveTo::reparam (char *params)
 
 void orc_Mod_SA_RIGHT_Primary_MoveTo::init ()
 {
-  //  std::cerr << "-> SA_RIGHT_Primary_MoveTo: start init" << std::endl;
+   std::cerr << "-> SA_RIGHT_Primary_MoveTo: start init" << std::endl;
 
 	// reset the index
 	index = 0;
@@ -65,6 +65,7 @@ void orc_Mod_SA_RIGHT_Primary_MoveTo::init ()
 	  //						"SolarArrayState");
 	 }
 
+	rtId = 84;
 	//
 	// check the preconditions
 	//
@@ -326,7 +327,7 @@ void orc_Mod_SA_RIGHT_Primary_MoveTo::compute ()
 
 void orc_Mod_SA_RIGHT_Primary_MoveTo::end ()
 {
-  //  fprintf( stderr, "SA_RIGHT_Primary_MoveTo:: End\n" );
+   fprintf( stderr, "SA_RIGHT_Primary_MoveTo:: End\n" );
 	SA_RIGHT_Primary_MoveTo_prec = NO_EVENT;
 	SA_RIGHT_Primary_MoveTo_post = NO_EVENT;
 

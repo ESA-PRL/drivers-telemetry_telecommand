@@ -15,7 +15,7 @@ namespace ControllerModelNamespace {
   }
   
   void orc_Mod_MAST_PTU_MoveTo::param(char *params) {
-    // std::cerr << "-> MAST_PTU_MoveTo: start param 1:" << std::endl;
+    std::cerr << "-> MAST_PTU_MoveTo: param" << std::endl;
     //
     // the action status is ok
     //
@@ -105,7 +105,7 @@ namespace ControllerModelNamespace {
   }
 
   void orc_Mod_MAST_PTU_MoveTo::init() {
-    //    std::cerr << "-> MAST_PTU_MoveTo: start init:" << currentTime << " " << trajDuration << std::endl;
+    std::cerr << "-> MAST_PTU_MoveTo: start init:" << currentTime << " " << trajDuration << std::endl;
     // if the action status is not ok (because of bad parameterisation
     // the code is not executed
     if (action_exec_status != ACTION_RET_OK) {
@@ -132,10 +132,10 @@ namespace ControllerModelNamespace {
     getModuleTaskPtr()->GetRobotTaskPtr()->setEnergyCons(0.0);
     getModuleTaskPtr()->GetRobotTaskPtr()->setDuration(0.0);
     getModuleTaskPtr()->GetRobotTaskPtr()->setMemoryMassCons(0.0);
-    
-    // get the action Id
-    rtId = Mt_ptr->GetRobotTaskPtr()->GetId();
     */
+    // get the action Id
+    rtId = 34; // Mt_ptr->GetRobotTaskPtr()->GetId();
+
     // get the reference to the physical resource
     //    phrMast = ((orc_PhR_Mast *) (Mt_ptr->GetRobotTaskPtr()->GetPhR()));
     
@@ -437,7 +437,7 @@ namespace ControllerModelNamespace {
   }
   
   void orc_Mod_MAST_PTU_MoveTo::end() {
-    //  fprintf( stderr, "MAST_PTU_MoveTo: End\n" );
+    fprintf( stderr, "MAST_PTU_MoveTo: End\n" );
     
     // reset the events
     MAST_PTU_MoveTo_prec = NO_EVENT;

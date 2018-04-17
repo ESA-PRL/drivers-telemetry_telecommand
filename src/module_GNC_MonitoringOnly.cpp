@@ -7,7 +7,7 @@ namespace ControllerModelNamespace {
 
 orc_Mod_GNC_MonitoringOnly::orc_Mod_GNC_MonitoringOnly (/*ModuleTask* mt,
 							  int indexclk*/)
-//  : ModuleAlgo ("orc_Mod_GNC_MonitoringOnly", mt, indexclk)
+  : ModuleAlgo (/*"orc_Mod_GNC_MonitoringOnly", mt, indexclk*/)
 {
   //  PRINT1("** orc_Mod_GNC_MonitoringOnly constructor")
 }
@@ -57,7 +57,7 @@ void orc_Mod_GNC_MonitoringOnly::init ()
 	  //						"GNCState");
 	}
 
-	rtId = 0; // Mt_ptr->GetRobotTaskPtr()->GetId();
+	rtId = 61; // Mt_ptr->GetRobotTaskPtr()->GetId();
 
 	action_duration = 2;
 

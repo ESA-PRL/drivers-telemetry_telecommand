@@ -6,7 +6,7 @@ namespace ControllerModelNamespace {
 
   orc_Mod_COMMS_WH2LST::orc_Mod_COMMS_WH2LST (/*ModuleTask* mt,
 					      int indexclk*/)
-  //    : ModuleAlgo ("orc_Mod_COMMS_WH2LST", mt, indexclk)
+    : ModuleAlgo (/*"orc_Mod_COMMS_WH2LST", mt, indexclk*/)
   {
     
   }
@@ -43,7 +43,7 @@ namespace ControllerModelNamespace {
     COMMS_WH2LST_post = NO_EVENT;
     
     // Get Action ID
-    rtId = 0; // Mt_ptr->GetRobotTaskPtr()->GetId();
+    rtId = 20; // Mt_ptr->GetRobotTaskPtr()->GetId();
     
     
     if ( theRobotProcedure->GetParameters()->get( "CommsState", DOUBLE,

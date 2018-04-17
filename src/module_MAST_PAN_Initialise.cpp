@@ -7,7 +7,7 @@ namespace ControllerModelNamespace {
   
   orc_Mod_MAST_PAN_Initialise::orc_Mod_MAST_PAN_Initialise (/*ModuleTask* mt,
 							      int indexclk*/)
-  //    : ModuleAlgo ("orc_Mod_MAST_PAN_Initialise", mt, indexclk)
+    : ModuleAlgo (/*"orc_Mod_MAST_PAN_Initialise", mt, indexclk*/)
   {
     //    PRINT1("** orc_Mod_MAST_PAN_Initialise constructor")
   }
@@ -20,7 +20,7 @@ namespace ControllerModelNamespace {
   void orc_Mod_MAST_PAN_Initialise::param (char *params)
   {
     
-    //  fprintf (stderr, "MAST_PAN_Initialise: param %s\n", params);
+    fprintf (stderr, "MAST_PAN_Initialise: param %s\n", params);
     
     int tmp1, tmp2;
     if (2 != sscanf(params, "%d %d", &tmp1, &tmp2)) {
@@ -64,7 +64,7 @@ namespace ControllerModelNamespace {
   
   void orc_Mod_MAST_PAN_Initialise::init ()
   {
-    //    std::cerr << "MAST_PAN_Initialise: init" << std::endl;
+    std::cerr << "MAST_PAN_Initialise: init" << std::endl;
     
     //
     // if the action status is not ok (because of bad parameterisation
@@ -89,7 +89,7 @@ namespace ControllerModelNamespace {
     }
     
     // get the action Id
-    rtId = 0; // Mt_ptr->GetRobotTaskPtr()->GetId();
+    rtId = 37; // Mt_ptr->GetRobotTaskPtr()->GetId();
     
     // get the reference to the physical resource
     //    phrMast = ((orc_PhR_Mast *)(Mt_ptr->GetRobotTaskPtr () -> GetPhR ()));
@@ -303,7 +303,7 @@ namespace ControllerModelNamespace {
 
   void orc_Mod_MAST_PAN_Initialise::end ()
   {
-    //  fprintf( stderr, "MAST_PAN_Initialise: End\n" );
+    fprintf( stderr, "MAST_PAN_Initialise: End\n" );
     // reset the events
     MAST_PAN_Initialise_prec = NO_EVENT;
     MAST_PAN_Initialise_post = NO_EVENT;

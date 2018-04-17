@@ -7,7 +7,7 @@ namespace ControllerModelNamespace {
 
 orc_Mod_DHS_Reduced2HighPwr::orc_Mod_DHS_Reduced2HighPwr (/*ModuleTask* mt,
 							    int indexclk*/)
-//  : ModuleAlgo ("orc_Mod_DHS_Reduced2HighPwr", mt, indexclk)
+  : ModuleAlgo (/*"orc_Mod_DHS_Reduced2HighPwr", mt, indexclk*/)
 {
   //  PRINT1("** orc_Mod_DHS_Reduced2HighPwr constructor")
 }
@@ -20,7 +20,7 @@ orc_Mod_DHS_Reduced2HighPwr::~orc_Mod_DHS_Reduced2HighPwr ()
 void orc_Mod_DHS_Reduced2HighPwr::param (char *params)
 {
 
-  //  fprintf (stderr, "DHS_Reduced2HighPwr:: param\n");
+    fprintf (stderr, "DHS_Reduced2HighPwr:: param\n");
 
 
 	strcpy(target_mode, "highpower");
@@ -37,7 +37,7 @@ void orc_Mod_DHS_Reduced2HighPwr::reparam (char *params)
 
 void orc_Mod_DHS_Reduced2HighPwr::init ()
 {
-  //  std::cerr << "-> DHS_Reduced2HighPwr: start init" << std::endl;
+  std::cerr << "-> DHS_Reduced2HighPwr: start init" << std::endl;
 
 	// example code
 	index = 0;
@@ -114,7 +114,7 @@ void orc_Mod_DHS_Reduced2HighPwr::compute ()
   //  std::cerr << "-> DHS_Reduced2HighPwr: start compute" << std::endl;
 
 	// Get Action ID
-  rtId = 0; //Mt_ptr->GetRobotTaskPtr()->GetId();
+  rtId = 12; //Mt_ptr->GetRobotTaskPtr()->GetId();
 
 
 	//
@@ -179,7 +179,7 @@ void orc_Mod_DHS_Reduced2HighPwr::compute ()
 
 void orc_Mod_DHS_Reduced2HighPwr::end ()
 {
-  //  fprintf( stderr, "DHS_Reduced2HighPwr:: End\n" );
+  fprintf( stderr, "DHS_Reduced2HighPwr:: End\n" );
 	DHS_Reduced2HighPwr_prec = NO_EVENT;
 	DHS_Reduced2HighPwr_post = NO_EVENT;
 

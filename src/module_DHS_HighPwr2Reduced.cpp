@@ -7,7 +7,7 @@ namespace ControllerModelNamespace {
 
 orc_Mod_DHS_HighPwr2Reduced::orc_Mod_DHS_HighPwr2Reduced (/*ModuleTask* mt,
 							    int indexclk*/)
-//  : ModuleAlgo ("orc_Mod_DHS_HighPwr2Reduced", mt, indexclk)
+  : ModuleAlgo (/*"orc_Mod_DHS_HighPwr2Reduced", mt, indexclk*/)
 {
   //  PRINT1("** orc_Mod_DHS_HighPwr2Reduced constructor")
 }
@@ -110,7 +110,7 @@ void orc_Mod_DHS_HighPwr2Reduced::compute ()
   //  std::cerr << "-> DHS_HighPwr2Reduced: start compute" << std::endl;
 
 	// Get Action ID
-  rtId = 0; // Mt_ptr->GetRobotTaskPtr()->GetId();
+  rtId = 15; // Mt_ptr->GetRobotTaskPtr()->GetId();
 
 
 	//

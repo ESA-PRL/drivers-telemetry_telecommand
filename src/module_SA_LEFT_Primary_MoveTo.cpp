@@ -6,7 +6,7 @@ namespace ControllerModelNamespace {
 
 orc_Mod_SA_LEFT_Primary_MoveTo::orc_Mod_SA_LEFT_Primary_MoveTo (/*ModuleTask* mt,
 								  int indexclk*/)
-//  : ModuleAlgo ("orc_Mod_SA_LEFT_Primary_MoveTo", mt, indexclk)
+  : ModuleAlgo (/*"orc_Mod_SA_LEFT_Primary_MoveTo", mt, indexclk*/)
 {
   //  PRINT1("** orc_Mod_SA_LEFT_Primary_MoveTo constructor")
 }
@@ -18,6 +18,7 @@ orc_Mod_SA_LEFT_Primary_MoveTo::~orc_Mod_SA_LEFT_Primary_MoveTo ()
 
 void orc_Mod_SA_LEFT_Primary_MoveTo::param (char *params)
 {
+    std::cerr << "SA_LEFT_Primary_MoveTo: param" << std::endl;
   if (1 != sscanf(params, "%lf", &tilt)) {
     //    theRobotProcedure->ExitOnParamValueError(
     //					     Mt_ptr->GetRobotTaskPtr()->GetMnemonic().c_str(), params);
@@ -36,7 +37,7 @@ void orc_Mod_SA_LEFT_Primary_MoveTo::reparam (char *params)
 
 void orc_Mod_SA_LEFT_Primary_MoveTo::init ()
 {
-  //  std::cerr << "-> SA_LEFT_Primary_MoveTo: start init" << std::endl;
+    std::cerr << "-> SA_LEFT_Primary_MoveTo: start init" << std::endl;
   // reset the index
   index = 0;
   
@@ -63,7 +64,9 @@ void orc_Mod_SA_LEFT_Primary_MoveTo::init ()
   //  exit(1);
   //  return;
   //	 }
-  
+
+  rtId = 90;
+
   //
   // set the local variables
   //
@@ -261,7 +264,7 @@ void orc_Mod_SA_LEFT_Primary_MoveTo::init ()
 
 void orc_Mod_SA_LEFT_Primary_MoveTo::end ()
 {
-  //  fprintf( stderr, "SA_LEFT_Primary_MoveTo:: End\n" );
+  fprintf( stderr, "SA_LEFT_Primary_MoveTo:: End\n" );
   SA_LEFT_Primary_MoveTo_prec = NO_EVENT;
   SA_LEFT_Primary_MoveTo_post = NO_EVENT;
   

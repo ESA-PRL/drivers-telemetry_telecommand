@@ -1,7 +1,7 @@
 #ifndef ORC_MOD_SA_RIGHT_Secondary_SwitchOff_H
 #define ORC_MOD_SA_RIGHT_Secondary_SwitchOff_H
 
-// #include "module.h"
+#include "module.h"
 // #include "PhR_SolarArray.h"
 
 #include "module_SA_RIGHT_Secondary_SwitchOff_Inc.h"
@@ -11,7 +11,7 @@ class orc_ProcRoverCtrl;
 /** The model of the o/b controller */
 namespace ControllerModelNamespace {
 
-  class orc_Mod_SA_RIGHT_Secondary_SwitchOff // : public ModuleAlgo
+  class orc_Mod_SA_RIGHT_Secondary_SwitchOff : public ModuleAlgo
 {
  public:
 

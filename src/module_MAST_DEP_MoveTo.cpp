@@ -6,7 +6,7 @@ namespace ControllerModelNamespace {
   
   orc_Mod_MAST_DEP_MoveTo::orc_Mod_MAST_DEP_MoveTo(/*ModuleTask* mt, 
 						     int indexclk*/) 
-  //: ModuleAlgo("orc_Mod_MAST_DEP_MoveTo", mt, indexclk) 
+    : ModuleAlgo(/*"orc_Mod_MAST_DEP_MoveTo", mt, indexclk*/) 
 {
   // PRINT1("** orc_Mod_MAST_DEP_MoveTo constructor")
 }
@@ -16,6 +16,7 @@ namespace ControllerModelNamespace {
   }
   
   void orc_Mod_MAST_DEP_MoveTo::param(char *params) {
+    fprintf( stderr, "MAST_DEP_MoveTo: param\n" );
     //
     // the action status is ok
     //
@@ -70,6 +71,7 @@ namespace ControllerModelNamespace {
   }
 
   void orc_Mod_MAST_DEP_MoveTo::init() {
+    fprintf( stderr, "MAST_DEP_MoveTo: Init\n" );
     // if the action status is not ok (because of bad parameterisation
     // the code is not executed
     if (action_exec_status != ACTION_RET_OK) {
@@ -98,7 +100,7 @@ namespace ControllerModelNamespace {
     getModuleTaskPtr()->GetRobotTaskPtr()->setMemoryMassCons(0.0);
     */
     // get the action Id
-    rtId = 0; // Mt_ptr->GetRobotTaskPtr()->GetId();
+    rtId = 39; // Mt_ptr->GetRobotTaskPtr()->GetId();
     
     // get the reference to the physical resource
     //    phrMast = ((orc_PhR_Mast *) (Mt_ptr->GetRobotTaskPtr()->GetPhR()));
@@ -307,7 +309,7 @@ namespace ControllerModelNamespace {
   }
   
   void orc_Mod_MAST_DEP_MoveTo::end() {
-    //  fprintf( stderr, "MAST_DEP_MoveTo: End\n" );
+    fprintf( stderr, "MAST_DEP_MoveTo: End\n" );
     
     // reset the events
     MAST_DEP_MoveTo_prec = NO_EVENT;

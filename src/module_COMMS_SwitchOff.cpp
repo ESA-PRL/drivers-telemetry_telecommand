@@ -6,7 +6,7 @@ namespace ControllerModelNamespace {
 
 orc_Mod_COMMS_SwitchOff::orc_Mod_COMMS_SwitchOff (/*ModuleTask* mt,
 						    int indexclk*/)
-// : ModuleAlgo ("orc_Mod_COMMS_SwitchOff", mt, indexclk)
+  : ModuleAlgo (/*"orc_Mod_COMMS_SwitchOff", mt, indexclk*/)
 {
   //  PRINT1("** orc_Mod_COMMS_SwitchOff constructor")
 }
@@ -19,7 +19,7 @@ orc_Mod_COMMS_SwitchOff::~orc_Mod_COMMS_SwitchOff ()
 void orc_Mod_COMMS_SwitchOff::param (char *params)
 {
 
-  // fprintf (stderr, "COMMS_SwitchOff:: param\n");
+  fprintf (stderr, "COMMS_SwitchOff:: param\n");
 
 
 	if (1 != sscanf(params, "%s", unitid)) {
@@ -41,7 +41,7 @@ void orc_Mod_COMMS_SwitchOff::reparam (char *params)
 
 void orc_Mod_COMMS_SwitchOff::init ()
 {
-  //  std::cerr << "-> COMMS_SwitchOff: start init" << std::endl;
+  std::cerr << "-> COMMS_SwitchOff: start init" << std::endl;
 
 	// example code
 	index = 0;
@@ -53,7 +53,7 @@ void orc_Mod_COMMS_SwitchOff::init ()
 	COMMS_SwitchOff_post = NO_EVENT;
 
 	// Get Action ID
-	rtId = 0; // Mt_ptr->GetRobotTaskPtr()->GetId();
+	rtId = 22; // Mt_ptr->GetRobotTaskPtr()->GetId();
 
 
 	if ( theRobotProcedure->GetParameters()->get( "CommsState", DOUBLE,
@@ -168,7 +168,7 @@ void orc_Mod_COMMS_SwitchOff::compute ()
 
 void orc_Mod_COMMS_SwitchOff::end ()
 {
-  //  fprintf( stderr, "COMMS_SwitchOff:: End\n" );
+  fprintf( stderr, "COMMS_SwitchOff:: End\n" );
 	COMMS_SwitchOff_prec = NO_EVENT;
 	COMMS_SwitchOff_post = NO_EVENT;
 

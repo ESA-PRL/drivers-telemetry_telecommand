@@ -1,7 +1,7 @@
 #ifndef ORC_MOD_COMMS_WH2LST_H
 #define ORC_MOD_COMMS_WH2LST_H
 
-// #include "module.h"
+#include "module.h"
 
 #include "module_COMMS_WH2LST_Inc.h"
 
@@ -10,7 +10,7 @@ class orc_ProcRoverCtrl;
 /** The model of the o/b controller */
 namespace ControllerModelNamespace {
 
-  class orc_Mod_COMMS_WH2LST // : public ModuleAlgo
+  class orc_Mod_COMMS_WH2LST : public ModuleAlgo
 {
  public:
 	int rtId;     //Action Id

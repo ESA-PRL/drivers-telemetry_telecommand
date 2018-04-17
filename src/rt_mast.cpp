@@ -31,7 +31,6 @@ if (compute_completed == 1 && end_completed == 0){
 }
 
 
-
 int RobotTask::computeMAST_DEP_Initialise(){
 if (param_completed == 0){
   MAST_DEP_Initialise.param(rtParams);

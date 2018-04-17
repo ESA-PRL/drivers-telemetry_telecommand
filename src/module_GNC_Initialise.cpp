@@ -7,7 +7,7 @@ namespace ControllerModelNamespace {
 
 orc_Mod_GNC_Initialise::orc_Mod_GNC_Initialise (/*ModuleTask* mt,
 						  int indexclk*/)
-//  : ModuleAlgo ("orc_Mod_GNC_Initialise", mt, indexclk)
+  : ModuleAlgo (/*"orc_Mod_GNC_Initialise", mt, indexclk*/)
 {
   //  PRINT1("** orc_Mod_GNC_Initialise constructor")
 }
@@ -20,7 +20,7 @@ orc_Mod_GNC_Initialise::~orc_Mod_GNC_Initialise ()
 void orc_Mod_GNC_Initialise::param (char *params)
 {
 
-  //  fprintf (stderr, "GNC_Initialise:: param\n");
+    fprintf (stderr, "GNC_Initialise:: param\n");
 
 	// the action status is ok
 	action_exec_status = ACTION_RET_OK;
@@ -35,7 +35,7 @@ void orc_Mod_GNC_Initialise::reparam (char *params)
 
 void orc_Mod_GNC_Initialise::init ()
 {
-  //  std::cerr << "-> GNC_Initialise: start init" << std::endl;
+  std::cerr << "-> GNC_Initialise: start init" << std::endl;
 
 	// if the action status is not ok the code is not executed
 	if (action_exec_status != ACTION_RET_OK) {
@@ -78,7 +78,7 @@ void orc_Mod_GNC_Initialise::init ()
 	*/
 
 	// get the action Id
-	rtId = 0; // Mt_ptr->GetRobotTaskPtr()->GetId();
+	rtId = 62; // Mt_ptr->GetRobotTaskPtr()->GetId();
 
 
 	//
@@ -216,7 +216,7 @@ void orc_Mod_GNC_Initialise::compute ()
 
 void orc_Mod_GNC_Initialise::end ()
 {
-  //  fprintf( stderr, "GNC_Initialise:: End\n" );
+  fprintf( stderr, "GNC_Initialise:: End\n" );
 
 	// reset the events
 	GNC_FollowPath_dist_reached = NO_EVENT;

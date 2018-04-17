@@ -7,7 +7,7 @@ namespace ControllerModelNamespace {
 
 orc_Mod_DHS_Reduced2LowPwr::orc_Mod_DHS_Reduced2LowPwr (/*ModuleTask* mt,
 							  int indexclk*/)
-//  : ModuleAlgo ("orc_Mod_DHS_Reduced2LowPwr", mt, indexclk)
+  : ModuleAlgo (/*"orc_Mod_DHS_Reduced2LowPwr", mt, indexclk*/)
 {
   //  PRINT1("** orc_Mod_DHS_Reduced2LowPwr constructor")
 }
@@ -114,7 +114,7 @@ void orc_Mod_DHS_Reduced2LowPwr::compute ()
   //  std::cerr << "-> DHS_Reduced2LowPwr: start compute" << std::endl;
 
 	// Get Action ID
-  rtId = 0; // Mt_ptr->GetRobotTaskPtr()->GetId();
+  rtId = 11; // Mt_ptr->GetRobotTaskPtr()->GetId();
 
 
 	//

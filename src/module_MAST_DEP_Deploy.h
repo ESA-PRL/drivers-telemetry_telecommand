@@ -1,14 +1,15 @@
 #ifndef ORC_MOD_MAST_DEP_Deploy_H
 #define ORC_MOD_MAST_DEP_Deploy_H
 
+#include "module.h"
+
 #include "module_MAST_DEP_Deploy_Inc.h"
-//#include "module.h"
 
 
 /** The model of the o/b controller */
 namespace ControllerModelNamespace {
 
-class orc_Mod_MAST_DEP_Deploy// : public ModuleAlgo
+class orc_Mod_MAST_DEP_Deploy : public ModuleAlgo
 {
  public:
 

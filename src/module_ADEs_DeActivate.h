@@ -1,14 +1,14 @@
 #ifndef ORC_MOD_ADEs_DeActivate_H
 #define ORC_MOD_ADEs_DeActivate_H
   
-// #include "module.h"
+#include "module.h"
   
 #include "module_ADEs_DeActivate_Inc.h"
   
 /** The model of the o/b controller */
 namespace ControllerModelNamespace {
 
-  class orc_Mod_ADEs_DeActivate // : public ModuleAlgo
+  class orc_Mod_ADEs_DeActivate : public ModuleAlgo
 {
  public:
 	int index;
@@ -19,6 +19,7 @@ namespace ControllerModelNamespace {
 	char task_param[20][124];
 	int rtId;
 
+	double AdeState[MAX_STATE_SIZE]; // KK
 
  public:
 	orc_Mod_ADEs_DeActivate (/*ModuleTask* mt, int indexclk*/);

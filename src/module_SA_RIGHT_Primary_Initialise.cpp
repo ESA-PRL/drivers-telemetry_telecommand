@@ -6,7 +6,7 @@ namespace ControllerModelNamespace {
 
 orc_Mod_SA_RIGHT_Primary_Initialise::orc_Mod_SA_RIGHT_Primary_Initialise (/*ModuleTask* mt,
 									    int indexclk*/)
-//  : ModuleAlgo ("orc_Mod_SA_RIGHT_Primary_Initialise", mt, indexclk)
+  : ModuleAlgo (/*"orc_Mod_SA_RIGHT_Primary_Initialise", mt, indexclk*/)
 {
   //  PRINT1("** orc_Mod_SA_RIGHT_Primary_Initialise constructor")
 }
@@ -19,8 +19,8 @@ orc_Mod_SA_RIGHT_Primary_Initialise::~orc_Mod_SA_RIGHT_Primary_Initialise ()
 void orc_Mod_SA_RIGHT_Primary_Initialise::param (char *params)
 {
 
-  //  fprintf (stderr, "SA_RIGHT_Primary_Initialise:: param\n");
-  //  fprintf (stderr, "SA_Left_PrimaryInit:: param\n");
+   fprintf (stderr, "SA_RIGHT_Primary_Initialise:: param\n");
+
   if (2 != sscanf(params, "%lf %lf", &timeout, &propDelay)) {
     fprintf(stderr, "In orc_Mod_SA_RIGHT_Primary_Initialise param failed\n");
     
@@ -38,7 +38,7 @@ void orc_Mod_SA_RIGHT_Primary_Initialise::reparam (char *params)
 
 void orc_Mod_SA_RIGHT_Primary_Initialise::init ()
 {
-  //  std::cerr << "-> SA_RIGHT_Primary_Initialise: start init" << std::endl;
+   std::cerr << "-> SA_RIGHT_Primary_Initialise: start init" << std::endl;
 
 	// example code
 	index = 0;
@@ -57,7 +57,7 @@ void orc_Mod_SA_RIGHT_Primary_Initialise::init ()
 	}
 
 	// Get Action ID
-	rtId = 0; // Mt_ptr->GetRobotTaskPtr()->GetId();
+	rtId = 85; // Mt_ptr->GetRobotTaskPtr()->GetId();
 
 	SolarArrayState[SA_RIGHT_PRIMARY_STATUS_INDEX] = SA_OPER_MODE_INIT; 
 	SolarArrayState[SA_ACTION_ID_INDEX]  = rtId;
@@ -195,7 +195,7 @@ void orc_Mod_SA_RIGHT_Primary_Initialise::compute ()
 
 void orc_Mod_SA_RIGHT_Primary_Initialise::end ()
 {
-  //  fprintf( stderr, "SA_RIGHT_Primary_Initialise:: End\n" );
+   fprintf( stderr, "SA_RIGHT_Primary_Initialise:: End\n" );
 	SA_RIGHT_Primary_Initialise_prec = NO_EVENT;
 	SA_RIGHT_Primary_Initialise_post = NO_EVENT;
 

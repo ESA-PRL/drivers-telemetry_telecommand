@@ -1,7 +1,7 @@
 #ifndef ORC_MOD_DHS_Reduced2LowPwr_H
 #define ORC_MOD_DHS_Reduced2LowPwr_H
 
-// #include "module.h"
+#include "module.h"
 
 #include "module_DHS_Reduced2LowPwr_Inc.h"
 
@@ -10,7 +10,7 @@ class orc_ProcRoverCtrl;
 /** The model of the o/b controller */
 namespace ControllerModelNamespace {
 
-  class orc_Mod_DHS_Reduced2LowPwr // : public ModuleAlgo
+  class orc_Mod_DHS_Reduced2LowPwr : public ModuleAlgo
 {
  public:
 	int rtId;     //Action Id

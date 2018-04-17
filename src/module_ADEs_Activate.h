@@ -1,17 +1,20 @@
 #ifndef ORC_MOD_ADEs_Activate_H
 #define ORC_MOD_ADEs_Activate_H
   
-//#include "module.h"
+#include "module.h"
   
 #include "module_ADEs_Activate_Inc.h"
   
 /** The model of the o/b controller */
 namespace ControllerModelNamespace {
 
-  class orc_Mod_ADEs_Activate // : public ModuleAlgo
+  class orc_Mod_ADEs_Activate : public ModuleAlgo
 {
  public:
 	int index;
+
+	double AdeState[MAX_STATE_SIZE]; // KK
+
 	double current_time;
 	double duration;
 	char taskid[124];

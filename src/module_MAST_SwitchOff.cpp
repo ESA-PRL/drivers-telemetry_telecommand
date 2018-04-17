@@ -8,7 +8,7 @@ namespace ControllerModelNamespace {
 //orc_Mod_MAST_SwitchOff::orc_Mod_MAST_SwitchOff (ModuleTask* mt,
 //					int indexclk)
 //  : ModuleAlgo ("orc_Mod_DMA_SwitchOff", mt, indexclk)
-orc_Mod_MAST_SwitchOff::orc_Mod_MAST_SwitchOff ()
+  orc_Mod_MAST_SwitchOff::orc_Mod_MAST_SwitchOff (): ModuleAlgo ()
 {
   //  PRINT1("** orc_Mod_DMA_SwitchOff constructor")
 }
@@ -73,7 +73,7 @@ void orc_Mod_MAST_SwitchOff::init ()
 	*/
 
 	// get the action Id
-	rtId = 0; // Mt_ptr->GetRobotTaskPtr()->GetId();
+	rtId = 33; // Mt_ptr->GetRobotTaskPtr()->GetId();
 
 	// get the duration of the Activity
 	//	phrMast = ((orc_PhR_Mast *)(Mt_ptr->GetRobotTaskPtr () -> GetPhR ()));
@@ -127,7 +127,7 @@ void orc_Mod_MAST_SwitchOff::compute ()
 	MastState[MAST_ACTION_RET_INDEX] = ACTION_RET_RUNNING;
 
 	if (index >= (duration/0.2)) {
-	  MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_OFF;
+	  //	  MastState[MAST_STATUS_INDEX] = MAST_OPER_MODE_OFF; KK
 	  
 	  if (targetMechanism == TARGET_MECHANISM_DEP) {
 	    MastState[MAST_DEP_STATUS_INDEX]  = MAST_OPER_MODE_DEP_OFF;

@@ -1,7 +1,7 @@
 #ifndef ORC_MOD_COMMS_SwitchOn_H
 #define ORC_MOD_COMMS_SwitchOn_H
 
-// #include "module.h"
+#include "module.h"
 // #include "PhR_Comms.h"
 
 #include "module_COMMS_SwitchOn_Inc.h"
@@ -11,7 +11,7 @@ class orc_ProcRoverCtrl;
 /** The model of the o/b controller */
 namespace ControllerModelNamespace {
 
-  class orc_Mod_COMMS_SwitchOn // : public ModuleAlgo
+  class orc_Mod_COMMS_SwitchOn : public ModuleAlgo
 {
  public:
 
