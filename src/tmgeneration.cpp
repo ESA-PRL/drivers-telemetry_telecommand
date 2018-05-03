@@ -84,6 +84,11 @@ int CommTmServer::sendDEMMessage(const char* filename, int seq, long time, const
     messproducer->send(demMessage.get()); 
 }
 
+void CommTmServer::sendStatesTM(){
+    first_time=true;
+}
+
+
 void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
 
  // State variables definition
@@ -201,6 +206,7 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
                       ("I'm a gnc message"));
               gncMessage->setIntProperty("iter",seq);
               gncMessage->setLongProperty("time",time1);
+              gncMessage->setFloatProperty("GNC_STATUS", GNCState[GNC_STATUS_INDEX]);
               gncMessage->setFloatProperty("X", GNCState[GNC_ROVER_POSEX_INDEX]);
               gncMessage->setFloatProperty("Y", GNCState[GNC_ROVER_POSEY_INDEX]);
               gncMessage->setFloatProperty("Z", GNCState[GNC_ROVER_POSEZ_INDEX]);
@@ -208,6 +214,7 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
               gncMessage->setFloatProperty("RY", GNCState[GNC_ROVER_POSERY_INDEX]);
               gncMessage->setFloatProperty("RZ", GNCState[GNC_ROVER_POSERZ_INDEX]);
               gncMessage->setIntProperty("Trajectory_STATUS", GNCState[GNC_TRAJECTORY_STATUS_INDEX]);
+              gncMessage->setIntProperty("FDIR_STATUS", GNCState[GNC_FDIR_STATUS_INDEX]);
               activemqTMSender->gncProducerMonitoring->send(gncMessage.get()); 
               for (int i=0; i<MAX_STATE_SIZE; i++)
               {
@@ -458,7 +465,7 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
               locomMessage->setFloatProperty("DeploymentCL", LOCOMState[GNC_ROVER_DEPLOYMENT_Q3_INDEX]);
               locomMessage->setFloatProperty("DeploymentCR", LOCOMState[GNC_ROVER_DEPLOYMENT_Q4_INDEX]);
               locomMessage->setFloatProperty("DeploymentRL", LOCOMState[GNC_ROVER_DEPLOYMENT_Q5_INDEX]);
-              locomMessage->setFloatProperty("DeploymetnRR", LOCOMState[GNC_ROVER_DEPLOYMENT_Q6_INDEX]);
+              locomMessage->setFloatProperty("DeploymentRR", LOCOMState[GNC_ROVER_DEPLOYMENT_Q6_INDEX]);
               locomMessage->setFloatProperty("CurrentFL", LOCOMState[GNC_ROVER_WHEEL1_CURRENT_INDEX]);
               locomMessage->setFloatProperty("CurrentFR", LOCOMState[GNC_ROVER_WHEEL2_CURRENT_INDEX]);
               locomMessage->setFloatProperty("CurrentCL", LOCOMState[GNC_ROVER_WHEEL3_CURRENT_INDEX]);
@@ -478,12 +485,6 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
               locomMessage->setFloatProperty("LeftBogie", LOCOMState[GNC_ROVER_LEFT_BOGIE_INDEX]);
               locomMessage->setFloatProperty("RightBogie", LOCOMState[GNC_ROVER_RIGHT_BOGIE_INDEX]);
               locomMessage->setFloatProperty("RearBogie", LOCOMState[GNC_ROVER_REAR_BOGIE_INDEX]);
-              locomMessage->setFloatProperty("TemperatureFL", LOCOMState[GNC_ROVER_WHEEL1_TEMPERATURE_INDEX]);
-              locomMessage->setFloatProperty("TemperatureFR", LOCOMState[GNC_ROVER_WHEEL2_TEMPERATURE_INDEX]);
-              locomMessage->setFloatProperty("TemperatureCL", LOCOMState[GNC_ROVER_WHEEL3_TEMPERATURE_INDEX]);
-              locomMessage->setFloatProperty("TemperatureCR", LOCOMState[GNC_ROVER_WHEEL4_TEMPERATURE_INDEX]);
-              locomMessage->setFloatProperty("TemperatureRL", LOCOMState[GNC_ROVER_WHEEL5_TEMPERATURE_INDEX]);
-              locomMessage->setFloatProperty("TemperatureRR", LOCOMState[GNC_ROVER_WHEEL6_TEMPERATURE_INDEX]);
               activemqTMSender->locomProducerMonitoring->send(locomMessage.get()); 
 	    }
 	    else if (rover == MaRTA) {

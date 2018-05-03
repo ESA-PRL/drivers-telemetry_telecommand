@@ -87,6 +87,7 @@ class CommTmServer : public CommServer
  public:
   CommTmServer(int port, RobotProcedure* prr, ActiveMQTMSender *tmsender, RoverName rn);
   ~CommTmServer(){};
+  void sendStatesTM();
   void orcGetTmMsg(std::string &tmmsg);
   int sendImageMessage(const char* filename, int seq, long time, const char* date, int size, const unsigned char * data, MessageProducer* messproducer, double *);
   int sendFileMessage(const char* filename, int size, const unsigned char * data, MessageProducer* messproducer);

@@ -3,6 +3,8 @@
 
 extern RobotProcedure *theRobotProcedure;
 
+extern void addOffsetTime(double seconds);
+
 /** The model of the o/b controller */
 namespace ControllerModelNamespace {
 
@@ -10,7 +12,7 @@ namespace ControllerModelNamespace {
   orc_Mod_MMS_WaitRelTime::orc_Mod_MMS_WaitRelTime(/*ModuleTask* mt,
 						     int indexclk*/) :
     ModuleAlgo(/*"orc_Mod_MMS_WaitRelTime", mt, indexclk*/) { 
-    
+    index=0;
   }
   
   orc_Mod_MMS_WaitRelTime::~orc_Mod_MMS_WaitRelTime() {
@@ -62,8 +64,8 @@ namespace ControllerModelNamespace {
     // check if the time is reached
     //
     if (index
-	>= ( waitTime / (theRobotProcedure->GetClock()->GetBasePeriod()))) {
-      
+	>= ( 15.0 / (theRobotProcedure->GetClock()->GetBasePeriod()))) {
+      addOffsetTime(waitTime-15.0); 
       MMS_WaitRelTime_post = SET_EVENT;
       // moduleSendEvent("MMS_WaitRelTime_post;");
     }

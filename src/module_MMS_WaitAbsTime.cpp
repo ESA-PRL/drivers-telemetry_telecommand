@@ -12,7 +12,7 @@ namespace ControllerModelNamespace {
   orc_Mod_MMS_WaitAbsTime::orc_Mod_MMS_WaitAbsTime(/*ModuleTask* mt,
 						     int indexclk*/) :
     ModuleAlgo(/*"orc_Mod_MMS_WaitAbsTime", mt, indexclk*/) { 
-    
+    index=0;
   }
   
   orc_Mod_MMS_WaitAbsTime::~orc_Mod_MMS_WaitAbsTime() {
@@ -34,6 +34,7 @@ namespace ControllerModelNamespace {
   
   void orc_Mod_MMS_WaitAbsTime::init() { 
     
+    index=0;
     MMS_WaitAbsTime_prec = NO_EVENT;
     MMS_WaitAbsTime_post = NO_EVENT;
     
@@ -58,6 +59,7 @@ namespace ControllerModelNamespace {
       MMS_WaitAbsTime_post = SET_EVENT;
       // moduleSendEvent("MMS_WaitAbsTime_post;");
     }
+    index++;
   }
   
   void orc_Mod_MMS_WaitAbsTime::end() { 
