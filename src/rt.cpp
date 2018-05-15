@@ -369,6 +369,21 @@ void* RobotTask::thread ()
             // notify activity running
         }
     }
+    else if (rtName == "GNC_WHEELWALK_GOTO") { 
+        if (param_completed == 0){
+            CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
+            activemqTCReceiver->addCommandInfo(cmd_info);
+            param_completed=1;
+        }
+        else if (post_cond == 1)
+        {
+            // notify activity finished    
+        }
+        else
+        {
+            // notify activity running
+        }
+    }
     else if (rtName == "GNC_TURNSPOT_GOTO") { 
         if (param_completed == 0){
             CommandInfo *cmd_info = new CommandInfo(rtName, rtParams);
