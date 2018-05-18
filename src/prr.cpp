@@ -1,5 +1,5 @@
-
 #include "prr.h"
+#include "rt.h"
 
 RobotProcedure::RobotProcedure (std::string name)
 {
@@ -32,14 +32,14 @@ RobotProcedure::RobotProcedure (std::string name)
 	//
 	// add the default global state 
 	// 
-	if ( GetParameters()->add( "ADEState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
+	if ( GetParameters()->add( "AdeState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) ADEState ) == ERROR ) {
 	  std::cout << "Error in OrcProcVimanco::Init() GetParameters()->add() failed" << std::endl;
 	  Status = ERROR;
 	}
 	//
 	// add the default global state 
 	// 
-	if ( GetParameters()->add( "SAState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
+	if ( GetParameters()->add( "SolarArrayState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) SAState ) == ERROR ) {
 	  std::cout << "Error in OrcProcVimanco::Init() GetParameters()->add() failed" << std::endl;
 	  Status = ERROR;
 	}
@@ -72,11 +72,11 @@ RobotProcedure::RobotProcedure (std::string name)
 	  Status = ERROR;
 	}
 
-	if ( GetParameters()->add( "TTCState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) TTCState ) == ERROR ) {
+	if ( GetParameters()->add( "CommsState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) TTCState ) == ERROR ) {
 	  std::cerr << "Error in OrcProcXXX::Init() GetParameters()->add() failed" << std::endl;
 	  Status = ERROR; 
 	}
-	if ( GetParameters()->add( "DHSState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) DHSState ) == ERROR ) {
+	if ( GetParameters()->add( "DhsState", DOUBLE, MAX_STATE_SIZE, 0, ( char * ) DHSState ) == ERROR ) {
 	  std::cerr << "Error in OrcProcXXX::Init() GetParameters()->add() failed" << std::endl;
 	  Status = ERROR; 
 	}

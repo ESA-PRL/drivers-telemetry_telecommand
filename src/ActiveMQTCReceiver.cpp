@@ -3,7 +3,7 @@
 #include "ActiveMQTCReceiver.h"
 
 
-int handleActiveMQTcMsg(ActiveMQTCReceiver *, char *msg);
+int handleTcMsg(ActiveMQTCReceiver *, char *msg);
 
 ActiveMQTCReceiver::~ActiveMQTCReceiver() {
   cleanup();
@@ -80,47 +80,85 @@ return NULL;
 
 // Called from the consumer since this class is a registered MessageListener.
 void ActiveMQTCReceiver::onMessage(const cms::Message* message) {
-  
+
   static int count = 0;
-  
+  std::string simEnvVar = "/home/marta";  // TODO make this a config param
+
   try {
-    count++;
-    const TextMessage* textMessage = dynamic_cast<const TextMessage*> (message);
-    string text = "";
-    
-    if (textMessage != NULL) {
-      //text = textMessage->getText();
-      text = textMessage->getStringProperty("TCLINE");
-      handleActiveMQTcMsg(this, (char *) text.c_str());
-    } else {
-      text = "NOT A TEXTMESSAGE!";
+	count++;
+	const TextMessage* textMessage = dynamic_cast<const TextMessage*> (message);
+
+	if (textMessage != NULL) {
+       std::cerr << "TEXT Message debug" << std::endl;
+	  if (textMessage->propertyExists("TCLINE")) {
+        std::cerr << "TCLINE debug" << std::endl;
+		string tc = textMessage->getStringProperty("TCLINE");
+		if (tc.size() > 0) {
+		  string text = "";
+		  text.append(textMessage->getStringProperty("TCLINE"));
+		  printf("ACTEXEC Message #%d Received: %s\n", count, text.c_str());
+		  handleTcMsg(this, (char *) text.c_str());
+		}
+	  }
+	  else if (textMessage->propertyExists("LOADACTPLAN")) {
+        std::cerr << "LOADACTPLAN debug" << std::endl;
+		string actplan = textMessage->getStringProperty("LOADACTPLAN");
+		if (actplan.size() > 0) {
+		  if (textMessage->propertyExists("NAME")) {
+			string filename = textMessage->getStringProperty("NAME");
+			if (filename.size() > 0) {
+			  std::ofstream file;
+			  file.open(simEnvVar + std::string("/Operations/inputs/") + filename);
+			  file << actplan;
+			  file << std::endl;
+			  file.close();
+              std::cerr << "LOADACTPLAN: " << filename << std::endl;
+
+			}
+		  }
+		}
+	  }
+	  else if (textMessage->propertyExists("EXECACTPLAN")) {
+       std::cerr << "EXECACTPLAN debug" << std::endl;
+       string execplan = textMessage->getStringProperty("EXECACTPLAN");
+       if (execplan.size() > 0) {
+        // the handleTcMsg requires three items
+        string execplantext = "1 d d d Activity_Plan 1 " + simEnvVar + "/Operations/inputs/" + execplan;
+        printf("EXECACTPLAN Message #%d Received: %s\n", count, execplan.c_str());
+        handleTcMsg(this, (char *) execplantext.c_str());
+       }
+      }
     }
-    printf("Message #%d Received: %s\n", count, text.c_str());
-    
-  } catch (CMSException& e) {
-    e.printStackTrace();
-    isConnected = false;
-    return; 
+else {
+  const BytesMessage* bytesMessage = dynamic_cast<const BytesMessage*> (message);
+
+  if (bytesMessage != NULL) {
+
   }
-  
-  // Commit all messages.
-  if (this->sessionTransacted) {
-    session->commit();
+  else {
+    // text = "NOT A TEXTMESSAGE OR BYTEMESSAGE!";
   }
+}
+
+} catch (CMSException& e) {
+e.printStackTrace();
+isConnected = false;
+return;
+}
 }
 
 // If something bad happens you see it here as this class is also been
 // registered as an ExceptionListener with the connection.
- void ActiveMQTCReceiver::onException(const CMSException& ex AMQCPP_UNUSED) {
-   isConnected = false;
- }
+void ActiveMQTCReceiver::onException(const CMSException& ex AMQCPP_UNUSED) {
+isConnected = false;
+}
 
 
 
 void ActiveMQTCReceiver::cleanup() {
-  if (connection != NULL) {
-    try {
-      connection->close();
+if (connection != NULL) {
+try {
+  connection->close();
     } catch (cms::CMSException& ex) {
       ex.printStackTrace();
     }
@@ -141,7 +179,7 @@ void ActiveMQTCReceiver::cleanup() {
   }
 }
 
-int handleActiveMQTcMsg(ActiveMQTCReceiver *tc_receiver, char *msg) {
+int handleTcMsg(ActiveMQTCReceiver *tc_receiver, char *msg) {
   
   char ackid[80], 
     actionname[80], 

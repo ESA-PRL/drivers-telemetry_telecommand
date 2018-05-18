@@ -24,7 +24,7 @@
 #include <iostream>
 #include <memory>
 
-#include "simplethread.h" 
+#include "simplethread.h"
 
 using namespace activemq::commands;
 using namespace activemq::core;
@@ -34,31 +34,51 @@ using namespace decaf::lang;
 using namespace cms;
 using namespace std;
 
-
 class ActiveMQTMSender: public SimpleThread {
 
  public:
-  
+
   Connection* connectionMonitor;
-  
+
   Session* sessionMonitor;
+
+  Destination* adeDestinationMonitoring;
+  MessageProducer* adeProducerMonitoring;
    
+  Destination* saDestinationMonitoring;
+  MessageProducer* saProducerMonitoring;
   
+  Destination* dhsDestinationMonitoring;
+  MessageProducer* dhsProducerMonitoring;
+  
+  Destination* ttcDestinationMonitoring;
+  MessageProducer* ttcProducerMonitoring;
+
   Destination* gncDestinationMonitoring;
   MessageProducer* gncProducerMonitoring;
-  
-  Destination* ptuDestinationMonitoring;
-  MessageProducer* ptuProducerMonitoring;
-  
+
+  Destination* mastDestinationMonitoring;
+  MessageProducer* mastProducerMonitoring;
+
   Destination* locomDestinationMonitoring;
   MessageProducer* locomProducerMonitoring;
-  
+
   Destination* fileDestinationMonitoring;
   MessageProducer* fileProducerMonitoring;
 
-  /********* img **********/ 
+  /********* img **********/
+  Destination* imgPancamLeftDestinationMonitoring;
+  MessageProducer* imgPancamLeftProducerMonitoring;
+  Destination* imgPancamRightDestinationMonitoring;
+  MessageProducer* imgPancamRightProducerMonitoring;
+
   Destination* imgMastDestinationMonitoring;
   MessageProducer* imgMastProducerMonitoring;
+
+  Destination* imgNavcamLeftDestinationMonitoring;
+  MessageProducer* imgNavcamLeftProducerMonitoring;
+  Destination* imgNavcamRightDestinationMonitoring;
+  MessageProducer* imgNavcamRightProducerMonitoring;
 
   Destination* imgFrontDestinationMonitoring;
   MessageProducer* imgFrontProducerMonitoring;
@@ -69,15 +89,28 @@ class ActiveMQTMSender: public SimpleThread {
   Destination* imgTofDestinationMonitoring;
   MessageProducer* imgTofProducerMonitoring;
 
-  Destination* imgHazcamDestinationMonitoring;
-  MessageProducer* imgHazcamProducerMonitoring;
+  Destination* imgLoccamLeftDestinationMonitoring;
+  MessageProducer* imgLoccamLeftProducerMonitoring;
+  Destination* imgLoccamRightDestinationMonitoring;
+  MessageProducer* imgLoccamRightProducerMonitoring;
+
+  Destination* imgHazcamLeftDestinationMonitoring;
+  MessageProducer* imgHazcamLeftProducerMonitoring;
+  Destination* imgHazcamRightDestinationMonitoring;
+  MessageProducer* imgHazcamRightProducerMonitoring;
 
   Destination* imgRearDestinationMonitoring;
   MessageProducer* imgRearProducerMonitoring;
 
-  /********* dist **********/ 
+  /********* dist **********/
   Destination* distMastDestinationMonitoring;
   MessageProducer* distMastProducerMonitoring;
+
+  Destination* distPancamDestinationMonitoring;
+  MessageProducer* distPancamProducerMonitoring;
+
+  Destination* distNavcamDestinationMonitoring;
+  MessageProducer* distNavcamProducerMonitoring;
 
   Destination* distFrontDestinationMonitoring;
   MessageProducer* distFrontProducerMonitoring;
@@ -88,15 +121,24 @@ class ActiveMQTMSender: public SimpleThread {
   Destination* distTofDestinationMonitoring;
   MessageProducer* distTofProducerMonitoring;
 
+  Destination* distLoccamDestinationMonitoring;
+  MessageProducer* distLoccamProducerMonitoring;
+
   Destination* distHazcamDestinationMonitoring;
   MessageProducer* distHazcamProducerMonitoring;
 
   Destination* distRearDestinationMonitoring;
   MessageProducer* distRearProducerMonitoring;
-  
-  /********* pc **********/ 
+
+  /********* pc **********/
+  Destination* pcPancamDestinationMonitoring;
+  MessageProducer* pcPancamProducerMonitoring;
+
   Destination* pcMastDestinationMonitoring;
   MessageProducer* pcMastProducerMonitoring;
+
+  Destination* pcNavcamDestinationMonitoring;
+  MessageProducer* pcNavcamProducerMonitoring;
 
   Destination* pcFrontDestinationMonitoring;
   MessageProducer* pcFrontProducerMonitoring;
@@ -107,15 +149,24 @@ class ActiveMQTMSender: public SimpleThread {
   Destination* pcTofDestinationMonitoring;
   MessageProducer* pcTofProducerMonitoring;
 
+  Destination* pcLoccamDestinationMonitoring;
+  MessageProducer* pcLoccamProducerMonitoring;
+
   Destination* pcHazcamDestinationMonitoring;
   MessageProducer* pcHazcamProducerMonitoring;
 
   Destination* pcRearDestinationMonitoring;
   MessageProducer* pcRearProducerMonitoring;
 
-  /********* dem **********/ 
+  /********* dem **********/
+  Destination* demPancamDestinationMonitoring;
+  MessageProducer* demPancamProducerMonitoring;
+
   Destination* demMastDestinationMonitoring;
   MessageProducer* demMastProducerMonitoring;
+
+  Destination* demNavcamDestinationMonitoring;
+  MessageProducer* demNavcamProducerMonitoring;
 
   Destination* demFrontDestinationMonitoring;
   MessageProducer* demFrontProducerMonitoring;
@@ -126,58 +177,59 @@ class ActiveMQTMSender: public SimpleThread {
   Destination* demTofDestinationMonitoring;
   MessageProducer* demTofProducerMonitoring;
 
+  Destination* demLoccamDestinationMonitoring;
+  MessageProducer* demLoccamProducerMonitoring;
+
   Destination* demHazcamDestinationMonitoring;
   MessageProducer* demHazcamProducerMonitoring;
 
   Destination* demRearDestinationMonitoring;
   MessageProducer* demRearProducerMonitoring;
- 
- 
+
   std::string brokerURI;
   int numMessages;
   bool useTopic;
   bool sessionTransacted;
-  
+
   bool isConnected;
   string topicname;
 
 public:
-  ActiveMQTMSender(const std::string& brokerURI, 
-		   int numMessages, 
-		   bool useTopic = false, 
-		   bool sessionTransacted = false,
-		   string topic_str = "TM"):
+  ActiveMQTMSender(const std::string& brokerURI,
+      int numMessages,
+      bool useTopic = false,
+      bool sessionTransacted = false,
+      string topic_str = "TM"):
     connectionMonitor(NULL),
-    sessionMonitor(NULL), 
+    sessionMonitor(NULL),
     numMessages(numMessages),
     useTopic(useTopic),
     sessionTransacted(sessionTransacted),
     topicname(topic_str),
-    brokerURI(brokerURI) 
-      {
-	isConnected = false;
-	createThread();
-      }
+    brokerURI(brokerURI)
+    {
+      isConnected = false;
+      createThread();
+    }
 
-    /*
-      ActiveMQTMSender(const std::string& brokerURI, 
-      int numMessages, 
-      bool useTopic = false, 
-      bool sessionTransacted = false,
-      string topic_str = "TM");
-    */
+  /*
+    ActiveMQTMSender(const std::string& brokerURI,
+    int numMessages,
+    bool useTopic = false,
+    bool sessionTransacted = false,
+    string topic_str = "TM");
+  */
   int init();
-  
-  
+
   virtual ~ActiveMQTMSender();
-  
+
   void close();
-  
+
   void* thread ();
 
  private:
-  
+
   void cleanup();
 };
- 
+
 #endif

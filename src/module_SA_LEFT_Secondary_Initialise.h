@@ -1,0 +1,55 @@
+#ifndef ORC_MOD_SA_LEFT_Secondary_Initialise_H
+#define ORC_MOD_SA_LEFT_Secondary_Initialise_H
+  
+#include "module.h"
+  
+#include "module_SA_LEFT_Secondary_Initialise_Inc.h"
+  
+/** The model of the o/b controller */
+namespace ControllerModelNamespace {
+
+ /**
+   * \brief Implements the **SA_LEFT_Secondary_Initialise** Action. Switch OFF of LEFT Solar Arrays primary hinges motor.
+   */
+  class orc_Mod_SA_LEFT_Secondary_Initialise : public ModuleAlgo
+{
+ public:
+	int rtId;     // Action Id
+	int index;
+
+	double SolarArrayState[MAX_STATE_SIZE];
+
+	char sa_type[80]; //  primary / secondary
+	char sa_position[80]; // left / right
+
+	// voltage has been identified on the line
+	double minOpVoltage;
+	double switchOnTime;
+	double timeout;
+	double propDelay;
+
+ public:
+	orc_Mod_SA_LEFT_Secondary_Initialise (/*ModuleTask* mt, int indexclk*/);
+  virtual ~orc_Mod_SA_LEFT_Secondary_Initialise ();
+
+ public:
+  // Output Event Ports declaration
+  int SA_LEFT_Secondary_Initialise_prec;
+int SA_LEFT_Secondary_Initialise_post;
+
+
+  char moduleParams[1024];
+
+  // Methods of computation
+  void init ();
+  void param (char *);
+  void reparam (char *);
+  void compute ();
+  void end ();
+};
+
+}
+#endif
+
+// End class  orc_Mod_SA_LEFT_Secondary_Initialise 
+

@@ -161,11 +161,18 @@ static const short GNC_ROVER_STEER1_CURRENT_INDEX = 67;
 static const short GNC_ROVER_STEER2_CURRENT_INDEX = 68;
 static const short GNC_ROVER_STEER5_CURRENT_INDEX = 69;
 static const short GNC_ROVER_STEER6_CURRENT_INDEX = 70;
+static const short GNC_ROVER_DEPLOYMENT1_CURRENT_INDEX = 81;
+static const short GNC_ROVER_DEPLOYMENT2_CURRENT_INDEX = 82;
+static const short GNC_ROVER_DEPLOYMENT3_CURRENT_INDEX = 83;
+static const short GNC_ROVER_DEPLOYMENT4_CURRENT_INDEX = 84;
+static const short GNC_ROVER_DEPLOYMENT5_CURRENT_INDEX = 85;
+static const short GNC_ROVER_DEPLOYMENT6_CURRENT_INDEX = 86;
 static const short GNC_ROVER_LEFT_ROCKER_INDEX = 71;
 static const short GNC_ROVER_RIGHT_ROCKER_INDEX = 72;
 static const short GNC_ROVER_LEFT_BOGIE_INDEX = 73;
 static const short GNC_ROVER_RIGHT_BOGIE_INDEX = 74;
-
+static const short GNC_ROVER_REAR_BOGIE_INDEX = 75;
+static const short GNC_FDIR_STATUS_INDEX    = 76;
 
 // constants for the status
 #define GNC_STATUS_FLAG_OFF    0
@@ -173,32 +180,26 @@ static const short GNC_ROVER_RIGHT_BOGIE_INDEX = 74;
 #define GNC_STATUS_FLAG_OPER   2
 
 #define GNC_OPER_MODE_OFF                0
-#define GNC_OPER_MODE_MONO               1
-#define GNC_OPER_MODE_INITIALISING       2
-#define GNC_OPER_MODE_STNDBY             3
-#define GNC_OPER_MODE_ABS_LOC            4
-#define GNC_OPER_MODE_NAVCAM_IMAGING     5
-#define GNC_OPER_MODE_LOCCAM_IMAGING     6
-#define GNC_OPER_MODE_NAV_PREP_PERC_EVAL 7
-#define GNC_OPER_MODE_PP_TRAV            8
-#define GNC_OPER_MODE_FPATH_TRAV_MOVE    9
-#define GNC_OPER_MODE_FPATH_TRAV_STNDBY  10
-#define GNC_OPER_MODE_PP_DRILL           11
-#define GNC_OPER_MODE_FPATH_DRILL_MOVE   12
-#define GNC_OPER_MODE_FPATH_DRILL_STNDBY 13
-#define GNC_OPER_MODE_LLO                14
-#define GNC_OPER_MODE_BEMA_DEPLOYMENT_1  15
-#define GNC_OPER_MODE_BEMA_DEPLOYMENT_2  16
+#define GNC_OPER_MODE_ABS_LOC            1
+#define GNC_OPER_MODE_MONO               2
+#define GNC_OPER_MODE_INITIALISING       3
+#define GNC_OPER_MODE_STNDBY             4
+#define GNC_OPER_MODE_LLO                5
+#define GNC_OPER_MODE_FPATH_FOLL_MOVE    6
+#define GNC_OPER_MODE_FPATH_FOLL_STNDBY  7
+#define GNC_OPER_MODE_NAVCAM_IMAGING     8
+#define GNC_OPER_MODE_LOCCAM_IMAGING     9
+#define GNC_OPER_MODE_BEMA_DEPLOYMENT_1  10
+#define GNC_OPER_MODE_BEMA_DEPLOYMENT_2  11
 
 
 #define GNC_MIN_OPER_TEMPERATURE 210
 #define GNC_WARMUP_TIMEOUT       1000
 
-
 //
-// SA STATUS
+//  Solar Array
 //
-static const short SA_STATUS_INDEX 	          = 0;
+// indexes of the controller state vector
 static const short SA_LEFT_PRIMARY_STATUS_INDEX   = 1;
 static const short SA_LEFT_SECONDARY_STATUS_INDEX  = 2;
 static const short SA_RIGHT_PRIMARY_STATUS_INDEX   = 3;
@@ -208,7 +209,6 @@ static const short SA_CURRENT_Q2_INDEX	= 6;
 static const short SA_CURRENT_Q3_INDEX	= 7;
 static const short SA_CURRENT_Q4_INDEX	= 8;
 
-static const short SA_DOF               = 4;
 static const short SA_DES_Q1_INDEX	= 9;
 static const short SA_DES_Q2_INDEX	= 10;
 static const short SA_DES_Q3_INDEX	= 11;
@@ -220,54 +220,77 @@ static const short SA_TEMPERATURE_INDEX	= 16;
 static const short SA_LEFT_DATARATE_INDEX	= 17;
 static const short SA_RIGHT_DATARATE_INDEX	= 18;
 
-static const short SA_LEFT_WARMUP_TIME_INDEX	= 19;
-static const short SA_RIGHT_WARMUP_TIME_INDEX	= 20;
+static const short SA_PRIM_LEFT_WARMUP_TIME_INDEX	= 19;
+static const short SA_SEC_LEFT_WARMUP_TIME_INDEX	= 20;
+static const short SA_PRIM_RIGHT_WARMUP_TIME_INDEX	= 21;
+static const short SA_SEC_RIGHT_WARMUP_TIME_INDEX	= 22;
 
-static const short SA_ACTION_ID_INDEX   = 21; // 12-nov-2010 (Action ID)
-static const short SA_ACTION_RET_INDEX  = 22;
+static const short SA_ACTION_ID_INDEX   = 25; 
+static const short SA_ACTION_RET_INDEX  = 26; 
+
+static const short SA_DOF = 4;
 
 
 #define SA_DOF 4
 // Modes definitions
 #define SA_OPER_MODE_OFF          0
-#define SA_OPER_MODE_INITIALISING 1
+#define SA_OPER_MODE_INIT         1
 #define SA_OPER_MODE_STNDBY       2
 #define SA_OPER_MODE_MOVING       3
-#define SA_OPER_MODE_SEC_MOVING   4
+//#define SA_OPER_MODE_SEC_MOVING   4
+
 // (m/sec, deg/sec) 
 #define SA_MAX_ROTATION_SPEED 3
 #define DEFAULT_SA_MIN_LINE_VOLTAGE 15
 #define DEFAULT_SA_WARMUP_TIME 60
 
 
-//
+//---------------------------------------------------
 // MAST STATUS
-//
+//---------------------------------------------------
+static const short MAST_DEP_STATUS_INDEX	= 0;
+static const short MAST_PAN_STATUS_INDEX	= 1;
+static const short MAST_TILT_STATUS_INDEX	= 2;
 
-static const short MAST_STATUS_INDEX		= 0;
-static const short MAST_TEMPERATURE_INDEX	= 1;
+static const short MAST_TEMPERATURE_INDEX	= 11;
 
-static const short MAST_CURRENT_Q1_INDEX	= 2;
-static const short MAST_CURRENT_Q2_INDEX	= 3;
-static const short MAST_CURRENT_Q3_INDEX	= 4;
-static const short MAST_CURRENT_Q4_INDEX	= 5;
-static const short MAST_CURRENT_Q5_INDEX	= 6;
+static const short MAST_CURRENT_Q1_INDEX	= 12;
+static const short MAST_CURRENT_Q2_INDEX	= 13;
+static const short MAST_CURRENT_Q3_INDEX	= 14;
+static const short MAST_CURRENT_Q4_INDEX	= 15;
+static const short MAST_CURRENT_Q5_INDEX	= 16;
 
-static const short MAST_DES_Q1_INDEX	= 7;
-static const short MAST_DES_Q2_INDEX	= 8;
-static const short MAST_DES_Q3_INDEX	= 9;
-static const short MAST_DES_Q4_INDEX	= 10;
-static const short MAST_DES_Q5_INDEX	= 11;
+static const short MAST_DES_Q1_INDEX	= 17;
+static const short MAST_DES_Q2_INDEX	= 18;
+static const short MAST_DES_Q3_INDEX	= 19;
+static const short MAST_DES_Q4_INDEX	= 20;
+static const short MAST_DES_Q5_INDEX	= 21;
 
-static const short MAST_TRAJ_DUR_INDEX     = 12;
-static const short MAST_POWER_CONS_INDEX   =  13;
-static const short MAST_DATARATE_INDEX     =  14;  // 3-11-2010
+static const short MAST_TRAJ_DUR_INDEX     = 22;
+static const short MAST_POWER_CONS_INDEX   = 23;
+static const short MAST_DATARATE_INDEX     = 24;  // 3-11-2010
 
-static const short MAST_WARMUP_TIME_PTU_INDEX = 15;
-static const short MAST_WARMUP_TIME_DEP_INDEX = 16;
+static const short MAST_WARMUP_TIME_DEP_INDEX  = 25;
+static const short MAST_WARMUP_TIME_PAN_INDEX  = 26;
+static const short MAST_WARMUP_TIME_TILT_INDEX = 27;
 
-static const short MAST_ACTION_ID_INDEX    = 17; // 12-nov-2010 (Action ID)
-static const short MAST_ACTION_RET_INDEX   = 18; // 12-nov-2010 (OK/ERROR/RUNNING)
+static const short MAST_ACTION_ID_INDEX    = 30; 
+static const short MAST_ACTION_RET_INDEX   = 31; 
+
+static const short MAST_DOF = 3;
+
+#define MAST_OPER_MODE_DEP_OFF          0
+#define MAST_OPER_MODE_DEP_INITIALISE   1
+#define MAST_OPER_MODE_DEP_STNDBY       2
+#define MAST_OPER_MODE_DEP_MOVING       3
+#define MAST_OPER_MODE_PAN_OFF          0
+#define MAST_OPER_MODE_PAN_INITIALISE   1
+#define MAST_OPER_MODE_PAN_STNDBY       2
+#define MAST_OPER_MODE_PAN_MOVING       3
+#define MAST_OPER_MODE_TILT_OFF         0
+#define MAST_OPER_MODE_TILT_INITIALISE  1
+#define MAST_OPER_MODE_TILT_STNDBY      2
+#define MAST_OPER_MODE_TILT_MOVING      3
 
 
 // (m/sec, deg/sec) 
@@ -277,21 +300,12 @@ static const short MAST_ACTION_RET_INDEX   = 18; // 12-nov-2010 (OK/ERROR/RUNNIN
 #define MAST_INITIALISE_TIME       1800
 #define MAST_PTU_MIN_LINE_VOLTAGE 10
 #define MAST_SWITCH_OFF_TIME      2 
-#define MAST_WARMUP_TIMEOUT       10
+#define MAST_WARMUP_TIMEOUT       2
 
-#define MAST_DOF                       3
-#define MAST_OPER_MODE_OFF             0
-#define MAST_OPER_MODE_PTU_INITIALISE  1
-#define MAST_OPER_MODE_PTU_STNDBY      2
-#define MAST_OPER_MODE_PTU_MOVING      3
-#define MAST_OPER_MODE_DEP_INITIALISE  4
-#define MAST_OPER_MODE_DEP_STNDBY      5
-#define MAST_OPER_MODE_DEP_MOVING      6
 
-//
+//---------------------------------------------------
 // ADE
-//
-
+//---------------------------------------------------
 static const short ADE_STATUS_LEFT_INDEX      = 0;
 static const short ADE_STATUS_RIGHT_INDEX     = 1;
 static const short ADE_LEFT_TEMPERATURE_INDEX = 2;
@@ -309,26 +323,27 @@ static const short ADE_RIGHT_WARMUP_TIME_INDEX = 16;
 static const short ADE_ACTION_ID_INDEX    = 17;
 static const short ADE_ACTION_RET_INDEX   = 18;
 
-static const short HDRM_BODY_1_STATUS_INDEX = 20;
-static const short HDRM_BODY_2_STATUS_INDEX = 21; 
-static const short HDRM_BODY_3_STATUS_INDEX = 22; 
-static const short HDRM_DRILL_1_STATUS_INDEX = 23;
-static const short HDRM_DRILL_2_STATUS_INDEX = 24; 
-static const short HDRM_MAST_STATUS_INDEX = 25; 
-static const short HDRM_SA_LEFT_1_STATUS_INDEX = 26; 
-static const short HDRM_SA_LEFT_2_STATUS_INDEX = 27; 
-static const short HDRM_SA_LEFT_3_STATUS_INDEX = 28; 
-static const short HDRM_SA_RIGHT_1_STATUS_INDEX = 29; 
-static const short HDRM_SA_RIGHT_2_STATUS_INDEX = 30; 
-static const short HDRM_SA_RIGHT_3_STATUS_INDEX = 31; 
-static const short HDRM_UMBILICAL_1_STATUS_INDEX = 32; 
-static const short HDRM_UMBILICAL_2_STATUS_INDEX = 33; 
-static const short HDRM_WHEEL_FL_STATUS_INDEX = 34; 
-static const short HDRM_WHEEL_FR_STATUS_INDEX = 35;
-static const short HDRM_WHEEL_ML_STATUS_INDEX = 36; 
-static const short HDRM_WHEEL_MR_STATUS_INDEX = 37; 
-static const short HDRM_WHEEL_RL_STATUS_INDEX = 38; 
-static const short HDRM_WHEEL_RR_STATUS_INDEX = 39;
+static const short HDRM_DMA_1_INDEX    = 30; // 0
+static const short HDRM_DMA_2_INDEX    = 31;  
+static const short HDRM_DRILL_L_INDEX  = 32;  
+static const short HDRM_DRILL_R_INDEX  = 33;
+static const short HDRM_SA_LFI_INDEX   = 34;
+static const short HDRM_SA_LFO_INDEX   = 35; // 5
+static const short HDRM_SA_LRI_INDEX   = 36; 
+static const short HDRM_SA_RFI_INDEX   = 37;
+static const short HDRM_SA_RFO_INDEX   = 38;
+static const short HDRM_SA_RRI_INDEX   = 39;
+static const short HDRM_UMB_L_INDEX    = 40; // 10
+static const short HDRM_UMB_R_INDEX    = 41; 
+static const short HDRM_WHEEL_LF_INDEX = 42;
+static const short HDRM_WHEEL_LM_INDEX = 43;
+static const short HDRM_WHEEL_LR_INDEX = 44;
+static const short HDRM_WHEEL_RF_INDEX = 45; // 15
+static const short HDRM_WHEEL_RM_INDEX = 46;  
+static const short HDRM_WHEEL_RR_INDEX = 47;
+static const short HDRM_BODY_LF_INDEX  = 48;
+static const short HDRM_BODY_RF_INDEX  = 49;
+static const short HDRM_BODY_R_INDEX   = 50; // 20
 
 
 #define HDRM_OFF 0
@@ -383,40 +398,45 @@ static const short LOCCAM_RLOC_STEREO_INDEX     = 23; // Index of stored images
 static const short HAZCAM_FHAZ_STEREO_INDEX     = 24; // Index of stored images
 static const short TOF_INDEX                    = 25; // Index of stored images
 static const short LIDAR_INDEX                  = 26; // Index of stored images
+static const short PANCAM_INDEX                 = 27; // Index of stored images
+static const short NAVCAM_INDEX                 = 28; // Index of stored images
+static const short LOCCAM_INDEX                 = 29; // Index of stored images
 
-// PanCam Operational Modes
+// PanCam Operational Modes // KK PANCAM OPER MODES UPDATED
 #define PANCAM_OPER_MODE_OFF                    0
-#define PANCAM_OPER_MODE_INITIALISING 		    1
-#define PANCAM_OPER_MODE_WACS_INITIALISE        2    
-#define PANCAM_OPER_MODE_HRC_INITIALISE         3    
-#define PANCAM_OPER_MODE_STNDBY                 4
-#define PANCAM_OPER_MODE_OPERATING              5
-#define PANCAM_OPER_MODE_SWITCHING_OFF          6
-#define PANCAM_OPER_MODE_FAIL                   7
+#define PANCAM_OPER_MODE_INIT        		1 
+#define PANCAM_OPER_MODE_INIT_CAM               2   
+#define PANCAM_OPER_MODE_STANDBY                3
 
+#define PANCAM_OPER_MODE_WAC_L_ENABLE                     4
+#define PANCAM_OPER_MODE_WAC_L_STANDBY                    5
+#define PANCAM_OPER_MODE_WAC_L_SWITCH_ON                  6
+#define PANCAM_OPER_MODE_WAC_L_MODE                       7
+#define PANCAM_OPER_MODE_WAC_L_FILTER_SELECTION           8
+#define PANCAM_OPER_MODE_WAC_L_GET_IMAGE                  9
+#define PANCAM_OPER_MODE_WAC_L_SWITCH_OFF                 10
+#define PANCAM_OPER_MODE_WAC_L_DISABLE                    11
 
-#define PANCAM_OPER_MODE_WAC_OFF                0
-#define PANCAM_OPER_MODE_WAC_STANDBY            1
-#define PANCAM_OPER_MODE_WAC_FILTER_SELECTION   2
-#define PANCAM_OPER_MODE_WAC_ACQUIRING_RRGB_IMAGE       3
-#define PANCAM_OPER_MODE_WAC_ACQUIRING_GEOLOGY_IMAGE    4
-#define PANCAM_OPER_MODE_WAC_GETTING_IMAGE_LOSSLESS     5
-#define PANCAM_OPER_MODE_WAC_GETTING_IMAGE_LOSSY        6
-#define PANCAM_OPER_MODE_WAC_GETTING_IMAGE_THUMBNAIL    7
+#define PANCAM_OPER_MODE_WAC_R_ENABLE                     12
+#define PANCAM_OPER_MODE_WAC_R_STANDBY                    13
+#define PANCAM_OPER_MODE_WAC_R_SWITCH_ON                  14
+#define PANCAM_OPER_MODE_WAC_R_MODE                       15
+#define PANCAM_OPER_MODE_WAC_R_FILTER_SELECTION           16
+#define PANCAM_OPER_MODE_WAC_R_GET_IMAGE                  17
+#define PANCAM_OPER_MODE_WAC_R_SWITCH_OFF                 18
+#define PANCAM_OPER_MODE_WAC_R_DISABLE                    19
 
-#define PANCAM_OPER_MODE_HRC_OFF             0
-#define PANCAM_OPER_MODE_HRC_STANDBY         1   
-#define PANCAM_OPER_MODE_HRC_GETTING_IMAGE   2 
-#define PANCAM_OPER_MODE_HRC_ACQUIRING_AF_AE_IMAGE 3
-#define PANCAM_OPER_MODE_HRC_ACQUIRING_AF_ME_IMAGE 4
-#define PANCAM_OPER_MODE_HRC_ACQUIRING_MF_AE_IMAGE 5
-#define PANCAM_OPER_MODE_HRC_ACQUIRING_MF_ME_IMAGE 6
-#define PANCAM_OPER_MODE_HRC_FOCUSSING_IMAGE 7
-#define PANCAM_OPER_MODE_HRC_EXPOSURE        8 
+#define PANCAM_OPER_MODE_HRC_ENABLE                     20
+#define PANCAM_OPER_MODE_HRC_STANDBY                    21
+#define PANCAM_OPER_MODE_HRC_SWITCH_ON                  22
+#define PANCAM_OPER_MODE_HRC_MODE                       23
+#define PANCAM_OPER_MODE_HRC_FOCUS                      24
+#define PANCAM_OPER_MODE_HRC_EXPOSURE                   25
+#define PANCAM_OPER_MODE_HRC_GET_IMAGE                  26
+#define PANCAM_OPER_MODE_HRC_SWITCH_OFF                 27
+#define PANCAM_OPER_MODE_HRC_DISABLE                    28
 
-#define PANCAM_COMPRESSION_LEVEL_LOSSLESS  1
-#define PANCAM_COMPRESSION_LEVEL_LOSSY     2
-#define PANCAM_COMPRESSION_LEVEL_THUMBNAIL 3
+#define PANCAM_OPER_MODE_SWITCH_OFF                     29
 
 //#define PANCAM_THERMAL_MODE_NONOPERATIONAL 0
 //#define PANCAM_THERMAL_MODE_OPERATIONAL    1
@@ -425,5 +445,13 @@ static const short LIDAR_INDEX                  = 26; // Index of stored images
 #define PANCAM_WARMUP_TIMEOUT 10
 #define PANCAM_WAC_GETTING_IMAGE_TIME 10
 #define PANCAM_HRC_GETTING_IMAGE_TIME 10
+
+enum RoverName 
+{
+    HDPR,
+    ExoTeR,
+    MaRTA
+};
+
 
 #endif

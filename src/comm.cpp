@@ -220,10 +220,11 @@ void* CommTcReplyServer::thread() {
 }
 
 
-CommTmServer::CommTmServer(int port, RobotProcedure* prr, ActiveMQTMSender* actmqtmsender): CommServer(port) {
+CommTmServer::CommTmServer(int port, RobotProcedure* prr, ActiveMQTMSender* actmqtmsender, RoverName rn): CommServer(port) {
 
   this->prr = prr;
   this->activemqTMSender = actmqtmsender; 
+  this->rover = rn;
   fprintf (stdout, "=== CommTmServer::CommTmServer \n");
   if ( createThread() == ERROR ) {
     fprintf (stdout, "=== CommTmServer::createThread failed \n");
