@@ -15,7 +15,6 @@ extern ActiveMQTCReceiver* activemqTCReceiver;
 
 RobotTask::RobotTask (std::string name)
 {
-  std::cout << "** RobotTask constructor:" << name << std::endl;
   tcRequestId = -1;
 
   if (( waitEndActionSem = orcSemCreate( ORCEMPTY ) ) == NULL ) {
