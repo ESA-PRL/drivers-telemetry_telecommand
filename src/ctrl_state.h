@@ -173,6 +173,7 @@ static const short GNC_ROVER_LEFT_BOGIE_INDEX = 73;
 static const short GNC_ROVER_RIGHT_BOGIE_INDEX = 74;
 static const short GNC_ROVER_REAR_BOGIE_INDEX = 75;
 static const short GNC_FDIR_STATUS_INDEX    = 76;
+static const short GNC_AUTONAV_STATUS_INDEX = 77;
 
 // constants for the status
 #define GNC_STATUS_FLAG_OFF    0

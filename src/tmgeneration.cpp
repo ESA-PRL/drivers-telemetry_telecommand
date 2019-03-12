@@ -215,7 +215,8 @@ void CommTmServer::orcGetTmMsg(std::string &tmmsg) {
               gncMessage->setFloatProperty("RZ", GNCState[GNC_ROVER_POSERZ_INDEX]);
               gncMessage->setIntProperty("Trajectory_STATUS", GNCState[GNC_TRAJECTORY_STATUS_INDEX]);
               gncMessage->setIntProperty("FDIR_STATUS", GNCState[GNC_FDIR_STATUS_INDEX]);
-              activemqTMSender->gncProducerMonitoring->send(gncMessage.get()); 
+              gncMessage->setIntProperty("AUTONAV_STATUS", GNCState[GNC_AUTONAV_STATUS_INDEX]);
+              activemqTMSender->gncProducerMonitoring->send(gncMessage.get());
               for (int i=0; i<MAX_STATE_SIZE; i++)
               {
                   lastGNCState[i]=GNCState[i];

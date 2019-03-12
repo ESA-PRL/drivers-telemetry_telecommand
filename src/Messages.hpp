@@ -20,7 +20,8 @@ namespace telemetry_telecommand
             FRONT,
             TOF,
             HAZCAM,
-            REAR
+            REAR,
+            AUTONAV // This is not a sensor but the software component we refer to as producer of different processed products. Typically AutoNav would be using the images coming from the NavCam.
         };
 
         enum ProductType // Be careful when changing this enum. 3DROCS uses corresponding integer numbers to select the type. Changing the enum will need to modify 3DROCS TC command. 
@@ -32,7 +33,9 @@ namespace telemetry_telecommand
             ALL,
             STEREO, // used to ask for stereo images
             STEREO_LEFT, // used to mark provided images
-            STEREO_RIGHT
+            STEREO_RIGHT,
+            NAVMAP,  // AutoNav-specific product
+            TRAJMAP  // AutoNav-specific product
         };
 
         enum Mode  // Be careful when changing this enum. 3DROCS uses corresponding integer numbers to select the type. Changing the enum will need to modify 3DROCS TC command. 

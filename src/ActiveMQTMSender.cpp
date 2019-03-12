@@ -44,12 +44,12 @@ void* ActiveMQTMSender::thread() {
           return NULL;
         }
 
-	string ade_str("ADE_STATE");
-	string sa_str("SA_STATE");
+    	string ade_str("ADE_STATE");
+	    string sa_str("SA_STATE");
         string gnc_str("GNC_STATE");
         string mast_str("MAST_STATE");
-	string dhs_str("DHS_STATE");
-	string ttc_str("TTC_STATE");
+	    string dhs_str("DHS_STATE");
+	    string ttc_str("TTC_STATE");
         string locom_str("LOCOM_STATE");
         string img_pancam_left_str("PANCAM_LEFT_IMAGE");
         string img_pancam_right_str("PANCAM_RIGHT_IMAGE");
@@ -91,6 +91,11 @@ void* ActiveMQTMSender::thread() {
         string dist_rear_str("DIST_REAR");
         string pc_rear_str("PC_REAR");
         string dem_rear_str("DEM_REAR");
+        string img_autonav_str("AUTONAV_IMAGE");
+        string dist_autonav_str("AUTONAV_DIST");
+        string dem_autonav_str("AUTONAV_DEM");
+        string navmap_autonav_str("AUTONAV_NAVMAP");
+        string trajmap_autonav_str("AUTONAV_TRAJMAP");
 
         string file_str("ROVERFILETRANSFER");
 
@@ -384,6 +389,20 @@ void* ActiveMQTMSender::thread() {
         imgRearProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
         isConnected = true;
 
+        /******** IMG_AUTONAV *********/
+        imgAutonavDestinationMonitoring = sessionMonitor->createTopic(img_autonav_str);
+        if (imgAutonavDestinationMonitoring == NULL) {
+          std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+          return NULL;
+        }
+        imgAutonavProducerMonitoring = sessionMonitor->createProducer(imgAutonavDestinationMonitoring);
+        if (imgAutonavProducerMonitoring == NULL) {
+          std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+          return NULL;
+        }
+        imgAutonavProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+        isConnected = true;
+
         /******** DIST_PANCAM *********/
         distPancamDestinationMonitoring = sessionMonitor->createTopic(dist_pancam_str);
         if (distPancamDestinationMonitoring == NULL) {
@@ -508,6 +527,20 @@ void* ActiveMQTMSender::thread() {
           return NULL;
         }
         distRearProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+        isConnected = true;
+
+        /******** DIST_AUTONAV *********/
+        distAutonavDestinationMonitoring = sessionMonitor->createTopic(dist_autonav_str);
+        if (distAutonavDestinationMonitoring == NULL) {
+          std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+          return NULL;
+        }
+        distAutonavProducerMonitoring = sessionMonitor->createProducer(distAutonavDestinationMonitoring);
+        if (distAutonavProducerMonitoring == NULL) {
+          std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+          return NULL;
+        }
+        distAutonavProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
         isConnected = true;
 
         /******** PC_PANCAM *********/
@@ -761,6 +794,53 @@ void* ActiveMQTMSender::thread() {
         }
         demRearProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
         isConnected = true;
+
+        // Finished
+        std::cout << "ActiveMQTMSender:" << " connected" <<  std::endl;
+        isConnected = true;
+
+        /******** DEM_AUTONAV *********/
+        demAutonavDestinationMonitoring = sessionMonitor->createTopic(dem_autonav_str);
+        if (demAutonavDestinationMonitoring == NULL) {
+          std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+          return NULL;
+        }
+        demAutonavProducerMonitoring = sessionMonitor->createProducer(demAutonavDestinationMonitoring);
+        if (demAutonavProducerMonitoring == NULL) {
+          std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+          return NULL;
+        }
+        demAutonavProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+        isConnected = true;
+
+        /******** NAVMAP_AUTONAV *********/
+        navmapAutonavDestinationMonitoring = sessionMonitor->createTopic(navmap_autonav_str);
+        if (navmapAutonavDestinationMonitoring == NULL) {
+          std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+          return NULL;
+        }
+        navmapAutonavProducerMonitoring = sessionMonitor->createProducer(navmapAutonavDestinationMonitoring);
+        if (navmapAutonavProducerMonitoring == NULL) {
+          std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+          return NULL;
+        }
+        navmapAutonavProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+        isConnected = true;
+
+        /******** TRAJMAP_AUTONAV *********/
+        trajmapAutonavDestinationMonitoring = sessionMonitor->createTopic(trajmap_autonav_str);
+        if (trajmapAutonavDestinationMonitoring == NULL) {
+          std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+          return NULL;
+        }
+        trajmapAutonavProducerMonitoring = sessionMonitor->createProducer(trajmapAutonavDestinationMonitoring);
+        if (trajmapAutonavProducerMonitoring == NULL) {
+          std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+          return NULL;
+        }
+        trajmapAutonavProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+        isConnected = true;
+
 
         // Finished
         std::cout << "ActiveMQTMSender:" << " connected" <<  std::endl;

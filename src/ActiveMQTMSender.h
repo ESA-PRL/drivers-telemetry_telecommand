@@ -102,6 +102,9 @@ class ActiveMQTMSender: public SimpleThread {
   Destination* imgRearDestinationMonitoring;
   MessageProducer* imgRearProducerMonitoring;
 
+  Destination* imgAutonavDestinationMonitoring;
+  MessageProducer* imgAutonavProducerMonitoring;
+
   /********* dist **********/
   Destination* distMastDestinationMonitoring;
   MessageProducer* distMastProducerMonitoring;
@@ -129,6 +132,9 @@ class ActiveMQTMSender: public SimpleThread {
 
   Destination* distRearDestinationMonitoring;
   MessageProducer* distRearProducerMonitoring;
+
+  Destination* distAutonavDestinationMonitoring;
+  MessageProducer* distAutonavProducerMonitoring;
 
   /********* pc **********/
   Destination* pcPancamDestinationMonitoring;
@@ -185,6 +191,17 @@ class ActiveMQTMSender: public SimpleThread {
 
   Destination* demRearDestinationMonitoring;
   MessageProducer* demRearProducerMonitoring;
+
+  Destination* demAutonavDestinationMonitoring;
+  MessageProducer* demAutonavProducerMonitoring;
+
+  /********* navmap ********/
+  Destination* navmapAutonavDestinationMonitoring;
+  MessageProducer* navmapAutonavProducerMonitoring;
+
+  /********* trajmap ********/
+  Destination* trajmapAutonavDestinationMonitoring;
+  MessageProducer* trajmapAutonavProducerMonitoring;
 
   std::string brokerURI;
   int numMessages;
