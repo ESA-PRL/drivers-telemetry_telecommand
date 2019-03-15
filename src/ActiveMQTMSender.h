@@ -195,11 +195,12 @@ class ActiveMQTMSender: public SimpleThread {
   Destination* demAutonavDestinationMonitoring;
   MessageProducer* demAutonavProducerMonitoring;
 
-  /********* navmap ********/
+  Destination* partialNavmapAutonavDestinationMonitoring;
+  MessageProducer* partialNavmapAutonavProducerMonitoring;
+
   Destination* navmapAutonavDestinationMonitoring;
   MessageProducer* navmapAutonavProducerMonitoring;
 
-  /********* trajmap ********/
   Destination* trajmapAutonavDestinationMonitoring;
   MessageProducer* trajmapAutonavProducerMonitoring;
 

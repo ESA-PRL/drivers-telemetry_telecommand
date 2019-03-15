@@ -34,8 +34,9 @@ namespace telemetry_telecommand
             STEREO, // used to ask for stereo images
             STEREO_LEFT, // used to mark provided images
             STEREO_RIGHT,
-            NAVMAP,  // AutoNav-specific product
-            TRAJMAP  // AutoNav-specific product
+            PARTIAL_NAVMAP, // AutoNav-specific product
+            NAVMAP,         // AutoNav-specific product
+            TRAJMAP         // AutoNav-specific product
         };
 
         enum Mode  // Be careful when changing this enum. 3DROCS uses corresponding integer numbers to select the type. Changing the enum will need to modify 3DROCS TC command. 

@@ -94,6 +94,7 @@ void* ActiveMQTMSender::thread() {
         string img_autonav_str("AUTONAV_IMAGE");
         string dist_autonav_str("AUTONAV_DIST");
         string dem_autonav_str("AUTONAV_DEM");
+        string partial_navmap_autonav_str("AUTONAV_PARTIAL_NAVMAP");
         string navmap_autonav_str("AUTONAV_NAVMAP");
         string trajmap_autonav_str("AUTONAV_TRAJMAP");
 
@@ -811,6 +812,20 @@ void* ActiveMQTMSender::thread() {
           return NULL;
         }
         demAutonavProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
+        isConnected = true;
+
+        /******** PARTIAL_NAVMAP_AUTONAV *********/
+        partialNavmapAutonavDestinationMonitoring = sessionMonitor->createTopic(partial_navmap_autonav_str);
+        if (partialNavmapAutonavDestinationMonitoring == NULL) {
+          std::cerr << "ActiveMQTMSender - destinationMonitoring is null" << std::endl;
+          return NULL;
+        }
+        partialNavmapAutonavProducerMonitoring = sessionMonitor->createProducer(partialNavmapAutonavDestinationMonitoring);
+        if (partialNavmapAutonavProducerMonitoring == NULL) {
+          std::cerr << "ActiveMQTMSender - producerMonitoring is null" << std::endl;
+          return NULL;
+        }
+        partialNavmapAutonavProducerMonitoring->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
         isConnected = true;
 
         /******** NAVMAP_AUTONAV *********/
